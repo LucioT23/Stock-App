@@ -11,6 +11,6 @@ st.title('A Simple Streamlit Tony Web App')
 
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
-    st.title("Mobile Client Fleet Check_ML")
-    choice = st.radio("Navigation", ["Upload","Profiling","Modelling", "Download"])
-    st.info("This project application helps you check your customer mobile fleet data.")
+    #st.title("Mobile Client Fleet Check_ML")
+    #choice = st.radio("Navigation", ["Upload","Profiling","Modelling", "Download"])
+    #st.info("This project application helps you check your customer mobile fleet data.")
