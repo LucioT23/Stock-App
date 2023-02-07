@@ -15,3 +15,12 @@ with st.sidebar:
     st.title("Mobile Client Fleet Check_ML")
     choice = st.radio("Navigation", ["Upload","Profiling","Modelling", "Download"])
     st.info("This project application helps you check your customer mobile fleet data.")
+
+    
+if choice == "Upload":
+    st.title("Upload Your Dataset")
+    file = st.file_uploader("Upload Your Dataset")
+    if file: 
+        df = pd.read_csv(file, index_col=None)
+        df.to_csv('dataset.csv', index=None)
+        st.dataframe(df)
