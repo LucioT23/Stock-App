@@ -1,5 +1,11 @@
 import streamlit as st
 import pandas as pd
+import numpy as np 
+from datetime import datetime 
+import plotly.express as px 
+
+pd.set_option('display.max_row',111)
+pd.set_option('display.max_column',111)
 #import openpyxl
 #from operator import index
 #import plotly.express as px
@@ -9,32 +15,21 @@ import pandas as pd
 #from streamlit_pandas_profiling import st_profile_report
 #import os 
 
-st.title('A Simple Streamlit Tony Web App')
+st.title('A Simple Tony Web App')
 
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Mobile Client Fleet Check_ML")
-    choice = st.radio("Navigation", ["Upload","Profiling","Modelling", "Download"])
+    choice = st.radio("Navigation", ["Download","Profiling","Modelling", "Upload"])
     st.info("This project application helps you check your customer mobile fleet data.")
 
     
-if choice == "Upload":
-    st.title("Upload Your Dataset")
-    file = st.file_uploader("Upload Your File")
+if choice == "Download":
+    st.title("Download Your Dataset")
+    file = st.file_uploader("Download Your File")
     if file: 
         df = pd.read_csv(file, index_col=None)
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
 
-    # Ajouter un bouton "Télécharger"
-    #st.write("Cliquez sur le bouton pour télécharger le fichier Excel :")
-    #if st.button("Télécharger"):
-    #    st.write("Téléchargement en cours...")
-    #    st.excel_download(df, "data.xlsx")
-    #    st.write("Téléchargement terminé.")
 
-    # file = st.file_uploader("Upload Your Dataset")
-    # if file: 
-    #    df = pd.read_csv(file, index_col=None)
-    #    df.to_csv('dataset.csv', index=None)
-    #    st.dataframe(df)
