@@ -22,13 +22,14 @@ if choice == "Upload":
     # Ajouter un bouton de téléchargement de fichier
     uploaded_file = st.file_uploader("Choisissez un fichier Excel :", type=["xlsx"])
 
-    if uploaded_file is not None:
+    if uploaded_file:
     # Charger le fichier sélectionné en tant que dataframe
-      df = pd.read_excel(uploaded_file, index_col=None)
+      df = pd.read_excel(uploaded_file)
 
       # Afficher le dataframe
       st.write("Voici le contenu du fichier Excel sélectionné :")
-      st.write(df)
+      #st.write(df)
+      st.dataframe(df)
 
     # Ajouter un bouton "Télécharger"
     #st.write("Cliquez sur le bouton pour télécharger le fichier Excel :")
