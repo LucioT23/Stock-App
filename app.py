@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np 
 from datetime import datetime 
-import plotly.express as px 
+import streamlit as st
+!pip install plotly_express
+import plotly.express as px
 
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
