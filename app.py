@@ -20,22 +20,22 @@ with st.sidebar:
 if choice == "Upload":
     st.title("Upload Your Dataset")
     # Ajouter un bouton de téléchargement de fichier
-  uploaded_file = st.file_uploader("Choisissez un fichier Excel :", type=["xlsx"])
+    uploaded_file = st.file_uploader("Choisissez un fichier Excel :", type=["xlsx"])
 
-  if uploaded_file is not None:
+    if uploaded_file is not None:
     # Charger le fichier sélectionné en tant que dataframe
-    df = pd.read_excel(uploaded_file)
+      df = pd.read_excel(uploaded_file, index_col=None)
 
-    # Afficher le dataframe
-    st.write("Voici le contenu du fichier Excel sélectionné :")
-    st.write(df)
+      # Afficher le dataframe
+      st.write("Voici le contenu du fichier Excel sélectionné :")
+      st.write(df)
 
     # Ajouter un bouton "Télécharger"
-    st.write("Cliquez sur le bouton pour télécharger le fichier Excel :")
-    if st.button("Télécharger"):
-        st.write("Téléchargement en cours...")
-        st.excel_download(df, "data.xlsx")
-        st.write("Téléchargement terminé.")
+    #st.write("Cliquez sur le bouton pour télécharger le fichier Excel :")
+    #if st.button("Télécharger"):
+    #    st.write("Téléchargement en cours...")
+    #    st.excel_download(df, "data.xlsx")
+    #    st.write("Téléchargement terminé.")
 
     # file = st.file_uploader("Upload Your Dataset")
     # if file: 
