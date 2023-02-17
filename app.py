@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import openpyxl
+#import openpyxl
 #from operator import index
 #import plotly.express as px
 #import pycaret
@@ -20,17 +20,11 @@ with st.sidebar:
     
 if choice == "Upload":
     st.title("Upload Your Dataset")
-    # Ajouter un bouton de téléchargement de fichier
-    uploaded_file = st.file_uploader("Choisissez un fichier Excel :", type=["xlsx"])
-
-    if uploaded_file:
-    # Charger le fichier sélectionné en tant que dataframe
-      df = pd.read_excel(uploaded_file)
-
-      # Afficher le dataframe
-      st.write("Voici le contenu du fichier Excel sélectionné :")
-      #st.write(df)
-      st.dataframe(df)
+    file = st.file_uploader("Upload Your File")
+    if file: 
+        df = pd.read_csv(file, index_col=None)
+        df.to_csv('dataset.csv', index=None)
+        st.dataframe(df)
 
     # Ajouter un bouton "Télécharger"
     #st.write("Cliquez sur le bouton pour télécharger le fichier Excel :")
