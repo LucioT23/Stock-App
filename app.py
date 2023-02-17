@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np 
 from datetime import datetime 
 import streamlit as st
-!pip install plotly_express
+! pip install plotly_express
 import plotly.express as px
 
 pd.set_option('display.max_row',111)
