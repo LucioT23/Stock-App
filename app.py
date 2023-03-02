@@ -88,10 +88,10 @@ if choice == "Download":
         df_ongoing = df[df['statut deploiement'].isin(['En cours'])]
         df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
 
-        counts = df_deploiement['Portail déployée'].value_counts()
+        counts = df_ongoing['Portail déployée'].value_counts()
 
         # plotting the pie chart
-        fig = px.pie(df_deploiement, names=counts.index, values =counts,width=800, height=400) # names=counts.index
+        fig = px.pie(df_ongoing, names=counts.index, values =counts,width=800, height=400) # names=counts.index
         #fig.update_layout(width=int(500))
         # showing the plot
         #fig.show()
