@@ -94,6 +94,8 @@ if choice == "Digital deployment in progress":
         df_deployed = df[df['statut deploiement'].isin(['Déployé'])]
         df_ongoing = df[df['statut deploiement'].isin(['En cours'])]
         df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
+        df_deploiement = df_deploiement[df_deploiement['Portail déployée']=='GLM AC']
+        df_deploiement = df_deploiement.sort_values(by='quarterc', ascending=True)
 
         counts = df_ongoing['Portail déployée'].value_counts()
 
@@ -103,10 +105,22 @@ if choice == "Digital deployment in progress":
         # showing the plot
         #fig.show()
 
-        #Ajout Graph
-        st.title("Déploiement en cours")
+        #Ajout Graph Deploiement en cours
+        st.subheader("Déploiement en cours")
         st.write(fig)
 
+        df_deploiement_mean = pd.DataFrame(df_deploiement.groupby(['quarterc'])['delivery_time_month'].mean()).reset_index()
 
-
+        # plotting the histogram
+        fig1 = px.histogram(df_deploiement_mean, x="quarterc", y="delivery_time_month",title="Durée de déploiement par Trimestre",
+                          labels={
+                            "delivery_time_month": "Délai de déploiement en mois",
+                            "quarterc": "Trimestre"}) 
+        fig1.update_layout(
+            height=400,
+            width =800)
+        
+        #Ajout Graph Durée des deploiements GLM AC
+        st.subheader("Durée des deploiements GLM AC")
+        st.write(fig1)
 
