@@ -14,7 +14,7 @@ st.title('A Simple Tony Web App')
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Mobile Client Fleet Check_ML")
-    choice = st.radio("Navigation", ["Download","Profiling","Modelling", "Upload"])
+    choice = st.radio("Navigation", ["Download","Digital deployment in progress","Modelling", "Upload"])
     st.info("This project application helps you check your customer mobile fleet data.")
 
     
@@ -88,6 +88,11 @@ if choice == "Download":
         df_ongoing = df[df['statut deploiement'].isin(['En cours'])]
         df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
 
+        # sauvegarde + affichage
+        df.to_csv('dataset.csv', index=None)
+        st.dataframe(df)
+
+if choice == "Digital deployment in progress":
         counts = df_ongoing['Portail déployée'].value_counts()
 
         # plotting the pie chart
@@ -100,8 +105,6 @@ if choice == "Download":
         st.title("Déploiement en cours")
         st.write(fig)
 
-        # sauvegarde + affichage
-        df.to_csv('dataset.csv', index=None)
-        st.dataframe(df)
+
 
 
