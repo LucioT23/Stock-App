@@ -75,6 +75,31 @@ if choice == "Download":
         df['quarter'] = pd.PeriodIndex(df['date Kick-off Interne'], freq='Q')
         df['quarterc'] = df['quarter'].astype('string')
 
+        #calcul du délais
+        df['delivery_time'] = (df['date Vie de Solution']-df['date Kick-off Interne']).dt.days
+
+        # Conversion en semaines
+        df['delivery_time_week'] = round(df['delivery_time'] / 7)
+        # Calcul de la différence en mois
+        df['delivery_time_month'] = (df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month)
+
+        df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
+        df_deployed = df[df['statut deploiement'].isin(['Déployé'])]
+        df_ongoing = df[df['statut deploiement'].isin(['En cours'])]
+        df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
+
+        counts = df_deploiement['Portail déployée'].value_counts()
+
+        # plotting the pie chart
+        fig = px.pie(df_deploiement, names=counts.index, values =counts,width=800, height=400) # names=counts.index
+        #fig.update_layout(width=int(500))
+        # showing the plot
+        #fig.show()
+
+        #Ajout Graph
+        st.title("Déploiement en cours")
+        st.write(fig)
+
         # sauvegarde + affichage
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
