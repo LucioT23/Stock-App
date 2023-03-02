@@ -83,16 +83,18 @@ if choice == "Download":
         # Calcul de la différence en mois
         df['delivery_time_month'] = (df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month)
 
-        df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
-        df_deployed = df[df['statut deploiement'].isin(['Déployé'])]
-        df_ongoing = df[df['statut deploiement'].isin(['En cours'])]
-        df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
-
         # sauvegarde + affichage
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
 
 if choice == "Digital deployment in progress":
+
+        df = pd.read_csv('dataset.csv', index_col=None)
+        df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
+        df_deployed = df[df['statut deploiement'].isin(['Déployé'])]
+        df_ongoing = df[df['statut deploiement'].isin(['En cours'])]
+        df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
+
         counts = df_ongoing['Portail déployée'].value_counts()
 
         # plotting the pie chart
