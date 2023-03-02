@@ -1,16 +1,16 @@
+! pip install -r requirements.txt
 import streamlit as st
 import pandas as pd
 import numpy as np 
 from datetime import datetime 
 import streamlit as st
-! pip install plotly_express
+#! pip install plotly_express
 import plotly.express as px
 
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 #import openpyxl
 #from operator import index
-#import plotly.express as px
 #import pycaret
 #from pycaret.regression import setup, compare_models, pull, save_model, load_model
 #import pandas_profiling
