@@ -24,7 +24,8 @@ if choice == "Download":
     if file: 
         df = pd.read_csv(file, index_col=None)
         df= df.drop(columns=['application déployée'])
-
+        df = df[df['Statut']!='Contrat Perdu']
+        
         # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
         def rename_application(df):
           for i,val in enumerate(df['Application déployée']):
