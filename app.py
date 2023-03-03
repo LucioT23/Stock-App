@@ -124,10 +124,9 @@ if choice == "GLM AC deployment in progress":
         st.subheader("Durée des deploiements GLM AC")
         st.write(fig1)
 
+        data3 = df_deploiement_mean.dropna(subset=['delivery_time_month'])
         fig2 = px.scatter(data3, x="quarterc", y="delivery_time_month", text="title")
-
         fig2.update_traces(textposition='top center')
-
         fig2.update_layout(
             height=600,
             title_text='Durée de déploiement par trimestre (GLM AC)')
