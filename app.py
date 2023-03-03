@@ -9,12 +9,12 @@ pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 
 
-st.title('A Simple Tony Web App')
+st.title('Digital Deployment')
 
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Mobile Client Fleet Check_ML")
-    choice = st.radio("Navigation", ["Download","Digital deployment in progress","Modelling", "Upload"])
+    choice = st.radio("Navigation", ["Download","GLM AC deployment in progress","Digital", "Plan"])
     st.info("This project application helps you check your customer mobile fleet data.")
 
     
@@ -87,7 +87,7 @@ if choice == "Download":
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
 
-if choice == "Digital deployment in progress":
+if choice == "GLM AC deployment in progress":
 
         df = pd.read_csv('dataset.csv', index_col=None)
         df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
@@ -123,4 +123,16 @@ if choice == "Digital deployment in progress":
         #Ajout Graph Durée des deploiements GLM AC
         st.subheader("Durée des deploiements GLM AC")
         st.write(fig1)
+
+        fig2 = px.scatter(data3, x="quarterc", y="delivery_time_month", text="title")
+
+        fig2.update_traces(textposition='top center')
+
+        fig2.update_layout(
+            height=600,
+            title_text='Durée de déploiement par trimestre (GLM AC)')
+
+        #Ajout Graph Durée des deploiements GLM AC par client déployés
+        st.subheader("Durée des deploiements GLM AC par client déployé")
+        st.write(fig2)
 
