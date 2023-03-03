@@ -101,6 +101,7 @@ if choice == "GLM AC deployment in progress":
 
         # plotting the pie chart
         fig = px.pie(df_ongoing, names=counts.index, values =counts,width=800, height=400) # names=counts.index
+        #hovertemplate = "%{counts}: <br>Popularity: %{percent} </br> %{text}"
         #fig.update_layout(width=int(500))
         # showing the plot
         #fig.show()
@@ -135,3 +136,19 @@ if choice == "GLM AC deployment in progress":
         st.subheader("Durée des deploiements GLM AC par client déployé")
         st.write(fig2)
 
+        # plotting the histogram
+        fig3 = px.histogram(df_deploiement, x="quarterc",color='statut deploiement', title="Statut déploiement par date de Kickoff (GLM AC)")
+        fig3.update_layout(height=400,width =800)
+
+        #Ajout Graph Statut déploiement par date de Kickoff (GLM AC)
+        st.subheader("Statut déploiement par date de Kickoff (GLM AC)")
+        st.write(fig3)
+
+        fig4 = px.scatter(df_deploiement.reset_index(), x="quarterc",color='statut deploiement', text="title")
+        fig4.update_traces(textposition='top center')
+        fig4.update_layout(height=800,
+            title_text='Statut déploiement par date de Kickoff (GLM AC) par client')
+
+        #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
+        st.subheader("Statut déploiement par date de Kickoff (GLM AC) par client")
+        st.write(fig4)
