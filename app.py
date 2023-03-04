@@ -114,13 +114,8 @@ if choice == "GLM AC deployment in progress":
         df_deploiement_mean = pd.DataFrame(df_deploiement.groupby(['quarterc'])['delivery_time_month'].mean()).reset_index()
 
         # plotting the histogram
-        fig1 = px.histogram(df_deploiement_mean, x="quarterc", y="delivery_time_month",title="Durée de déploiement par Trimestre",
-                          labels={
-                            "delivery_time_month": "Délai de déploiement en mois",
-                            "quarterc": "Trimestre"}) 
-        fig1.update_layout(
-            height=400,
-            width =800)
+        fig1 = px.histogram(df_deploiement_mean, x="quarterc", y="delivery_time_month",title="Durée de déploiement par Trimestre")
+        fig1.update_layout(height=400,width =800, yaxis_title="délai de déploiement",xaxis_title="Trimestre")
         
         #Ajout Graph Durée des deploiements GLM AC
         st.subheader("Durée des deploiements GLM AC")
@@ -131,7 +126,7 @@ if choice == "GLM AC deployment in progress":
         #fig2.update_traces(textposition='top center')
         fig2.update_layout(
             height=600,width=800,
-            title_text='Durée de déploiement par trimestre (GLM AC)')
+            title_text='Durée de déploiement par trimestre (GLM AC)', yaxis_title="délai de déploiement",xaxis_title="Trimestre")
         
         def improve_text_position(x):
           positions = ['top center','top right', 'bottom center', 'bottom left']  # you can add more: left center ...
@@ -155,7 +150,7 @@ if choice == "GLM AC deployment in progress":
         fig4 = px.scatter(df_deploiement.reset_index(), x="quarterc",color='statut deploiement', text="title")
         fig4.update_traces(textposition='top center')
         fig4.update_layout(height=800,width=800,
-            title_text='Statut déploiement par date de Kickoff (GLM AC) par client')
+            title_text='Statut déploiement par date de Kickoff (GLM AC) par client', yaxis_title="Client",xaxis_title="Trimestre")
 
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Statut déploiement par date de Kickoff (GLM AC) par client")
