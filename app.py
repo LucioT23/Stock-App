@@ -128,10 +128,16 @@ if choice == "GLM AC deployment in progress":
 
         data3 = df_deploiement.dropna(subset=['delivery_time_month'])
         fig2 = px.scatter(data3, x="quarterc", y="delivery_time_month", text="title")
-        fig2.update_traces(textposition='top center')
+        #fig2.update_traces(textposition='top center')
         fig2.update_layout(
             height=600,
             title_text='Durée de déploiement par trimestre (GLM AC)')
+        
+        def improve_text_position(x):
+          positions = ['top center','top right', 'bottom center', 'bottom left']  # you can add more: left center ...
+          return [positions[i % len(positions)] for i in range(len(x))]
+
+        fig2.update_traces(textposition=improve_text_position(data3["quarterc"]))
 
         #Ajout Graph Durée des deploiements GLM AC par client déployés
         st.subheader("Durée des deploiements GLM AC par client déployé")
@@ -139,13 +145,7 @@ if choice == "GLM AC deployment in progress":
 
         # plotting the histogram
         fig3 = px.histogram(df_deploiement, x="quarterc",color='statut deploiement', title="Statut déploiement par date de Kickoff (GLM AC)")
-        fig3.update_layout(height=400,width =800)
-
-        def improve_text_position(x):
-          positions = ['top center','top right', 'bottom center', 'bottom left']  # you can add more: left center ...
-          return [positions[i % len(positions)] for i in range(len(x))]
-
-        fig3.update_traces(textposition=improve_text_position(df_deploiement["quarterc"]))
+        fig3.update_layout(height=400,width =900)
 
         #Ajout Graph Statut déploiement par date de Kickoff (GLM AC)
         st.subheader("Statut déploiement par date de Kickoff (GLM AC)")
