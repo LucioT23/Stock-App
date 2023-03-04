@@ -130,7 +130,7 @@ if choice == "GLM AC deployment in progress":
         fig2 = px.scatter(data3, x="quarterc", y="delivery_time_month", text="title")
         #fig2.update_traces(textposition='top center')
         fig2.update_layout(
-            height=600,
+            height=600,width=800,
             title_text='Durée de déploiement par trimestre (GLM AC)')
         
         def improve_text_position(x):
@@ -153,7 +153,7 @@ if choice == "GLM AC deployment in progress":
 
         fig4 = px.scatter(df_deploiement.reset_index(), x="quarterc",color='statut deploiement', text="title")
         fig4.update_traces(textposition='top center')
-        fig4.update_layout(height=800,
+        fig4.update_layout(height=800,width=800,
             title_text='Statut déploiement par date de Kickoff (GLM AC) par client')
 
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
