@@ -141,19 +141,20 @@ if choice == "GLM AC deployment in progress":
         fig3 = px.histogram(df_deploiement, x="quarterc",color='statut deploiement', title="Statut déploiement par date de Kickoff (GLM AC)")
         fig3.update_layout(height=400,width =800)
 
+        def improve_text_position(x):
+        """ it is more efficient if the x values are sorted """
+        # fix indentation 
+        positions = ['top center','top right', 'bottom center', 'bottom left']  # you can add more: left center ...
+        return [positions[i % len(positions)] for i in range(len(x))]
+
+        fig3.update_traces(textposition=improve_text_position(data3["quarterc"]))
+
         #Ajout Graph Statut déploiement par date de Kickoff (GLM AC)
         st.subheader("Statut déploiement par date de Kickoff (GLM AC)")
         st.write(fig3)
 
         fig4 = px.scatter(df_deploiement.reset_index(), x="quarterc",color='statut deploiement', text="title")
-        #fig4.update_traces(textposition='top center')        
-        def improve_text_position(x):
-            """ it is more efficient if the x values are sorted """
-            # fix indentation 
-            positions = ['top center','top right', 'bottom center', 'bottom left']  # you can add more: left center ...
-            return [positions[i % len(positions)] for i in range(len(x))]
-
-        fig4.update_traces(textposition=improve_text_position(data3["quarterc"]))
+        fig4.update_traces(textposition='top center')
         fig4.update_layout(height=800,
             title_text='Statut déploiement par date de Kickoff (GLM AC) par client')
 
