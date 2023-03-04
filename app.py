@@ -145,7 +145,8 @@ if choice == "GLM AC deployment in progress":
 
         # plotting the histogram
         fig3 = px.histogram(df_deploiement, x="quarterc",color='statut deploiement', title="Statut déploiement par date de Kickoff (GLM AC)")
-        fig3.update_layout(height=400,width =900)
+        fig3.update_layout(height=400,width =900, yaxis_title="Nb déploiement",xaxis_title="Trimestre")
+        
 
         #Ajout Graph Statut déploiement par date de Kickoff (GLM AC)
         st.subheader("Statut déploiement par date de Kickoff (GLM AC)")
