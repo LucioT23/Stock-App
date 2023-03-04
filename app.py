@@ -102,7 +102,7 @@ if choice == "GLM AC deployment in progress":
 
         # plotting the pie chart
         fig = px.pie(df_ongoing, names=counts.index, values =counts,width=800, height=400) # names=counts.index
-        #hovertemplate = "%{counts}: <br>Popularity: %{percent} </br> %{text}"
+        fig.update_traces(textinfo="percent+label+value")
         #fig.update_layout(width=int(500))
         # showing the plot
         #fig.show()
@@ -146,7 +146,14 @@ if choice == "GLM AC deployment in progress":
         st.write(fig3)
 
         fig4 = px.scatter(df_deploiement.reset_index(), x="quarterc",color='statut deploiement', text="title")
-        fig4.update_traces(textposition='top center')
+        #fig4.update_traces(textposition='top center')        
+        def improve_text_position(x):
+            """ it is more efficient if the x values are sorted """
+            # fix indentation 
+            positions = ['top center','top right', 'bottom center', 'bottom left']  # you can add more: left center ...
+            return [positions[i % len(positions)] for i in range(len(x))]
+
+        fig4.update_traces(textposition=improve_text_position(data3["quarterc"]))
         fig4.update_layout(height=800,
             title_text='Statut déploiement par date de Kickoff (GLM AC) par client')
 
