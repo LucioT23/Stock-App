@@ -142,8 +142,6 @@ if choice == "GLM AC deployment in progress":
         fig3.update_layout(height=400,width =800)
 
         def improve_text_position(x):
-        """ it is more efficient if the x values are sorted """
-        # fix indentation 
         positions = ['top center','top right', 'bottom center', 'bottom left']  # you can add more: left center ...
         return [positions[i % len(positions)] for i in range(len(x))]
 
