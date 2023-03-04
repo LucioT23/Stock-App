@@ -24,7 +24,6 @@ if choice == "Download":
     if file: 
         df = pd.read_csv(file, index_col=None)
         df= df.drop(columns=['application déployée'])
-        df = df[df['Statut']!='Contrat Perdu']
         
         # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
         def rename_application(df):
@@ -84,6 +83,7 @@ if choice == "Download":
         # Calcul de la différence en mois
         df['delivery_time_month'] = (df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month)
 
+        df = df[df['Statut']!='Contrat Perdu']
         # sauvegarde + affichage
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
