@@ -266,7 +266,7 @@ if choice == "Customer Migration":
         #st.write(new_data)
         #st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
         fig5 = px.scatter(new_data, x="trimestre_digital",y="Code groupe DISE", hover_name="title",color="Portail déployée") 
-        fig5.update_layout(height=800,width =800, yaxis_title=None,xaxis_title="Trimestre")
+        #fig5.update_layout(height=800,width =800, yaxis_title=None,xaxis_title="Trimestre")
 
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Déploiement Digital par Client")
