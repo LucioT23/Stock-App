@@ -166,7 +166,7 @@ if choice == "Customer Migration":
         # replace NaN by 0
         #data_test['trimestre_deployé'] = data_test['trimestre_deployé'].fillna("0")
         
-        trimestres = sorted(data_test.dropna(subset=[‘trimestre_deployé’])[‘trimestre_deployé’].unique())
+        trimestres = sorted(data_test.dropna(subset=['trimestre_deployé'])['trimestre_deployé'].unique())
         #trimestres = sorted(data_test['trimestre_deployé'].unique())
 
         new_data = pd.DataFrame()  # créer un DataFrame vide
