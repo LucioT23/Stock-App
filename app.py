@@ -14,8 +14,8 @@ st.title('Digital Deployment')
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Mobile Client Fleet Check_ML")
-    choice = st.radio("Navigation", ["Download","GLM AC deployment in progress","Digital", "Plan"])
-    st.info("This project application helps you check your customer mobile fleet data.")
+    choice = st.radio("Navigation", ["Download","GLM AC deployment","Customer Migration", "Project Manager"])
+    st.info("This project application helps you to have a complete vision of the digital deployments of our clients")
 
     
 if choice == "Download":
@@ -88,7 +88,7 @@ if choice == "Download":
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
 
-if choice == "GLM AC deployment in progress":
+if choice == "GLM AC deployment":
 
         df = pd.read_csv('dataset.csv', index_col=None)
         df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
@@ -155,3 +155,131 @@ if choice == "GLM AC deployment in progress":
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Statut déploiement par date de Kickoff (GLM AC) par client")
         st.write(fig4)
+
+if choice == "Customer Migration":
+
+        df = pd.read_csv('dataset.csv', index_col=None)
+        df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
+        df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
+        data_test = df_deploiement2.copy()
+        data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']]
+
+        trimestres = sorted(data_test['trimestre_deployé'].unique())
+
+        new_data = pd.DataFrame()  # créer un DataFrame vide
+
+        # boucler sur chaque trimestre
+        for t in trimestres:
+          df_t = data_test[data_test['trimestre_deployé'] <= t]
+          df_t['trimestre_digital'] = t #deployé
+          new_data = pd.concat([new_data, df_t])
+          new_data = new_data.sort_values(by=['trimestre_digital','title']).reset_index(drop=True)
+          new_data['trimestre_digital'] = new_data['trimestre_digital'].astype('string')
+
+        new_data['title'] = new_data['title'].str.title()
+
+        # Créer un dictionnaire qui stocke les valeurs complètes pour chaque client
+        complete_codes = {}
+        for index, row in new_data.iterrows():
+            client = row['title']
+            code = row['Code groupe DISE']
+            if ',' not in code:
+                if client in complete_codes:
+                    code = complete_codes[client]
+                else:
+                    continue
+            else:
+                complete_codes[client] = code
+
+        # Compléter les codes manquants pour chaque client
+        for index, row in new_data.iterrows():
+            client = row['title']
+            code = row['Code groupe DISE']
+            if ',' not in code:
+                if client in complete_codes:
+                    new_data.at[index, 'Code groupe DISE'] = complete_codes[client]
+
+        # Créer une nouvelle colonne 'migré' initialement à False
+        new_data['migré'] = False
+
+        # Créer une colonne 'new_portail' pour stocker le nouveau portail migré
+        new_data['old_portail'] = ''
+
+        # Grouper les données par client
+        grouped = new_data.groupby('Code groupe DISE') # instead of 'title'
+
+        #old_portail_history= None
+        for name, group in grouped:
+            
+            # Obtenir les portails déployés par le client dans l'ordre chronologique
+            portails_deployes = group.sort_values('trimestre_digital')['Portail déployée'] #deployé
+
+            # Vérifier si le client a été migré pour chaque trimestre
+            for i in range(len(portails_deployes)):
+                if i!=0:
+                  if portails_deployes.iloc[i] != portails_deployes.iloc[i-1]:
+                      old_portail = portails_deployes.iloc[i-1]
+                      if old_portail_history == "":
+                        old_portail_history = old_portail 
+
+                      new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']) & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'migré'] = True
+                      new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']) & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'old_portail'] = old_portail_history #portails_deployes.iloc[i-1]  
+
+            old_portail_history = ""
+
+        to_remove=[]
+
+        # Créer une nouvelle colonne 'migré' initialement à False
+        new_data['to_remove'] = False
+
+        # Grouper les données par client
+        grouped = new_data.groupby('Code groupe DISE')
+
+        for name, group in grouped:
+
+          old_portail_deployes = group.loc[(new_data['Code groupe DISE'] == name) & (new_data['old_portail'] !='')]
+
+          for i in range(len(old_portail_deployes)-1): 
+            if old_portail_deployes.iloc[i]['Portail déployée'] == old_portail_deployes.iloc[i]['old_portail']:
+              old_portail = old_portail_deployes.iloc[i]['Portail déployée'] 
+              new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['Portail déployée'] == old_portail) & (new_data['old_portail'] == group.iloc[i]['Portail déployée']),'to_remove']=True
+
+        new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
+
+        # Grouper les données par client
+        grouped = new_data.groupby('Code groupe DISE')
+
+        for name, group in grouped:
+            portail_deployes = group.loc[(new_data['Code groupe DISE'] == name)]
+            for i in range(len(portail_deployes) - 1):
+                if (portail_deployes.iloc[i]['trimestre_digital'] == portail_deployes.iloc[i+1]['trimestre_digital']) and (portail_deployes.iloc[i+1]['migré'] == True):
+                    new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['migré'] == False) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']),'to_remove']=True
+
+        new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
+
+        count_portail_migre = pd.DataFrame(new_data.groupby(['trimestre_digital','Portail déployée'])['Code groupe DISE'].count()).reset_index()
+        count_portail_migre = count_portail_migre.rename(columns={'Code groupe DISE': 'nb déploiement par portail'})
+
+        # Réorganiser les données
+        df_pivot = pd.pivot_table(count_portail_migre, 
+                                  values='nb déploiement par portail', 
+                                  index='trimestre_digital', 
+                                  columns='Portail déployée', 
+                                  fill_value=0, 
+                                  aggfunc='sum')
+
+        # Calculer le cumul
+        #df_cumsum = df_pivot.cumsum()
+
+        # Réinitialiser l'index et convertir la colonne en trimestres
+        #df_cumsum = df_cumsum.reset_index()
+        df_pivot = df_pivot.reset_index()
+        df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
+
+        # Convertir les données en format long
+        df_long_quarter = pd.melt(df_pivot, id_vars=['trimestre_digital'], var_name='Portail déployé', value_name='nb de portail')
+        df_long=df_long_quarter.copy()
+        df_long['trimestre_digital'] = df_long_quarter['trimestre_digital'].dt.strftime('%Y-%m-%d')
+
+        fig = px.bar(df_long, x="trimestre_digital", y='nb de portail', color='Portail déployé', text='nb de portail')
+        fig.show()      
