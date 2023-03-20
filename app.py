@@ -265,6 +265,13 @@ if choice == "Customer Migration":
 
         #st.write(new_data)
         #st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
+        fig5 = px.scatter(new_data, x="trimestre_digital",y="Code groupe DISE", hover_name="title",color="Portail déployée") 
+        
+        #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
+        st.subheader("Déploiement Digital par Client")
+        st.write(fig5)     
+
+
 
         # Réorganiser les données
         df_pivot = pd.pivot_table(count_portail_migre, 
@@ -282,6 +289,6 @@ if choice == "Customer Migration":
         df_pivot = df_pivot.reset_index()
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], errors='ignore').dt.to_period('Q')
-        df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], format='%Y-%m-%d', errors='coerce').dt.to_period('Q')
+        #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], format='%Y-%m-%d', errors='coerce').dt.to_period('Q')
 
         st.write(df_pivot)
