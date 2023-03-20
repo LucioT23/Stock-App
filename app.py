@@ -201,5 +201,67 @@ if choice == "Customer Migration":
                 if client in complete_codes:
                     new_data.at[index, 'Code groupe DISE'] = complete_codes[client]
 
-        st.write(new_data)
+        # Créer une nouvelle colonne 'migré' initialement à False
+        new_data['migré'] = False
+
+        # Créer une colonne 'new_portail' pour stocker le nouveau portail migré
+        new_data['old_portail'] = ''
+
+        # Grouper les données par client
+        grouped = new_data.groupby('Code groupe DISE') # instead of 'title'
+
+        #old_portail_history= None
+        for name, group in grouped:
+            
+            # Obtenir les portails déployés par le client dans l'ordre chronologique
+            portails_deployes = group.sort_values('trimestre_digital')['Portail déployée'] #deployé
+
+            # Vérifier si le client a été migré pour chaque trimestre
+            for i in range(len(portails_deployes)):
+                if i!=0:
+                  if portails_deployes.iloc[i] != portails_deployes.iloc[i-1]:
+                      old_portail = portails_deployes.iloc[i-1]
+                      if old_portail_history == "":
+                        old_portail_history = old_portail 
+
+                      new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']) & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'migré'] = True
+                      new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']) & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'old_portail'] = old_portail_history #portails_deployes.iloc[i-1]  
+
+            old_portail_history = ""
+
+        to_remove=[]
+
+        # Créer une nouvelle colonne 'migré' initialement à False
+        new_data['to_remove'] = False
+
+        # Grouper les données par client
+        grouped = new_data.groupby('Code groupe DISE')
+
+        for name, group in grouped:
+
+          old_portail_deployes = group.loc[(new_data['Code groupe DISE'] == name) & (new_data['old_portail'] !='')]
+
+          for i in range(len(old_portail_deployes)-1): 
+            if old_portail_deployes.iloc[i]['Portail déployée'] == old_portail_deployes.iloc[i]['old_portail']:
+              old_portail = old_portail_deployes.iloc[i]['Portail déployée'] 
+              new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['Portail déployée'] == old_portail) & (new_data['old_portail'] == group.iloc[i]['Portail déployée']),'to_remove']=True
+
+        new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
+
+        # Grouper les données par client
+        grouped = new_data.groupby('Code groupe DISE')
+
+        for name, group in grouped:
+            portail_deployes = group.loc[(new_data['Code groupe DISE'] == name)]
+            for i in range(len(portail_deployes) - 1):
+                if (portail_deployes.iloc[i]['trimestre_digital'] == portail_deployes.iloc[i+1]['trimestre_digital']) and (portail_deployes.iloc[i+1]['migré'] == True):
+                    new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['migré'] == False) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']),'to_remove']=True
+
+        new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
+
+        count_portail_migre = pd.DataFrame(new_data.groupby(['trimestre_digital','Portail déployée'])['Code groupe DISE'].count()).reset_index()
+        count_portail_migre = count_portail_migre.rename(columns={'Code groupe DISE': 'nb déploiement par portail'})
+
+
+        #st.write(new_data)
         st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
