@@ -324,7 +324,7 @@ if choice == "Project Manager":
         st.write(fig8) 
 
         # plotting the bar plot
-        fig9 = px.bar(df_ongoing.groupby(["Chef de projet"])['title'].count().reset_index(), x="Chef de projet", y='title', orientation='h')
+        fig9 = px.bar(df_ongoing.groupby(["Chef de projet"])['title'].count().reset_index(), x="Chef de projet", y='title')
         fig9.update_layout(height=400,width =800)
 
         #Ajout du graphique animé sur la migration client sur les portails digitaux
