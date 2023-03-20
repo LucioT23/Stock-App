@@ -291,3 +291,10 @@ if choice == "Customer Migration":
 
         # Afficher les résultats
         st.write(df_long)
+
+        fig6 = px.bar(df_long, x="trimestre_digital", y='nb de portail', color='Portail déployé', text='nb de portail')
+        fig6.update_layout(height=400,width =800)
+
+        #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
+        st.subheader("Déploiement Digital par portail")
+        st.write(fig6) 
