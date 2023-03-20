@@ -261,7 +261,7 @@ if choice == "Customer Migration":
         count_portail_migre = count_portail_migre.rename(columns={'Code groupe DISE': 'nb déploiement par portail'})
 
         fig5 = px.scatter(new_data, x="trimestre_digital",y="Code groupe DISE", hover_name="title",color="Portail déployée") 
-        fig5.update_layout(height=600,width =1200, yaxis_title=None,xaxis_title="Trimestre")
+        fig5.update_layout(height=500,width =900, yaxis_title=None,xaxis_title="Trimestre")
 
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Déploiement Digital par Client")
@@ -303,4 +303,30 @@ if choice == "Customer Migration":
 
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Migration des clients sur les portails Digitaux")
-        st.write(fig7) 
+        st.write(fig7)
+
+if choice == "Project Manager":
+
+        df = pd.read_csv('dataset.csv', index_col=None)
+        df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
+        df_deployed = df[df['statut deploiement'].isin(['Déployé'])]
+        df_ongoing = df[df['statut deploiement'].isin(['En cours'])]
+        df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
+        df_deploiement = df_deploiement[df_deploiement['Portail déployée']=='GLM AC']
+        df_deploiement = df_deploiement.sort_values(by='quarterc', ascending=True)
+
+        # plotting the bar plot
+        fig8 = px.bar(df_deploiement, x='Phase d’avancement', y=df_deploiement['Phase d’avancement'].value_counts(), orientation='h')
+        fig8.update_layout(height=400,width =800)
+
+        #Ajout du graphique animé sur la migration client sur les portails digitaux
+        st.subheader("Déploiement en cours par phase de déploiement")
+        st.write(fig8) 
+
+        # plotting the bar plot
+        fig9 = px.bar(df_ongoing, x="Chef de projet", y=df_ongoing["Chef de projet"].value_counts(), orientation='h')
+        fig9.update_layout(height=400,width =800)
+
+        #Ajout du graphique animé sur la migration client sur les portails digitaux
+        st.subheader("Nombre de déploiement par CDP")
+        st.write(fig9) 
