@@ -84,6 +84,7 @@ if choice == "Download":
         df['delivery_time_month'] = (df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month)
 
         df = df[df['Statut']!='Contrat Perdu']
+        df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
         # sauvegarde + affichage
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
