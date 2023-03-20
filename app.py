@@ -281,6 +281,6 @@ if choice == "Customer Migration":
         #df_cumsum = df_cumsum.reset_index()
         df_pivot = df_pivot.reset_index()
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
-        df_pivot[‘trimestre_digital’] = pd.to_datetime(df_pivot[‘trimestre_digital’], errors=‘ignore’).dt.to_period(‘Q’)
+        df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], errors='ignore').dt.to_period('Q')
 
         st.write(df_pivot)
