@@ -163,11 +163,8 @@ if choice == "Customer Migration":
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']]
-        # replace NaN by 0
-        #data_test['trimestre_deployé'] = data_test['trimestre_deployé'].fillna("0")
         
         trimestres = sorted(data_test.dropna(subset=['trimestre_deployé'])['trimestre_deployé'].unique())
-        #trimestres = sorted(data_test['trimestre_deployé'].unique())
 
         new_data = pd.DataFrame()  # créer un DataFrame vide
 
@@ -271,9 +268,7 @@ if choice == "Customer Migration":
 
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Déploiement Digital par Client")
-        st.write(fig5)     
-
-
+        st.write(fig5) 
 
         # Réorganiser les données
         df_pivot = pd.pivot_table(count_portail_migre, 
@@ -285,9 +280,14 @@ if choice == "Customer Migration":
 
         # Réinitialiser l'index et convertir la colonne en trimestres
         df_pivot = df_pivot.reset_index()
-        #df_pivot = df_pivot.drop(index=0)
-        #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
+        df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], errors='ignore').dt.to_period('Q')
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], format='%Y-%m-%d', errors='coerce').dt.to_period('Q')
 
-        st.write(df_pivot)
+        # Convertir les données en format long
+        df_long_quarter = pd.melt(df_pivot, id_vars=['trimestre_digital'], var_name='Portail déployé', value_name='nb de portail')
+        df_long=df_long_quarter.copy()
+        df_long['trimestre_digital'] = df_long_quarter['trimestre_digital'].dt.strftime('%Y-%m-%d')
+
+        # Afficher les résultats
+        st.write(df_long)
