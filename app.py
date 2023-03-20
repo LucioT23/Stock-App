@@ -284,7 +284,7 @@ if choice == "Customer Migration":
 
         # Réinitialiser l'index et convertir la colonne en trimestres
         df_pivot = df_pivot.reset_index()
-        df_pivot = df_pivot.drop(index=0)
+        #df_pivot = df_pivot.drop(index=0)
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], errors='ignore').dt.to_period('Q')
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], format='%Y-%m-%d', errors='coerce').dt.to_period('Q')
