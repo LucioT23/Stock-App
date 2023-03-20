@@ -202,3 +202,4 @@ if choice == "Customer Migration":
                     new_data.at[index, 'Code groupe DISE'] = complete_codes[client]
 
         st.write(new_data)
+        st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
