@@ -178,5 +178,5 @@ if choice == "Customer Migration":
 
         new_data['title'] = new_data['title'].str.title()
 
-        st.table(new_data)
+        st.write(new_data)
         
