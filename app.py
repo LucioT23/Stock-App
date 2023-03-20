@@ -316,7 +316,7 @@ if choice == "Project Manager":
         df_deploiement = df_deploiement.sort_values(by='quarterc', ascending=True)
 
         # plotting the bar plot
-        fig8 = px.bar(df_deploiement, x="Phase d'avancement", y=df_deploiement["Phase d'avancement"].value_counts(), orientation='h')
+        fig8 = px.bar(df_deploiement.groupby(["Phase d'avancement"])['title'].count().reset_index(), x="Phase d'avancement", y='title')
         fig8.update_layout(height=400,width =800)
 
         #Ajout du graphique animé sur la migration client sur les portails digitaux
@@ -324,7 +324,7 @@ if choice == "Project Manager":
         st.write(fig8) 
 
         # plotting the bar plot
-        fig9 = px.bar(df_ongoing, x="Chef de projet", y=df_ongoing["Chef de projet"].value_counts(), orientation='h')
+        fig9 = px.bar(df_ongoing.groupby(["Chef de projet"])['title'].count().reset_index(), x="Chef de projet", y='title', orientation='h')
         fig9.update_layout(height=400,width =800)
 
         #Ajout du graphique animé sur la migration client sur les portails digitaux
