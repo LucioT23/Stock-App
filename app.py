@@ -317,7 +317,7 @@ if choice == "Project Manager":
 
         # plotting the bar plot
         fig8 = px.bar(df_deploiement.groupby(["Phase d'avancement"])['title'].count().reset_index(), x="Phase d'avancement", y='title')
-        fig8.update_layout(height=400,width =800, yaxis_title="Nb de Client"))
+        fig8.update_layout(height=400,width =800, yaxis_title="Nb de Client")
 
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Déploiement en cours par phase de déploiement")
