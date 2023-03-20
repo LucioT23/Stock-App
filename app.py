@@ -266,7 +266,7 @@ if choice == "Customer Migration":
         #st.write(new_data)
         #st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
         fig5 = px.scatter(new_data, x="trimestre_digital",y="Code groupe DISE", hover_name="title",color="Portail déployée") 
-        fig5.update_layout(height=400,width =800, yaxis_title="Clients (code groupe)",xaxis_title="Trimestre")
+        fig5.update_layout(height=800,width =800, yaxis_title="Clients (code groupe)",xaxis_title="Trimestre")
 
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Déploiement Digital par Client")
@@ -282,12 +282,9 @@ if choice == "Customer Migration":
                                   fill_value=0, 
                                   aggfunc='sum')
 
-        # Calculer le cumul
-        #df_cumsum = df_pivot.cumsum()
-
         # Réinitialiser l'index et convertir la colonne en trimestres
-        #df_cumsum = df_cumsum.reset_index()
         df_pivot = df_pivot.reset_index()
+        df_pivot = df_pivot.drop(index=0)
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], errors='ignore').dt.to_period('Q')
         #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], format='%Y-%m-%d', errors='coerce').dt.to_period('Q')
