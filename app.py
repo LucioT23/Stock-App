@@ -164,7 +164,7 @@ if choice == "Customer Migration":
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']]
         # replace NaN by 0
-        data_test['trimestre_deployé'] = data_test['trimestre_deployé'].fillna("0")
+        #data_test['trimestre_deployé'] = data_test['trimestre_deployé'].fillna("0")
         
         trimestres = sorted(data_test['trimestre_deployé'].unique())
 
