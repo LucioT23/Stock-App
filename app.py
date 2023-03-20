@@ -159,7 +159,6 @@ if choice == "GLM AC deployment":
 if choice == "Customer Migration":
 
         df = pd.read_csv('dataset.csv', index_col=None)
-        df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']]
@@ -281,5 +280,8 @@ if choice == "Customer Migration":
         df_long=df_long_quarter.copy()
         df_long['trimestre_digital'] = df_long_quarter['trimestre_digital'].dt.strftime('%Y-%m-%d')
 
-        fig = px.bar(df_long, x="trimestre_digital", y='nb de portail', color='Portail déployé', text='nb de portail')
-        fig.show()      
+        fig5 = px.bar(df_long, x="trimestre_digital", y='nb de portail', color='Portail déployé', text='nb de portail')
+        
+        #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
+        st.subheader("Déploiement Digital par portail")
+        st.write(fig5)     
