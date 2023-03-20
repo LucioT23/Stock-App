@@ -260,11 +260,8 @@ if choice == "Customer Migration":
         count_portail_migre = pd.DataFrame(new_data.groupby(['trimestre_digital','Portail déployée'])['Code groupe DISE'].count()).reset_index()
         count_portail_migre = count_portail_migre.rename(columns={'Code groupe DISE': 'nb déploiement par portail'})
 
-
-        #st.write(new_data)
-        #st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
         fig5 = px.scatter(new_data, x="trimestre_digital",y="Code groupe DISE", hover_name="title",color="Portail déployée") 
-        fig5.update_layout(height=600,width =800, yaxis_title=None,xaxis_title="Trimestre")
+        fig5.update_layout(height=600,width =1200, yaxis_title=None,xaxis_title="Trimestre")
 
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Déploiement Digital par Client")
@@ -281,8 +278,6 @@ if choice == "Customer Migration":
         # Réinitialiser l'index et convertir la colonne en trimestres
         df_pivot = df_pivot.reset_index()
         df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
-        #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], errors='ignore').dt.to_period('Q')
-        #df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital'], format='%Y-%m-%d', errors='coerce').dt.to_period('Q')
 
         # Convertir les données en format long
         df_long_quarter = pd.melt(df_pivot, id_vars=['trimestre_digital'], var_name='Portail déployé', value_name='nb de portail')
@@ -290,7 +285,7 @@ if choice == "Customer Migration":
         df_long['trimestre_digital'] = df_long_quarter['trimestre_digital'].dt.strftime('%Y-%m-%d')
 
         # Afficher les résultats
-        st.write(df_long)
+        #st.write(df_long)
 
         fig6 = px.bar(df_long, x="trimestre_digital", y='nb de portail', color='Portail déployé', text='nb de portail')
         fig6.update_layout(height=400,width =800)
@@ -298,3 +293,15 @@ if choice == "Customer Migration":
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
         st.subheader("Déploiement Digital par portail")
         st.write(fig6) 
+
+        df_long = df_long.sort_values('trimestre_digital')
+
+        fig7 = px.bar(df_long, x="Portail déployé", y='nb de portail',
+             animation_frame="trimestre_digital", animation_group="Portail déployé",color = "Portail déployé",
+             range_y=[0, df_long['nb de portail'].max()])
+
+                fig6.update_layout(height=400,width =800)
+
+        #Ajout du graphique animé sur la migration client sur les portails digitaux
+        st.subheader("Migration des clients sur les portails Digitaux")
+        st.write(fig7) 
