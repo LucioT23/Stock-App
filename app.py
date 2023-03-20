@@ -264,4 +264,22 @@ if choice == "Customer Migration":
 
 
         #st.write(new_data)
-        st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
+        #st.write(new_data[new_data['title'].str.contains("Airbus", case=False)])
+
+                # Réorganiser les données
+        df_pivot = pd.pivot_table(count_portail_migre, 
+                                  values='nb déploiement par portail', 
+                                  index='trimestre_digital', 
+                                  columns='Portail déployée', 
+                                  fill_value=0, 
+                                  aggfunc='sum')
+
+        # Calculer le cumul
+        #df_cumsum = df_pivot.cumsum()
+
+        # Réinitialiser l'index et convertir la colonne en trimestres
+        #df_cumsum = df_cumsum.reset_index()
+        df_pivot = df_pivot.reset_index()
+        df_pivot['trimestre_digital'] = pd.to_datetime(df_pivot['trimestre_digital']).dt.to_period('Q')
+
+        st.write(df_pivot)
