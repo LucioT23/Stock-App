@@ -299,8 +299,7 @@ if choice == "Customer Migration":
         fig7 = px.bar(df_long, x="Portail déployé", y='nb de portail',
              animation_frame="trimestre_digital", animation_group="Portail déployé",color = "Portail déployé",
              range_y=[0, df_long['nb de portail'].max()])
-
-                fig6.update_layout(height=400,width =800)
+        fig7.update_layout(height=400,width =800)
 
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Migration des clients sur les portails Digitaux")
