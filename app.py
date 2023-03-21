@@ -13,7 +13,7 @@ st.title('Digital Deployment')
 
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
-    st.title("Mobile Client Fleet Check_ML")
+    st.title("Digital Mobile Client Deployment_ML")
     choice = st.radio("Navigation", ["Download","GLM AC deployment","Customer Migration", "Project Manager"])
     st.info("This project application helps you to have a complete vision of the digital deployments of our clients")
 
@@ -160,7 +160,17 @@ if choice == "GLM AC deployment":
 if choice == "Customer Migration":
 
         df = pd.read_csv('dataset.csv', index_col=None)
-        df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
+        df_digit_GLMAC= df[(df['statut deploiement'].isin(['En cours']))&(df['Portail déployée']=='GLM AC')]
+        counts_GLMAC = df_digit_GLMAC['Portail existant'].value_counts()
+
+        # plotting the pie chart
+        fig10 = px.pie(df_digit_GLMAC, names=counts_GLMAC.index, values =counts_GLMAC,width=800, height=400) # names=counts.index
+        fig10.update_traces(textinfo="percent+label+value")
+        #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
+        st.subheader("Répartition des déploiements GLM AC par portail migré")
+        st.write(fig10)
+        
+        df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']]
         
