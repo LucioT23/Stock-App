@@ -334,6 +334,11 @@ if choice == "Project Manager":
         st.write(fig8) 
         st.write(df_deploiement.groupby(["Phase d'avancement"])['title'])
 
+        df_avancement = pd.DataFrame(df_deploiement.groupby(["Phase d'avancement", 'title']).agg(sum_col1=("Phase d'avancement", 'sum')).reset_index())
+        df_avancement = df_avancement.rename(columns={"Phase d'avancement": "Phase d'avancement", 'title': 'Clients'})
+        df_avancement = df_avancement.drop(columns='sum_col1')
+        st.write(df_avancement)
+
         # plotting the bar plot
         fig9 = px.bar(df_ongoing.groupby(["Chef de projet"])['title'].count().reset_index(), x="Chef de projet", y='title')
         fig9.update_layout(height=400,width =800, yaxis_title="Nb de Client")
