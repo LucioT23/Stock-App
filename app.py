@@ -332,6 +332,7 @@ if choice == "Project Manager":
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Déploiement en cours par phase de déploiement")
         st.write(fig8) 
+        st.write(df_deploiement.groupby(["Phase d'avancement"])['title'])
 
         # plotting the bar plot
         fig9 = px.bar(df_ongoing.groupby(["Chef de projet"])['title'].count().reset_index(), x="Chef de projet", y='title')
