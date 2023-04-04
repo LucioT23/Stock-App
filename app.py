@@ -167,7 +167,7 @@ if choice == "Customer Migration":
         fig10 = px.pie(df_digit_GLMAC, names=counts_GLMAC.index, values =counts_GLMAC,width=800, height=400) # names=counts.index
         fig10.update_traces(textinfo="percent+label+value")
         #Ajout Statut déploiement par date de Kickoff (GLM AC) par client
-        st.subheader("Répartition des déploiements GLM AC par portail migré")
+        st.subheader("Répartition des déploiements GLM AC en cours par portail migré")
         st.write(fig10)
         
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
