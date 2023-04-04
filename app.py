@@ -249,7 +249,7 @@ if choice == "Customer Migration":
 
           old_portail_deployes = group.loc[(new_data['Code groupe DISE'] == name) & (new_data['old_portail'] !='')]
 
-          for i in range(len(old_portail_deployes)-1): 
+          for i in range(len(old_portail_deployes)): 
             if old_portail_deployes.iloc[i]['Portail déployée'] == old_portail_deployes.iloc[i]['old_portail']:
               old_portail = old_portail_deployes.iloc[i]['Portail déployée'] 
               new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['Portail déployée'] == old_portail) & (new_data['old_portail'] == group.iloc[i]['Portail déployée']),'to_remove']=True
@@ -332,8 +332,7 @@ if choice == "Project Manager":
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Déploiement en cours par phase de déploiement")
         st.write(fig8) 
-        st.write(df_deploiement.groupby(["Phase d'avancement"])['title'])
-
+        
         df_avancement = pd.DataFrame(df_deploiement.groupby(["Phase d'avancement", 'title']).agg(sum_col1=("Phase d'avancement", 'sum')).reset_index())
         df_avancement = df_avancement.rename(columns={"Phase d'avancement": "Phase d'avancement", 'title': 'Clients'})
         df_avancement = df_avancement.drop(columns='sum_col1')
