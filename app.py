@@ -19,7 +19,7 @@ with st.sidebar:
 
     
 if choice == "Download":
-    st.title("Download Your Dataset")
+    st.title("Download Your Kantree Dataset")
     file = st.file_uploader("Download Your File")
     if file: 
         df = pd.read_csv(file, index_col=None)
@@ -88,6 +88,14 @@ if choice == "Download":
         # sauvegarde + affichage
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
+
+        st.title("Download Your Tosca Dataset")
+        file = st.file_uploader("Download Your File")
+        if file: 
+          df_Tosca = pd.read_excel(file, index_col=None)
+        
+        df_Tosca.to_csv('dataset.csv', index=None)
+        st.dataframe(df_Tosca)
 
 if choice == "GLM AC deployment":
         st.title('GLM AC deployment')
