@@ -267,6 +267,22 @@ if choice == "Customer Migration":
 
         new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
 
+        # Ajout pie graph pour les clients GLM AC migrés 
+        df_migrated = new_data[(new_data['trimestre_digital']=='2023Q1') & (new_data['Portail déployée']=='GLM AC')]
+        for i, val in enumerate(df_migrated['Portail déployée']):
+          if df_migrated['old_portail'].iloc[i] == '':
+                df_migrated['old_portail'].iloc[i]= df_migrated['Portail déployée'].iloc[i]
+
+        counts = df_migrated['old_portail'].value_counts()
+
+        # plotting the pie chart
+        fig11 = px.pie(df_migrated, names=counts.index, values =counts,width=800, height=400) # names=counts.index
+        fig11.update_traces(textinfo="percent+label+value")
+        # Ajout Statut déploiement par date de Kickoff (GLM AC) par client
+        st.subheader("Déploiements GLM AC par portail initial")
+        st.write(fig11)
+
+        
         count_portail_migre = pd.DataFrame(new_data.groupby(['trimestre_digital','Portail déployée'])['Code groupe DISE'].count()).reset_index()
         count_portail_migre = count_portail_migre.rename(columns={'Code groupe DISE': 'nb déploiement par portail'})
 
