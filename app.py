@@ -90,7 +90,7 @@ if choice == "Download":
         st.dataframe(df)
 
 if choice == "GLM AC deployment":
-
+        st.title('GLM AC deployment')
         df = pd.read_csv('dataset.csv', index_col=None)
         df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
         df_deployed = df[df['statut deploiement'].isin(['Déployé'])]
@@ -168,6 +168,7 @@ if choice == "GLM AC deployment":
         st.write(fig4)
 
 if choice == "Customer Migration":
+        st.title('GLM AC Customer Migration')
 
         df = pd.read_csv('dataset.csv', index_col=None)
 
@@ -333,6 +334,7 @@ if choice == "Customer Migration":
         st.write(fig7)
 
 if choice == "Project Manager":
+        st.title('Project Manager')
 
         df = pd.read_csv('dataset.csv', index_col=None)
         df_non_deployed = df[df['statut deploiement'].isin(['Non déployé'])]
