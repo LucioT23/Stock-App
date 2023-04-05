@@ -90,13 +90,22 @@ if choice == "Download":
         st.dataframe(df)
 
     st.title("Download Your Tosca Dataset")
-    file_Tosca = st.file_uploader("Download Your File")
-    if file_Tosca: 
-        df = pd.read_csv(file_Tosca, index_col=None)
+    #file_Tosca = st.file_uploader("Download Your File")
+    #if file_Tosca: 
+    #    df = pd.read_csv(file_Tosca, index_col=None)
     
-    df_Tosca.to_csv("dataset_Tosca.csv", index=False)
-    st.dataframe(df_Tosca)
+    #df_Tosca.to_csv("dataset_Tosca.csv", index=False)
+    #st.dataframe(df_Tosca)
 
+    # Demander à l'utilisateur de charger un fichier CSV
+    file_Tosca = st.file_uploader("Choisir un fichier CSV", type=["csv"])
+
+    # Si un fichier est chargé, lire les données CSV dans un DataFrame pandas
+    if file_Tosca is not None:
+      df_Tosca = pd.read_csv(file_Tosca)
+      st.write(df_Tosca)
+    else:
+      st.write("Veuillez charger un fichier CSV.")
 
 if choice == "GLM AC deployment":
         st.title('GLM AC deployment')
