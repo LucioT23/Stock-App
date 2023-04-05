@@ -93,12 +93,12 @@ if choice == "Download":
 
         if file_Tosca is not None:
             try:
-                df_Tosca = pd.read_excel(file_Tosca, engine="openpyxl")
+                df_Tosca = pd.read_excel(file_Tosca)
                 df_Tosca.to_csv("dataset_Tosca.csv", index=False)
                 st.dataframe(df_Tosca)
             except Exception as e:
                 st.error(e)
-                st.warning("Unable to load the file.")
+                st.warning("Unable to load the file")
 
 if choice == "GLM AC deployment":
         st.title('GLM AC deployment')
