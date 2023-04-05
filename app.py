@@ -89,13 +89,16 @@ if choice == "Download":
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
 
-        st.title("Download Your Tosca Dataset")
-        file = st.file_uploader("Download Your File")
-        if file: 
-          df_Tosca = pd.read_excel(file, index_col=None)
-        
-        df_Tosca.to_csv('dataset.csv', index=None)
-        st.dataframe(df_Tosca)
+        file_Tosca = st.file_uploader("Upload your file", type=["xlsx", "xls"])
+
+        if file_Tosca is not None:
+            try:
+                df_Tosca = pd.read_excel(file_Tosca, engine="openpyxl")
+                df_Tosca.to_csv("dataset_Tosca.csv", index=False)
+                st.dataframe(df_Tosca)
+            except Exception as e:
+                st.error(e)
+                st.warning("Unable to load the file.")
 
 if choice == "GLM AC deployment":
         st.title('GLM AC deployment')
