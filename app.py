@@ -98,11 +98,16 @@ if choice == "Download":
     #st.dataframe(df_Tosca)
 
     # Demander à l'utilisateur de charger un fichier CSV
-    file_Tosca = st.file_uploader("Choisir un fichier CSV", type=["csv"])
+    #file_Tosca = st.file_uploader("Choisir un fichier CSV", type=["csv"])
+    file_Tosca = st.file_uploader("Download Your File", type=["xlsx", "xls"])
+    #if file_Tosca:
+    #df = pd.read_excel(file_Tosca)
 
     # Si un fichier est chargé, lire les données CSV dans un DataFrame pandas
     if file_Tosca is not None:
-      df_Tosca = pd.read_csv(file_Tosca)
+      df_Tosca = pd.read_excel(file_Tosca)
+      #df_Tosca = pd.read_csv(file_Tosca)
+      df_Tosca.to_csv('dataset.csv', index=None)
       st.write(df_Tosca)
     else:
       st.write("Veuillez charger un fichier CSV.")
