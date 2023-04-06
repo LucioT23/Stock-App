@@ -20,7 +20,7 @@ with st.sidebar:
     
 if choice == "Download":
     st.header("Download Your Kantree Dataset") # ou st.subheader()
-    file = st.file_uploader("Download Your File, "key="1")
+    file = st.file_uploader("Download Your File, key="1")
     if file: 
         df = pd.read_csv(file, index_col=None)
         df= df.drop(columns=['application déployée'])
@@ -91,7 +91,7 @@ if choice == "Download":
 
 
     st.header("Download Your Tosca Dataset") # ou st.subheader()
-    file_Tosca = st.file_uploader("Download Your File", "key="2")
+    file_Tosca = st.file_uploader("Download Your File", key="2")
     if file_Tosca: 
         df_Tosca = pd.read_csv(file_Tosca, sep=';', warn_bad_lines=True,error_bad_lines=False)
         df_Tosca.to_csv('dataset_Tosca.csv', index=None)
