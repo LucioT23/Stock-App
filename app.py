@@ -14,12 +14,12 @@ st.title('Digital Deployment')
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Digital Mobile Deployment_ML")
-    choice = st.radio("Navigation", ["Download","GLM AC deployment","Customer Migration", "Project Manager"])
+    choice = st.radio("Navigation", ["Download","Download_2",,"GLM AC deployment","Customer Migration", "Project Manager"])
     st.info("This project application helps you to have a complete vision of the digital deployments of our clients")
 
     
 if choice == "Download":
-    st.title("Download Your Kantree Dataset")
+    st.header("Download Your Kantree Dataset") # ou st.subheader()
     file = st.file_uploader("Download Your File")
     if file: 
         df = pd.read_csv(file, index_col=None)
@@ -89,28 +89,17 @@ if choice == "Download":
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
 
-    st.title("Download Your Tosca Dataset")
-    #file_Tosca = st.file_uploader("Download Your File")
-    #if file_Tosca: 
-    #    df = pd.read_csv(file_Tosca, index_col=None)
-    
-    #df_Tosca.to_csv("dataset_Tosca.csv", index=False)
-    #st.dataframe(df_Tosca)
+   
 
-    # Demander à l'utilisateur de charger un fichier CSV
-    #file_Tosca = st.file_uploader("Choisir un fichier CSV", type=["csv"])
-    file_Tosca = st.file_uploader("Download Your File", type=["xlsx", "xls"])
-    #if file_Tosca:
-    #df = pd.read_excel(file_Tosca)
+if choice == "Download_2":
+    st.header("Download Your Tosca Dataset") # ou st.subheader()
+    file = st.file_uploader("Download Your File")
+    if file: 
+        df = pd.read_excel(file)
+        df.to_csv('dataset.csv', index=None)
+        st.write(df)
 
-    # Si un fichier est chargé, lire les données CSV dans un DataFrame pandas
-    if file_Tosca is not None:
-      df_Tosca = pd.read_excel(file_Tosca)
-      #df_Tosca = pd.read_csv(file_Tosca)
-      df_Tosca.to_csv('dataset.csv', index=None)
-      st.write(df_Tosca)
-    else:
-      st.write("Veuillez charger un fichier CSV.")
+
 
 if choice == "GLM AC deployment":
         st.title('GLM AC deployment')
