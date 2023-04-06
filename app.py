@@ -95,9 +95,9 @@ if choice == "Download_2":
     st.header("Download Your Tosca Dataset") # ou st.subheader()
     file = st.file_uploader("Download Your File")
     if file: 
-        df = pd.read_csv(file, index_col=None)
+        df = pd.read_csv(file, error_bad_lines=False)
         #df.to_csv('dataset.csv', index=None)
-        #st.write(df)
+        st.write(df.shape())
 
 
 
