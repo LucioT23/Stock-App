@@ -96,7 +96,7 @@ if choice == "Download_2":
     file_Tosca = st.file_uploader("Download Your File")
     if file_Tosca: 
         df_Tosca = pd.read_csv(file_Tosca, error_bad_lines=False)
-        df_Tosca.to_csv('dataset_Tosca.csv', index=None)
+        df_Tosca.to_csv('dataset_Tosca.csv', sep=';')
         st.dataframe(df_Tosca)
 
 
