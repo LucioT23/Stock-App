@@ -96,8 +96,8 @@ if choice == "Download_2":
     file = st.file_uploader("Download Your File")
     if file: 
         df = pd.read_csv(file, error_bad_lines=False)
-        #df.to_csv('dataset.csv', index=None)
-        st.write(df.shape())
+        df.to_csv('dataset.csv', index=None)
+        st.write(df)
 
 
 
