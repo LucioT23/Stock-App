@@ -20,7 +20,7 @@ with st.sidebar:
     
 if choice == "Download":
     st.header("Download Your Kantree Dataset") # ou st.subheader()
-    file = st.file_uploader("Download Your File, key="1")
+    file = st.file_uploader("Download Your File", key="1")
     if file: 
         df = pd.read_csv(file, index_col=None)
         df= df.drop(columns=['application déployée'])
