@@ -14,7 +14,7 @@ st.title('Digital Deployment')
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Digital Mobile Deployment_ML")
-    choice = st.radio("Navigation", ["Download","Download_2",,"GLM AC deployment","Customer Migration", "Project Manager"])
+    choice = st.radio("Navigation", ["Download","Download_2","GLM AC deployment","Customer Migration", "Project Manager"])
     st.info("This project application helps you to have a complete vision of the digital deployments of our clients")
 
     
