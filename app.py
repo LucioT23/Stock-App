@@ -192,9 +192,7 @@ if choice == "Customer Migration":
             return sum(actif_par_code.get(c, 0) for c in codes)
 
         df["Nb_actifs"] = df['Code groupe DISE'].apply(calculer_actif)
-        
-        #df = nb_actif(df,df_Tosca)
-        st.write(df)
+
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
@@ -335,8 +333,6 @@ if choice == "Customer Migration":
         df_long=df_long_quarter.copy()
         df_long['trimestre_digital'] = df_long_quarter['trimestre_digital'].dt.strftime('%Y-%m-%d')
 
-        # Afficher les résultats
-        #st.write(df_long)
 
         fig6 = px.bar(df_long, x="trimestre_digital", y='nb de portail', color='Portail déployé', text='nb de portail')
         fig6.update_layout(height=400,width =800)
@@ -356,19 +352,15 @@ if choice == "Customer Migration":
         st.subheader("Migration des clients sur les portails Digitaux")
         st.write(fig7)
 
-
         st.header('Nombre de lignes Digitales')
 
         # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
         data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
         data_grouped = data_grouped.sort_values('trimestre_digital')
-        st.write(data_grouped)
 
         # plotting the bar plot for lines Digitalized
         fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
-        fig12.update_layout(height=600,width =1200, yaxis_title="Nb de lignes")
-        #Ajout du graphique animé sur la migration client sur les portails digitaux
-        st.subheader("Volume de lignes digitalisées")
+        fig12.update_layout(height=600,width =800, yaxis_title="Nb de lignes")
         st.write(fig12)
 
 if choice == "Project Manager":
