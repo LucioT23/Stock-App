@@ -353,7 +353,7 @@ if choice == "Customer Migration":
         st.write(fig7)
 
         st.header('Nombre de lignes Digitales')
-
+        st.write(new_data)
         # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
         data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
         data_grouped = data_grouped.sort_values('trimestre_digital')
