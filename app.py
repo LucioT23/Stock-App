@@ -21,15 +21,9 @@ def nb_actif(df,df_Tosca):
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
 
   def calculer_actif(codes):
-    if isinstance(codes, str):
-        try:
-            codes = [int(c) for c in codes.split(',')]
-        except ValueError:
-            return 0
-    else:
-        codes = [int(codes)]
-    #return len(codes)
-    return sum(actif_par_code.get(c, 0) for c in codes)
+    codes_list = codes.split(',')
+    codes_int = [int(code) for code in codes_list]
+    return sum(codes_int)
 
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
   return (df_test)
