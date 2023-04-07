@@ -131,7 +131,7 @@ def data_by_trimestre(df):
   # Grouper les données par client
   grouped = new_data.groupby('Code groupe DISE') # instead of 'title'
 
-  #old_portail_history= None
+  old_portail_history = ""
   for name, group in grouped:
       
       # Obtenir les portails déployés par le client dans l'ordre chronologique
