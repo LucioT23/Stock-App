@@ -196,11 +196,11 @@ if choice == "Customer Migration":
           df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
           return (df_test)
 
-        df = nb_actif(df, df_Tosca)
+        #df = nb_actif(df, df_Tosca)
 
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
         data_test = df_deploiement2.copy()
-        data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
+        data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']] #,'Nb_actifs'
         
         trimestres = sorted(data_test.dropna(subset=['trimestre_deployé'])['trimestre_deployé'].unique())
 
@@ -370,15 +370,15 @@ if choice == "Customer Migration":
         #data = data_by_trimestre(df) 
 
         # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
-        data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
-        data_grouped = data_grouped.sort_values('trimestre_digital')
+        #data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
+        #data_grouped = data_grouped.sort_values('trimestre_digital')
 
         # plotting the bar plot for lines Digitalized
-        fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
-        fig12.update_layout(height=600,width =1200, yaxis_title="Nb de lignes")
+        #fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
+        #fig12.update_layout(height=600,width =1200, yaxis_title="Nb de lignes")
         #Ajout du graphique animé sur la migration client sur les portails digitaux
-        st.subheader("Volume de lignes digitalisées")
-        st.write(fig12)
+        #st.subheader("Volume de lignes digitalisées")
+        #st.write(fig12)
 
 if choice == "Project Manager":
         st.header('Project Manager')
