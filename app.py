@@ -196,7 +196,7 @@ if choice == "Customer Migration":
           df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
           return (df_test)
 
-        #df = nb_actif(df, df_Tosca)
+        df = nb_actif(df,df_Tosca)
 
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
         data_test = df_deploiement2.copy()
