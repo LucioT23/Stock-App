@@ -99,14 +99,15 @@ if choice == "Download":
 
 
 if choice == "Download_2":
+    st.header('Nombre de lignes Digitales')
     df = pd.read_csv('dataset.csv', index_col=None)
     df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
 
-    df= df.drop(columns=['application déployée'])
+    #df= df.drop(columns=['application déployée'])
     df = cleaning_data(df)
     df = nb_actif(df, df_Tosca)
     data = data_by_trimestre(df) 
-       
+
     # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
     data_grouped = pd.DataFrame(data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
     data_grouped = data_grouped.sort_values('trimestre_digital')
