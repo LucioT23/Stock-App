@@ -190,12 +190,12 @@ if choice == "Customer Migration":
             actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
 
             def calculer_actif(codes):
-                if isinstance(codes, str):
+                if isinstance(codes, str) and len(codes) > 0:
                     codes_list = codes.split(',')
-                    codes_list = [int(c) for c in codes_list]
-                    return sum(actif_par_code.get(c, 0) for c in codes_list)
-                else:
-                    return 0
+                    if all(c.isdigit() for c in codes_list):
+                        codes_list = [int(c) for c in codes_list]
+                        return sum(actif_par_code.get(c, 0) for c in codes_list)
+                return 0
                     
             df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
             return df_test
