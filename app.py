@@ -183,11 +183,10 @@ if choice == "Customer Migration":
 
         df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
         df_Tosca = df_Tosca[['Code groupe DISE','nb_actif']]
-
+        st.write(df_Tosca)
         # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
         actif_par_code = dict(zip(df_Tosca['Code groupe DISE'], df_Tosca['nb_actif']))
 
-        st.write(df['Code groupe DISE'].dtypes)
         def calculer_actif(codes):
             codes = [int(c) for c in codes.split(',') if c.isdigit()]
             return sum(actif_par_code.get(c, 0) for c in codes)
