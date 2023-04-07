@@ -197,6 +197,7 @@ if choice == "Customer Migration":
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
         
+        st.write(data_test)
         trimestres = sorted(data_test.dropna(subset=['trimestre_deployé'])['trimestre_deployé'].unique())
 
         new_data = pd.DataFrame()  # créer un DataFrame vide
