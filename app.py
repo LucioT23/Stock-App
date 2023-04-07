@@ -189,12 +189,13 @@ if choice == "Customer Migration":
 
         def calculer_actif(codes):
             if isinstance(codes, list):
-                codes = [int(c) for c in codes]
+                codes = [int(c.strip("[]")) for c in codes]
             elif isinstance(codes, str):
-                codes = [int(c) for c in codes.split(',') if c.isdigit()]
+                codes = [int(c) for c in codes.strip("[]").split(',') if c.isdigit()]
             else:
                 return 0
             return sum(actif_par_code.get(c, 0) for c in codes)
+
 
 
         df["Nb_actifs"] = df['Code groupe DISE'].apply(calculer_actif)
