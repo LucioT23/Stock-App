@@ -201,7 +201,7 @@ if choice == "Customer Migration":
             return df_test
 
         df = nb_actif(df,df_Tosca)
-
+        st.write(df)
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
