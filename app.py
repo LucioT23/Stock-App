@@ -190,8 +190,10 @@ if choice == "Customer Migration":
         def calculer_actif(codes):
             if ',' in codes:
                 codes = [int(c) for c in codes.split(',') if c.isdigit()]
+                st.write(codes)
             else:
                 codes = [int(codes) if codes.isdigit() else 0]
+                st.write(codes)
             return sum(actif_par_code.get(c, 0) for c in codes)
 
 
