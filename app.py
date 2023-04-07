@@ -8,32 +8,6 @@ import plotly.express as px
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 
-################# Functions #########################
-
-# Application functions
-
-def nb_actif(df, df_Tosca):
-    df_test = df.copy()
-    df_Tosca = df_Tosca.rename(columns={'fk_code_grp': 'Code groupe DISE'})
-    df_Tosca_test = df_Tosca[['Code groupe DISE', 'nb_actif']]
-
-    # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
-    actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
-
-    def calculer_actif(codes):
-        if isinstance(codes, str):
-            codes_list = codes.split(',')
-            codes_list = [int(c) for c in codes_list]
-            return sum(actif_par_code.get(c, 0) for c in codes_list)
-        else:
-            return 0
-
-
-    df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
-    return df_test
-
-#############################################
-
 st.title('Digital Deployment')
 
 with st.sidebar: 
@@ -207,24 +181,20 @@ if choice == "Customer Migration":
         df = pd.read_csv('dataset.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
 
-        def nb_actif(df, df_Tosca):
-            df_test = df.copy()
-            df_Tosca = df_Tosca.rename(columns={'fk_code_grp': 'Code groupe DISE'})
-            df_Tosca_test = df_Tosca[['Code groupe DISE', 'nb_actif']]
+        def nb_actif(df,df_Tosca):
+          df_test = df.copy()
+          df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
+          df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
 
-            # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
-            actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
+          # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
+          actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
 
-            def calculer_actif(codes):
-                if isinstance(codes, str):
-                    codes_list = codes.split(',')
-                    codes_list = [int(c) for c in codes_list]
-                    return sum(actif_par_code.get(c, 0) for c in codes_list)
-                else:
-                    return 0
+          def calculer_actif(codes):
+              codes = [int(c) for c in codes.split(',')]
+              return sum(actif_par_code.get(c, 0) for c in codes)
 
-            df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
-            return df_test
+          df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
+          return (df_test)
 
         df = nb_actif(df, df_Tosca)
 
