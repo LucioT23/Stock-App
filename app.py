@@ -365,24 +365,17 @@ if choice == "Customer Migration":
 
 
         st.header('Nombre de lignes Digitales')
-        #df = pd.read_csv('dataset.csv', index_col=None)
-        #df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
-
-        #df= df.drop(columns=['application déployée'])
-        #df = cleaning_data(df)
-        #df = nb_actif(df, df_Tosca)
-        #data = data_by_trimestre(df) 
 
         # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
-        #data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
-        #data_grouped = data_grouped.sort_values('trimestre_digital')
+        data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
+        data_grouped = data_grouped.sort_values('trimestre_digital')
 
         # plotting the bar plot for lines Digitalized
-        #fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
-        #fig12.update_layout(height=600,width =1200, yaxis_title="Nb de lignes")
+        fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
+        fig12.update_layout(height=600,width =1200, yaxis_title="Nb de lignes")
         #Ajout du graphique animé sur la migration client sur les portails digitaux
-        #st.subheader("Volume de lignes digitalisées")
-        #st.write(fig12)
+        st.subheader("Volume de lignes digitalisées")
+        st.write(fig12)
 
 if choice == "Project Manager":
         st.header('Project Manager')
