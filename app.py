@@ -11,22 +11,23 @@ pd.set_option('display.max_column',111)
 ################# Functions #########################
 
 # Application functions
-def nb_actif(df,df_Tosca):
 
-  df_test = df.copy()
-  df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
-  df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
+def nb_actif(df, df_Tosca):
+    df_test = df.copy()
+    df_Tosca = df_Tosca.rename(columns={'fk_code_grp': 'Code groupe DISE'})
+    df_Tosca_test = df_Tosca[['Code groupe DISE', 'nb_actif']]
 
-  # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
-  actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
+    # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
+    actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
 
-  def calculer_actif(codes):
-    codes_list = codes.split(',')
-    codes_int = [int(code) for code in codes_list]
-    return sum(codes_int)
+    def calculer_actif(codes):
+        codes_list = codes.split(',')
+        codes_list = [int(c) for c in codes_list]
+        return sum(actif_par_code.get(c, 0) for c in codes_list)
 
-  df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
-  return (df_test)
+    df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
+    return df_test
+
 
 #############################################
 def cleaning_data(df):
