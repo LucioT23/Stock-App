@@ -187,6 +187,7 @@ if choice == "Customer Migration":
         # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
         actif_par_code = dict(zip(df_Tosca['Code groupe DISE'], df_Tosca['nb_actif']))
 
+        st.write(df['Code groupe DISE'])
         def calculer_actif(codes):
             if not isinstance(codes, str):
                 return 0
