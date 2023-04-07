@@ -106,7 +106,7 @@ def data_by_trimestre(df):
   df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
   data_test = df_deploiement2.copy()
   data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
-  data_test['trimestre_deployé'] = data_test['trimestre_deployé'].fillna('0)
+  data_test['trimestre_deployé'] = data_test['trimestre_deployé'].fillna('0')
   trimestres = sorted(data_test['trimestre_deployé'].unique())
 
   new_data = pd.DataFrame()  # créer un DataFrame vide
