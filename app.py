@@ -32,157 +32,7 @@ def nb_actif(df, df_Tosca):
     df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
     return df_test
 
-
-
 #############################################
-def cleaning_data(df):
-  
-  # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
-  def rename_application(df):
-    for i,val in enumerate(df['Application déployée']):
-      #print(i,val)
-      if val == 'MWM, MWM' or val == 'MWM':
-        df.loc[i,'Portail déployée']='MWM'    
-      elif val == 'EWOCS, EWOCS' or val =='EWOCS':
-        df.loc[i,'Portail déployée']='EWOCS'
-      elif val == 'GLM AC, GLM AC' or val == 'GLM AC, MWM' or val == 'GLM AC, EWOCS' or val =='GLM AC' or val =='HUG':
-        df.loc[i,'Portail déployée']='GLM AC'
-    return df
-
-  df= rename_application(df)
-
-  # tranfo en date toutes les colonnes avec un format date
-  date_columns = [col for col in df.columns if 'date' in col]
-  for col in date_columns :
-    df[col]= pd.to_datetime(df[col],format='%Y %m %d')
-
-  today = datetime.now().date()
-  today = pd.to_datetime(today,format='%Y %m %d')
-
-  # MAJ du statut de déploiement
-  def statut(row):
-      if pd.notnull(row['date Vie de Solution']) and row['date Vie de Solution'].date() < today:
-          return 'Déployé'
-      elif pd.notnull(row['date Kick-off Interne']) and pd.isnull(row['date Vie de Solution']):
-          if row['Statut'] == 'Stand by':
-              return 'Non déployé'
-          else:
-              return 'En cours'
-      else:
-          return 'Non déployé'
-
-  df['statut deploiement'] = df.apply(statut, axis=1)
-
-  # select not renouvellement ou avenant
-  df = df[df['Renouvellement'].isna()]
-  
-  # replace NaN by 0
-  df["Code groupe DISE"] = df["Code groupe DISE"].fillna("0")
-
-  # Replace ',' '/' and '-' with ';'
-  df["Code groupe DISE"] = df["Code groupe DISE"].str.replace(r'[,/-]', ';')
-  
-  try:
-        df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
-  except ValueError:
-        df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';') if i.isdigit()])
-  return df
-  
-  #df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
-  df["Code groupe DISE"]  = df["Code groupe DISE"] .astype(str)
-  df["Code groupe DISE"]  = df["Code groupe DISE"] .str.replace('[', '').str.replace(']', '')
-
-  df['quarter'] = pd.PeriodIndex(df['date Kick-off Interne'], freq='Q')
-  df['quarterc'] = df['quarter'].astype('string')
-
-  df = df[df['Statut']!='Contrat Perdu']
-  df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
-
-  return (df)
-
-###############################
-def data_by_trimestre(df):
-
-  df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
-  data_test = df_deploiement2.copy()
-  data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
-  data_test['trimestre_deployé'] = data_test['trimestre_deployé'].fillna('0')
-  trimestres = sorted(data_test['trimestre_deployé'].unique())
-
-  new_data = pd.DataFrame()  # créer un DataFrame vide
-
-  # boucler sur chaque trimestre
-  for t in trimestres:
-    #print(t)
-    df_t = data_test[data_test['trimestre_deployé'] <= t]
-    df_t['trimestre_digital'] = t #deployé
-    new_data = pd.concat([new_data, df_t])
-    new_data = new_data.sort_values(by=['trimestre_digital','title']).reset_index(drop=True)
-    new_data['trimestre_digital'] = new_data['trimestre_digital'].astype('string')
-
-  new_data['title'] = new_data['title'].str.title()
-  
-  # Créer une nouvelle colonne 'migré' initialement à False
-  new_data['migré'] = False
-
-  # Créer une colonne 'new_portail' pour stocker le nouveau portail migré
-  new_data['old_portail'] = ''
-
-  # Grouper les données par client
-  grouped = new_data.groupby('Code groupe DISE') # instead of 'title'
-
-  old_portail_history = ""
-  for name, group in grouped:
-      
-      # Obtenir les portails déployés par le client dans l'ordre chronologique
-      portails_deployes = group.sort_values('trimestre_digital')['Portail déployée'] #deployé
-
-      # Vérifier si le client a été migré pour chaque trimestre
-      for i in range(len(portails_deployes)):
-          if i!=0:
-            if portails_deployes.iloc[i] != portails_deployes.iloc[i-1]:
-                old_portail = portails_deployes.iloc[i-1]
-                if old_portail_history == "":
-                  old_portail_history = old_portail 
-
-                new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']) & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'migré'] = True
-                new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']) & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'old_portail'] = old_portail_history #portails_deployes.iloc[i-1]  
-
-      old_portail_history = ""
-
-  to_remove=[]
-
-  # Créer une nouvelle colonne 'migré' initialement à False
-  new_data['to_remove'] = False
-
-  # Grouper les données par client
-  grouped = new_data.groupby('Code groupe DISE')
-
-  for name, group in grouped:
-
-    old_portail_deployes = group.loc[(new_data['Code groupe DISE'] == name) & (new_data['old_portail'] !='')]
-
-    for i in range(len(old_portail_deployes)-1): 
-      if old_portail_deployes.iloc[i]['Portail déployée'] == old_portail_deployes.iloc[i]['old_portail']:
-        old_portail = old_portail_deployes.iloc[i]['Portail déployée'] 
-        new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['Portail déployée'] == old_portail) & (new_data['old_portail'] == group.iloc[i]['Portail déployée']),'to_remove']=True
-
-  new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
-
-  # Grouper les données par client
-  grouped = new_data.groupby('Code groupe DISE')
-
-  for name, group in grouped:
-      portail_deployes = group.loc[(new_data['Code groupe DISE'] == name)]
-      for i in range(len(portail_deployes) - 1):
-          if (portail_deployes.iloc[i]['trimestre_digital'] == portail_deployes.iloc[i+1]['trimestre_digital']) and (portail_deployes.iloc[i+1]['migré'] == True):
-              new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['migré'] == False) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']),'to_remove']=True
-  
-  new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
-
-  return (new_data)
-
-#################
 
 st.title('Digital Deployment')
 
@@ -274,25 +124,6 @@ if choice == "Download":
 
 
 if choice == "Download_2":
-    st.header('Nombre de lignes Digitales')
-    df = pd.read_csv('dataset.csv', index_col=None)
-    df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
-
-    #df= df.drop(columns=['application déployée'])
-    df = cleaning_data(df)
-    df = nb_actif(df, df_Tosca)
-    data = data_by_trimestre(df) 
-
-    # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
-    data_grouped = pd.DataFrame(data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
-    data_grouped = data_grouped.sort_values('trimestre_digital')
-
-    # plotting the bar plot for lines Digitalized
-    fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
-    fig12.update_layout(height=600,width =1200, yaxis_title="Nb de lignes")
-    #Ajout du graphique animé sur la migration client sur les portails digitaux
-    st.subheader("Volume de lignes digitalisées")
-    st.write(fig12)
 
 
 
@@ -378,10 +209,11 @@ if choice == "Customer Migration":
         st.header('GLM AC Customer Migration')
 
         df = pd.read_csv('dataset.csv', index_col=None)
+        df = nb_actif(df, df_Tosca)
 
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
         data_test = df_deploiement2.copy()
-        data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']]
+        data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
         
         trimestres = sorted(data_test.dropna(subset=['trimestre_deployé'])['trimestre_deployé'].unique())
 
@@ -539,6 +371,27 @@ if choice == "Customer Migration":
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Migration des clients sur les portails Digitaux")
         st.write(fig7)
+
+
+        st.header('Nombre de lignes Digitales')
+        #df = pd.read_csv('dataset.csv', index_col=None)
+        df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
+
+        #df= df.drop(columns=['application déployée'])
+        #df = cleaning_data(df)
+        #df = nb_actif(df, df_Tosca)
+        #data = data_by_trimestre(df) 
+
+        # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
+        data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
+        data_grouped = data_grouped.sort_values('trimestre_digital')
+
+        # plotting the bar plot for lines Digitalized
+        fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
+        fig12.update_layout(height=600,width =1200, yaxis_title="Nb de lignes")
+        #Ajout du graphique animé sur la migration client sur les portails digitaux
+        st.subheader("Volume de lignes digitalisées")
+        st.write(fig12)
 
 if choice == "Project Manager":
         st.header('Project Manager')
