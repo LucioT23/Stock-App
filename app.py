@@ -39,7 +39,7 @@ st.title('Digital Deployment')
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Digital Mobile Deployment_ML")
-    choice = st.radio("Navigation", ["Download","Download_2","GLM AC deployment","Customer Migration", "Project Manager"])
+    choice = st.radio("Navigation", ["Download","GLM AC deployment","Customer Migration", "Project Manager"])
     st.info("This project application helps you to have a complete vision of the digital deployments of our clients")
 
     
@@ -121,10 +121,6 @@ if choice == "Download":
         df_Tosca = pd.read_csv(file_Tosca, sep=';', warn_bad_lines=True,error_bad_lines=False)
         df_Tosca.to_csv('dataset_Tosca.csv', index=None)
         st.dataframe(df_Tosca)
-
-
-if choice == "Download_2":
-
 
 
 if choice == "GLM AC deployment":
@@ -424,6 +420,4 @@ if choice == "Project Manager":
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Nombre de déploiement par CDP")
         st.write(fig9)
-
-
 
