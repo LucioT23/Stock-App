@@ -205,6 +205,7 @@ if choice == "Customer Migration":
         st.header('GLM AC Customer Migration')
 
         df = pd.read_csv('dataset.csv', index_col=None)
+        df = pd.read_csv('dataset_Tosca.csv', index_col=None)
         df = nb_actif(df, df_Tosca)
 
         df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]             
