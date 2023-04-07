@@ -189,8 +189,8 @@ if choice == "Customer Migration":
 
         st.write(df['Code groupe DISE'].dtypes)
         def calculer_actif(codes):
-            if not isinstance(codes, str):
-                return 0
+            if not isinstance(codes, list):
+                return 0 
             codes = [int(c) for c in codes.split(',') if c.isdigit()]
             return sum(actif_par_code.get(c, 0) for c in codes)
 
