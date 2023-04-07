@@ -205,7 +205,7 @@ if choice == "Customer Migration":
         st.header('GLM AC Customer Migration')
 
         df = pd.read_csv('dataset.csv', index_col=None)
-        df = pd.read_csv('dataset_Tosca.csv', index_col=None)
+        df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
 
         def nb_actif(df, df_Tosca):
             df_test = df.copy()
@@ -222,11 +222,9 @@ if choice == "Customer Migration":
                     return sum(actif_par_code.get(c, 0) for c in codes_list)
                 else:
                     return 0
-                    
+
             df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
             return df_test
-
-
 
         df = nb_actif(df, df_Tosca)
 
