@@ -369,6 +369,7 @@ if choice == "Customer Migration":
         # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
         data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
         data_grouped = data_grouped.sort_values('trimestre_digital')
+        st.write(data_grouped)
 
         # plotting the bar plot for lines Digitalized
         fig12 = px.bar(data_grouped, x="trimestre_digital", y="Nb_actifs", hover_name='title',color='Portail déployée')
