@@ -183,7 +183,7 @@ if choice == "Customer Migration":
 
         df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
         df_Tosca = df_Tosca[['Code groupe DISE','nb_actif']]
-        st.write(df_Tosca)
+
         # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
         actif_par_code = dict(zip(df_Tosca['Code groupe DISE'], df_Tosca['nb_actif']))
 
@@ -202,7 +202,6 @@ if choice == "Customer Migration":
         data_test = df_deploiement2.copy()
         data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
         
-        st.write(data_test)
         trimestres = sorted(data_test.dropna(subset=['trimestre_deployé'])['trimestre_deployé'].unique())
 
         new_data = pd.DataFrame()  # créer un DataFrame vide
@@ -359,7 +358,7 @@ if choice == "Customer Migration":
         st.write(fig7)
 
         st.header('Nombre de lignes Digitales')
-        st.write(new_data)
+
         # ne prendre qu'une valeur si plusieurs ligne avec le même code DISE sur un même trimestre digital
         data_grouped = pd.DataFrame(new_data.groupby(['Code groupe DISE', 'trimestre_digital']).first().reset_index())
         data_grouped = data_grouped.sort_values('trimestre_digital')
