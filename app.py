@@ -77,9 +77,9 @@ def cleaning_data(df):
   
   try:
         df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
-    except ValueError:
+  except ValueError:
         df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';') if i.isdigit()])
-    return df
+  return df
   
   #df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
   df["Code groupe DISE"]  = df["Code groupe DISE"] .astype(str)
