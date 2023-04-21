@@ -8,6 +8,8 @@ import plotly.express as px
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 
+
+############################################ Fonctions ###################################
 def cleaning_data(df):
   
   # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
@@ -54,7 +56,16 @@ def cleaning_data(df):
 
   # Replace ',' '/' and '-' with ';'
   df["Code groupe DISE"] = df["Code groupe DISE"].str.replace(r'[,/-]', ';')
-  df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
+  #df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
+  
+  # conversion de la colonne en liste d'entiers
+  def convert_list(x):
+        try:
+            return [int(i) for i in x.split(';') if i.isdigit()]
+        except ValueError:
+            return []
+
+  df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(convert_list)
   df["Code groupe DISE"]  = df["Code groupe DISE"] .astype(str)
   df["Code groupe DISE"]  = df["Code groupe DISE"] .str.replace('[', '').str.replace(']', '')
 
@@ -159,8 +170,7 @@ def data_by_trimestre(df):
 
   return (new_data)
 
-
-
+###############################################################################
 
 st.title('Digital Deployment')
 
