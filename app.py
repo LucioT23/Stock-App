@@ -76,11 +76,12 @@ if choice == "Download":
 
         #calcul du délais
         df['delivery_time'] = (df['date Vie de Solution']-df['date Kick-off Interne']).dt.days
-
+        df['delivery_time_month'] = df['date Vie de Solution'].dt.to_period('M').astype(float) - df['date Kick-off Interne'].dt.to_period('M').astype(float)
+        
         # Conversion en semaines
-        df['delivery_time_week'] = round(df['delivery_time'] / 7)
+        #df['delivery_time_week'] = round(df['delivery_time'] / 7)
         # Calcul de la différence en mois
-        df['delivery_time_month'] = (df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month)
+        #df['delivery_time_month'] = (df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month)
 
         df = df[df['Statut']!='Contrat Perdu']
         df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
