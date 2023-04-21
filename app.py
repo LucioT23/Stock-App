@@ -134,7 +134,7 @@ if choice == "GLM AC deployment":
         st.write(fig10)
 
         df_deploiement_mean = pd.DataFrame(df_deploiement.groupby(['quarterc'])['delivery_time_month'].mean()).reset_index()
-        
+        df_deploiement_mean['delivery_time_month'] = df_deploiement_mean['delivery_time_month'].round(1)
 
         # plotting the histogram
         fig1 = px.histogram(df_deploiement_mean, x="quarterc", y="delivery_time_month",title="Durée de déploiement par Trimestre")
@@ -145,6 +145,7 @@ if choice == "GLM AC deployment":
         st.write(fig1)
 
         data3 = df_deploiement.dropna(subset=['delivery_time_month'])
+        data3['delivery_time_month'] = data3['delivery_time_month'].round(1)
         fig2 = px.scatter(data3, x="quarterc", y="delivery_time_month", text="title")
         #fig2.update_traces(textposition='top center')
         fig2.update_layout(
