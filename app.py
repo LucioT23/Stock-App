@@ -19,7 +19,7 @@ def nb_actif(df,df_Tosca):
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
   
   def calculer_actif(codes):
-      codes = [int(c) for c in codes.split(',')]
+      codes = [int(c) for c in codes.split(',') if c.isdigit()]
       return sum(actif_par_code.get(c, 0) for c in codes)
 
   #df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
