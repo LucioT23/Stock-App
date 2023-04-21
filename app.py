@@ -564,7 +564,7 @@ if choice == "Project Manager":
 if choice == "Test":
         st.header('Test fonctions')
         df = pd.read_csv('dataset.csv', index_col=None)
-        df= df.drop(columns=['application déployée'])
+        #df= df.drop(columns=['application déployée'])
         df = cleaning_data(df)
         #df = nb_actif(df, df_Tosca)
         data = data_by_trimestre(df)
