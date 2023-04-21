@@ -111,7 +111,7 @@ def data_by_trimestre(df):
 
   # Créer une colonne 'new_portail' pour stocker le nouveau portail migré
   new_data['old_portail'] = ''
-  old_portail_history == ""
+  old_portail_history = ""
 
   # Grouper les données par client
   grouped = new_data.groupby('Code groupe DISE') # instead of 'title'
