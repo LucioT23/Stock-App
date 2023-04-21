@@ -295,8 +295,11 @@ if choice == "Customer Migration":
 
         new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
 
+        # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
+        plus_recente = data['trimestre_digital'].max()
+        
         # Ajout pie graph pour les clients GLM AC migrés 
-        df_migrated = new_data[(new_data['trimestre_digital']=='2023Q1') & (new_data['Portail déployée']=='GLM AC')]
+        df_migrated = new_data[(new_data['trimestre_digital']==plus_recente) & (new_data['Portail déployée']=='GLM AC')]
         for i, val in enumerate(df_migrated['Portail déployée']):
           if df_migrated['old_portail'].iloc[i] == '':
                 df_migrated['old_portail'].iloc[i]= df_migrated['Portail déployée'].iloc[i]
@@ -337,7 +340,6 @@ if choice == "Customer Migration":
         df_long_quarter = pd.melt(df_pivot, id_vars=['trimestre_digital'], var_name='Portail déployé', value_name='nb de portail')
         df_long=df_long_quarter.copy()
         df_long['trimestre_digital'] = df_long_quarter['trimestre_digital'].dt.strftime('%Y-%m-%d')
-
 
         fig6 = px.bar(df_long, x="trimestre_digital", y='nb de portail', color='Portail déployé', text='nb de portail')
         fig6.update_layout(height=400,width =800)
@@ -397,6 +399,6 @@ if choice == "Project Manager":
         fig9.update_layout(height=400,width =800, yaxis_title="Nb de Client")
 
         #Ajout du graphique animé sur la migration client sur les portails digitaux
-        st.subheader("Nombre de déploiement par CDP")
+        st.subheader("Nombre de déploiement en cours par CDP")
         st.write(fig9)
 
