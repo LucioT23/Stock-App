@@ -126,8 +126,10 @@ def data_by_trimestre(df):
           if i!=0:
             if portails_deployes.iloc[i] != portails_deployes.iloc[i-1]:
                 old_portail = portails_deployes.iloc[i-1]
+                if old_portail_history is None:
+                    old_portail_history = ""
                 if old_portail_history == "":
-                  old_portail_history = old_portail 
+                    old_portail_history = old_portail
 
                 new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital'])
                  & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'migré'] = True
