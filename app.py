@@ -14,22 +14,15 @@ def nb_actif(df,df_Tosca):
   df_test = df.copy()
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
-
+  
   # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
-
+  
   def calculer_actif(codes):
-      # Vérifier que codes est une chaîne de caractères
-      if not isinstance(codes, str):
-          raise TypeError("codes doit être une chaîne de caractères")
-
       codes = [int(c) for c in codes.split(',')]
-      return sum(actif_par_code.get(int(c), 0) for c in codes)
+      return sum(actif_par_code.get(c, 0) for c in codes)
 
-  # Vérifier que la colonne 'Code groupe DISE' est de type chaîne de caractères
-  if not pd.api.types.is_string_dtype(df_test['Code groupe DISE']):
-      raise TypeError("La colonne 'Code groupe DISE' doit être de type chaîne de caractères")
-
+  df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
   return (df_test)
 
