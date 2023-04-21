@@ -296,7 +296,7 @@ if choice == "Customer Migration":
         new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
 
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
-        plus_recente = data['trimestre_digital'].max()
+        plus_recente = new_data['trimestre_digital'].max()
         
         # Ajout pie graph pour les clients GLM AC migrés 
         df_migrated = new_data[(new_data['trimestre_digital']==plus_recente) & (new_data['Portail déployée']=='GLM AC')]
