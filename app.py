@@ -98,7 +98,8 @@ def cleaning_data(df):
   df['delivery_time_month'] = df['delivery_time_month'].apply(lambda x: round(x, 1))
 
   df = df[df['Statut']!='Contrat Perdu']
-  df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
+  #df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
+  df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q').strftime(' %YQ%q')
 
   return (df)
 
