@@ -133,7 +133,7 @@ if choice == "GLM AC deployment":
         st.write(fig10)
 
         df_deploiement_mean = pd.DataFrame(df_deploiement.groupby(['quarterc'])['delivery_time_month'].mean()).reset_index()
-        data2['delivery_time_month'] = data2['delivery_time_month'].round(1)
+        df_deploiement_mean['delivery_time_month'] = df_deploiement_mean['delivery_time_month'].round(1)
 
         # plotting the histogram
         fig1 = px.histogram(df_deploiement_mean, x="quarterc", y="delivery_time_month",title="Durée de déploiement par Trimestre")
