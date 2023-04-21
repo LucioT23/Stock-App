@@ -8,12 +8,166 @@ import plotly.express as px
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 
+def cleaning_data(df):
+  
+  # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
+  def rename_application(df):
+    for i,val in enumerate(df['Application déployée']):
+      #print(i,val)
+      if val == 'MWM, MWM' or val == 'MWM':
+        df.loc[i,'Portail déployée']='MWM'    
+      elif val == 'EWOCS, EWOCS' or val =='EWOCS':
+        df.loc[i,'Portail déployée']='EWOCS'
+      elif val == 'GLM AC, GLM AC' or val == 'GLM AC, MWM' or val == 'GLM AC, EWOCS' or val =='GLM AC' or val =='HUG':
+        df.loc[i,'Portail déployée']='GLM AC'
+    return df
+
+  df= rename_application(df)
+
+  # tranfo en date toutes les colonnes avec un format date
+  date_columns = [col for col in df.columns if 'date' in col]
+  for col in date_columns :
+    df[col]= pd.to_datetime(df[col],format='%Y %m %d')
+
+  today = datetime.now().date()
+  today = pd.to_datetime(today,format='%Y %m %d')
+
+  # MAJ du statut de déploiement
+  def statut(row):
+      if pd.notnull(row['date Vie de Solution']) and row['date Vie de Solution'].date() < today:
+          return 'Déployé'
+      elif pd.notnull(row['date Kick-off Interne']) and pd.isnull(row['date Vie de Solution']):
+          if row['Statut'] == 'Stand by':
+              return 'Non déployé'
+          else:
+              return 'En cours'
+      else:
+          return 'Non déployé'
+
+  df['statut deploiement'] = df.apply(statut, axis=1)
+
+  # select not renouvellement ou avenant
+  df = df[df['Renouvellement'].isna()]
+  
+  # replace NaN by 0
+  df["Code groupe DISE"] = df["Code groupe DISE"].fillna("0")
+
+  # Replace ',' '/' and '-' with ';'
+  df["Code groupe DISE"] = df["Code groupe DISE"].str.replace(r'[,/-]', ';')
+  df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
+  df["Code groupe DISE"]  = df["Code groupe DISE"] .astype(str)
+  df["Code groupe DISE"]  = df["Code groupe DISE"] .str.replace('[', '').str.replace(']', '')
+
+  df['quarter'] = pd.PeriodIndex(df['date Kick-off Interne'], freq='Q')
+  df['quarterc'] = df['quarter'].astype('string')
+
+  #calcul du délais
+  # Calcul du délai en mois avec fraction de mois
+  df['delivery_time_month'] = ((df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month) + (df['date Vie de Solution'].dt.day - df['date Kick-off Interne'].dt.day) / 30)
+
+  # Arrondir le résultat à un dixième près
+  df['delivery_time_month'] = df['delivery_time_month'].apply(lambda x: round(x, 1))
+
+  df = df[df['Statut']!='Contrat Perdu']
+  df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
+
+  return (df)
+
+def data_by_trimestre(df):
+
+  df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
+  data_test = df_deploiement2.copy()
+  data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
+  # Trier le DataFrame selon la colonne trimestre_deployé
+  data_test = data_test.sort_values('trimestre_deployé', na_position='last')
+  trimestres = sorted(data_test['trimestre_deployé'].unique())
+
+  new_data = pd.DataFrame()  # créer un DataFrame vide
+
+  # boucler sur chaque trimestre
+  for t in trimestres:
+    #print(t)
+    df_t = data_test[data_test['trimestre_deployé'] <= t]
+    df_t['trimestre_digital'] = t #deployé
+    new_data = pd.concat([new_data, df_t])
+    new_data = new_data.sort_values(by=['trimestre_digital','title']).reset_index(drop=True)
+    new_data['trimestre_digital'] = new_data['trimestre_digital'].astype('string')
+
+  new_data['title'] = new_data['title'].str.title()
+  
+  # Créer une nouvelle colonne 'migré' initialement à False
+  new_data['migré'] = False
+
+  # Créer une colonne 'new_portail' pour stocker le nouveau portail migré
+  new_data['old_portail'] = ''
+
+  # Grouper les données par client
+  grouped = new_data.groupby('Code groupe DISE') # instead of 'title'
+
+  #old_portail_history= None
+  for name, group in grouped:
+      
+      # Obtenir les portails déployés par le client dans l'ordre chronologique
+      portails_deployes = group.sort_values('trimestre_digital')['Portail déployée'] #deployé
+
+      # Vérifier si le client a été migré pour chaque trimestre
+      for i in range(len(portails_deployes)):
+          if i!=0:
+            if portails_deployes.iloc[i] != portails_deployes.iloc[i-1]:
+                old_portail = portails_deployes.iloc[i-1]
+                if old_portail_history == "":
+                  old_portail_history = old_portail 
+
+                new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital'])
+                 & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'migré'] = True
+                new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital'])
+                 & (new_data['Portail déployée'] == group.iloc[i]['Portail déployée']), 'old_portail'] = old_portail_history #portails_deployes.iloc[i-1]  
+
+      old_portail_history = ""
+
+  to_remove=[]
+
+  # Créer une nouvelle colonne 'migré' initialement à False
+  new_data['to_remove'] = False
+
+  # Grouper les données par client
+  grouped = new_data.groupby('Code groupe DISE')
+
+  for name, group in grouped:
+    old_portail_deployes = group.loc[(new_data['Code groupe DISE'] == name) & (new_data['old_portail'] !='')]
+
+    for i in range(len(old_portail_deployes)): #-1
+      if old_portail_deployes.iloc[i]['Portail déployée'] == old_portail_deployes.iloc[i]['old_portail']:
+        old_portail = old_portail_deployes.iloc[i]['Portail déployée'] 
+        new_data.loc[(new_data['Code groupe DISE'] == name)
+         & (new_data['Portail déployée'] == old_portail)
+         & (new_data['old_portail'] == group.iloc[i]['Portail déployée']),'to_remove']=True
+
+  new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
+
+  # Grouper les données par client
+  grouped = new_data.groupby('Code groupe DISE')
+
+  for name, group in grouped:
+      portail_deployes = group.loc[(new_data['Code groupe DISE'] == name)]
+      for i in range(len(portail_deployes)-1): #-1
+          if (portail_deployes.iloc[i]['trimestre_digital'] == portail_deployes.iloc[i+1]['trimestre_digital']) and (portail_deployes.iloc[i+1]['migré'] == True):
+              new_data.loc[(new_data['Code groupe DISE'] == name) & (new_data['migré'] == False) 
+              & (new_data['trimestre_digital'] == group.iloc[i]['trimestre_digital']),'to_remove']=True
+  
+  new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
+
+  return (new_data)
+
+
+
+
 st.title('Digital Deployment')
 
 with st.sidebar: 
     st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
     st.title("Digital Mobile Deployment_ML")
-    choice = st.radio("Navigation", ["Download","GLM AC deployment","Customer Migration", "Project Manager"])
+    choice = st.radio("Navigation", ["Download","GLM AC deployment","Customer Migration", "Project Manager", "test"])
     st.info("This project application helps you to have a complete vision of the digital deployments of our clients")
 
     
@@ -407,3 +561,17 @@ if choice == "Project Manager":
         st.subheader("Nombre de déploiement en cours par CDP")
         st.write(fig9)
 
+if choice == "Test":
+        st.header('Test fonctions')
+        df = pd.read_csv('dataset.csv', index_col=None)
+        df= df.drop(columns=['application déployée'])
+        df = cleaning_data(df)
+        #df = nb_actif(df, df_Tosca)
+        data = data_by_trimestre(df)
+
+        # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
+        mask = df["Phase d'avancement"] == 'Pipe déploiement'
+
+        # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
+        df.loc[mask, 'statut deploiement'] = 'En cours'
+        st.write(df)
