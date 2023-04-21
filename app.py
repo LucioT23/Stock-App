@@ -19,11 +19,11 @@ def nb_actif(df,df_Tosca):
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
 
   def calculer_actif(codes):
-      if isinstance(codes, str):
-          codes = [int(c) for c in codes.split(',')]
-      else:
-          codes = [int(codes)]
-      return sum(actif_par_code.get(c, 0) for c in codes)
+      if pd.isna(codes):  # vérifier si la valeur est nulle ou manquante
+          return 0  # renvoyer 0 si c'est le cas
+      codes_str = str(codes)  # convertir la variable en chaîne de caractères
+      codes_list = [int(c) for c in codes_str.split(',') if c]  # filtrer les chaînes de caractères vides et convertir les éléments en entiers
+      return sum(actif_par_code.get(c, 0) for c in codes_list)
 
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
   return (df_test)
