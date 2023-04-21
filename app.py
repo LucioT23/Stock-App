@@ -596,7 +596,7 @@ if choice == "Test":
         #df= df.drop(columns=['application déployée'])
         df = cleaning_data(df)
         df = nb_actif(df, df_Tosca)
-        data = data_by_trimestre(df)
+        #data = data_by_trimestre(df)
 
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
         mask = df["Phase d'avancement"] == 'Pipe déploiement'
