@@ -80,7 +80,7 @@ if choice == "Download":
         
         # Calcul du délai en mois avec fraction de mois
         df['delivery_time_month'] = ((df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month) + (df['date Vie de Solution'].dt.day - df['date Kick-off Interne'].dt.day) / 30)
-
+        
         # Arrondir le résultat à un dixième près
         df['delivery_time_month'] = df['delivery_time_month'].apply(lambda x: round(x, 1))
   
@@ -108,6 +108,7 @@ if choice == "GLM AC deployment":
         df_deploiement = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
         df_deploiement = df_deploiement[df_deploiement['Portail déployée']=='GLM AC']
         df_deploiement = df_deploiement.sort_values(by='quarterc', ascending=True)
+        df_deploiement['delivery_time_month'] = df_deploiement['delivery_time_month'].round(1)
 
         counts = df_ongoing['Portail déployée'].value_counts()
 
@@ -133,7 +134,7 @@ if choice == "GLM AC deployment":
         st.write(fig10)
 
         df_deploiement_mean = pd.DataFrame(df_deploiement.groupby(['quarterc'])['delivery_time_month'].mean()).reset_index()
-        df_deploiement_mean['delivery_time_month'] = df_deploiement_mean['delivery_time_month'].round(1)
+        
 
         # plotting the histogram
         fig1 = px.histogram(df_deploiement_mean, x="quarterc", y="delivery_time_month",title="Durée de déploiement par Trimestre")
