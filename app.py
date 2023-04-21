@@ -19,10 +19,7 @@ def nb_actif(df,df_Tosca):
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
 
   def calculer_actif(codes):
-      if not codes.isdigit():
-          codes = [int(c) for c in codes.split(',') if c.isdigit()]
-      else:
-          codes = [int(codes)]
+      codes = [int(c) for c in codes.split(',')]
       return sum(actif_par_code.get(c, 0) for c in codes)
 
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
@@ -87,7 +84,7 @@ def cleaning_data(df):
   df["Code groupe DISE"]  = df["Code groupe DISE"] .astype(str)
   df["Code groupe DISE"]  = df["Code groupe DISE"] .str.replace('[', '').str.replace(']', '')
 
-  df['quarter'] = pd.PeriodIndex(df['date Kick-off Interne'], freq='Q')
+  df['quarter'] = pd.PeriodIndex(df['date Kick-off Interne'], freq='Q').strftime(' %YQ%q')
   df['quarterc'] = df['quarter'].astype('string')
 
   #calcul du délais
