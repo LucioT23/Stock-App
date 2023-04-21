@@ -111,9 +111,11 @@ def data_by_trimestre(df):
 
   # Créer une colonne 'new_portail' pour stocker le nouveau portail migré
   new_data['old_portail'] = ''
+  old_portail_history == ""
 
   # Grouper les données par client
   grouped = new_data.groupby('Code groupe DISE') # instead of 'title'
+
 
   #old_portail_history= None
   for name, group in grouped:
@@ -126,8 +128,6 @@ def data_by_trimestre(df):
           if i!=0:
             if portails_deployes.iloc[i] != portails_deployes.iloc[i-1]:
                 old_portail = portails_deployes.iloc[i-1]
-                if old_portail_history is None:
-                    old_portail_history = ""
                 if old_portail_history == "":
                     old_portail_history = old_portail
 
