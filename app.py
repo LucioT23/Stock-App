@@ -75,14 +75,15 @@ if choice == "Download":
         df['quarterc'] = df['quarter'].astype('string')
 
         #calcul du délais
-        df['delivery_time'] = (df['date Vie de Solution']-df['date Kick-off Interne']).dt.days
-        df['delivery_time_month'] = df['date Vie de Solution'].dt.to_period('M').astype(float) - df['date Kick-off Interne'].dt.to_period('M').astype(float)
+        #df['delivery_time'] = (df['date Vie de Solution']-df['date Kick-off Interne']).dt.days
+        #df['delivery_time_month'] = df['date Vie de Solution'].dt.to_period('M').astype(float) - df['date Kick-off Interne'].dt.to_period('M').astype(float)
         
-        # Conversion en semaines
-        #df['delivery_time_week'] = round(df['delivery_time'] / 7)
-        # Calcul de la différence en mois
-        #df['delivery_time_month'] = (df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month)
+        # Calcul du délai en mois avec fraction de mois
+        df['delivery_time_month'] = ((df['date Vie de Solution'].dt.year - df['date Kick-off Interne'].dt.year) * 12 + (df['date Vie de Solution'].dt.month - df['date Kick-off Interne'].dt.month) + (df['date Vie de Solution'].dt.day - df['date Kick-off Interne'].dt.day) / 30)
 
+        # Arrondir le résultat à un dixième près
+        df['delivery_time_month'] = df['delivery_time_month'].apply(lambda x: round(x, 1))
+  
         df = df[df['Statut']!='Contrat Perdu']
         df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
         # sauvegarde + affichage
@@ -132,6 +133,7 @@ if choice == "GLM AC deployment":
         st.write(fig10)
 
         df_deploiement_mean = pd.DataFrame(df_deploiement.groupby(['quarterc'])['delivery_time_month'].mean()).reset_index()
+        data2['delivery_time_month'] = data2['delivery_time_month'].round(1)
 
         # plotting the histogram
         fig1 = px.histogram(df_deploiement_mean, x="quarterc", y="delivery_time_month",title="Durée de déploiement par Trimestre")
