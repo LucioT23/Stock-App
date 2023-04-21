@@ -22,8 +22,9 @@ def nb_actif(df,df_Tosca):
       codes = [int(c) for c in codes.split(',')]
       return sum(actif_par_code.get(c, 0) for c in codes)
 
-  df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
-  df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
+  #df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
+  df_test["Nb_actifs"] = df_test['Code groupe DISE'].astype(str).apply(calculer_actif)
+  #df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
   return (df_test)
 
 def cleaning_data(df):
