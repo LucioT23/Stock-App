@@ -25,8 +25,6 @@ def nb_actif(df,df_Tosca):
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
   return (df_test)
 
-
-
 def cleaning_data(df):
   
   # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
@@ -593,6 +591,7 @@ if choice == "Project Manager":
 if choice == "Test":
         st.header('Test fonctions')
         df = pd.read_csv('dataset.csv', index_col=None)
+        df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         #df= df.drop(columns=['application déployée'])
         df = cleaning_data(df)
         df = nb_actif(df, df_Tosca)
