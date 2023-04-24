@@ -648,13 +648,13 @@ if choice == "Test":
         data = data_by_trimestre(df_2)
         st.write(data)
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
-        mask = df["Phase d'avancement"] == 'Pipe déploiement'
+        mask = df_2["Phase d'avancement"] == 'Pipe déploiement'
 
         # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
-        df.loc[mask, 'statut deploiement'] = 'En cours'
+        df_2.loc[mask, 'statut deploiement'] = 'En cours'
         
         # déploiement en cours GLM AC extrait du fichier Kantree
-        df_ongoing_deploiement_GLMAC = df[(df['statut deploiement']=='En cours') & (df['Portail déployée']=='GLM AC')]
+        df_ongoing_deploiement_GLMAC = df_2[(df_2['statut deploiement']=='En cours') & (df_2['Portail déployée']=='GLM AC')]
         df_ongoing_deploiement_GLMAC['title'] = df_ongoing_deploiement_GLMAC['title'].str.title()
 
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
