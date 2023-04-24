@@ -30,8 +30,6 @@ def nb_actif_2(df,df_Tosca):
   df_test = df_test.loc[df_test['Code groupe DISE'] != '0']
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
-  st.write(df_test)
-  st.write(df_Tosca_test)
 
   #### Suppression des codes groupes de df_test non présent dans le dataframe df_Tosca_test car généère des erreurs
   # Convertir les chaînes de caractères de codes en listes de codes dans df_test
@@ -647,8 +645,8 @@ if choice == "Test":
         df_2 = cleaning_data(df_2)
         df_2 = nb_actif_2(df_2, df_Tosca)
         st.write(df_2)
-        #data = data_by_trimestre(df)
-
+        data = data_by_trimestre(df_2)
+        st.write(data)
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
         #mask = df["Phase d'avancement"] == 'Pipe déploiement'
 
