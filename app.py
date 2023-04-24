@@ -12,6 +12,21 @@ pd.set_option('display.max_column',111)
 ############################################ Fonctions ###################################
 def nb_actif(df,df_Tosca):
   df_test = df.copy()
+  df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
+  df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
+
+  # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
+  actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
+
+  def calculer_actif(codes):
+      codes = [int(c) for c in codes.split(',')]
+      return sum(actif_par_code.get(c, 0) for c in codes)
+
+  df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
+  return (df_test)
+
+def nb_actif_2(df,df_Tosca):
+  df_test = df.copy()
   df_test = df_test.loc[df_test['Code groupe DISE'] != '0']
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
@@ -630,7 +645,7 @@ if choice == "Test":
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         
         df_2 = cleaning_data(df_2)
-        df_2 = nb_actif(df, df_Tosca)
+        df_2 = nb_actif(df2, df_Tosca)
         st.write(df_2)
         #data = data_by_trimestre(df)
 
