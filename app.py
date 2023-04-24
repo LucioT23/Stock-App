@@ -4,6 +4,7 @@ import numpy as np
 from datetime import datetime 
 import streamlit as st
 import plotly.express as px
+import base64
 
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
@@ -717,8 +718,7 @@ if choice == "Test":
         counts_MWM = df_mwm['état'].value_counts()
         
         st.write(df_mwm)
-        df_mwm.to_csv('df_mwm.csv', index=None)
-
+        
         # créer un graphique pie
         fig = px.pie(data_frame=df_mwm, #resultats['MWM']
                       values=counts_MWM.values,  # utiliser les valeurs de counts_MWM
@@ -734,3 +734,10 @@ if choice == "Test":
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
         st.write(fig)
+
+        if st.button('Exporter en CSV'):
+        # Exportez le fichier CSV
+        csv = df.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()
+        href = f'<a href="data:file/csv;base64,{b64}" download="donnees.csv">Télécharger le fichier CSV</a>'
+        st.markdown(href, unsafe_allow_html=True)
