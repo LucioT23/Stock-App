@@ -628,11 +628,10 @@ if choice == "Test":
 
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
-        #df= df.drop(columns=['application déployée'])
+        
         df_2 = cleaning_data(df_2)
+        df_2 = nb_actif(df, df_Tosca)
         st.write(df_2)
-        #df = nb_actif(df, df_Tosca)
-        #st.write(df)
         #data = data_by_trimestre(df)
 
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
