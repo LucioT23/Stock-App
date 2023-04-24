@@ -619,6 +619,7 @@ if choice == "Test":
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         #df= df.drop(columns=['application déployée'])
         df = cleaning_data(df)
+        st.write(df)
         df = nb_actif(df, df_Tosca)
         st.write(df)
         #data = data_by_trimestre(df)
@@ -628,4 +629,4 @@ if choice == "Test":
 
         # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
         df.loc[mask, 'statut deploiement'] = 'En cours'
-        st.write(df)
+        #st.write(df)
