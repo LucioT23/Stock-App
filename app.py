@@ -699,7 +699,7 @@ if choice == "Test":
         # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
         df_2.loc[mask, 'statut deploiement'] = 'En cours'
         
-        resultats = Client_MWM_EWOCS (df, data)
+        resultats = Client_MWM_EWOCS (df_2, data)
 
         df_mwm = resultats['MWM']
 
