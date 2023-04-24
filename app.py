@@ -637,16 +637,14 @@ if choice == "Test":
             df= df.drop(columns=['application déployée'])
 
         df.to_csv('dataset_test.csv', index=None)
-        #st.dataframe(df)
-
+        
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         
         df_2 = cleaning_data(df_2)
         df_2 = nb_actif_2(df_2, df_Tosca)
-        #st.write(df_2)
         data = data_by_trimestre(df_2)
-        st.write(data)
+        
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
         mask = df_2["Phase d'avancement"] == 'Pipe déploiement'
 
@@ -708,7 +706,8 @@ if choice == "Test":
         df_mwm = df_mwm.groupby('title').apply(remove_duplicates).reset_index(drop=True)
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
         counts_MWM = df_mwm['état'].value_counts()
-        #counts_MWM = resultats['MWM']['état'].value_counts()
+        
+        st.write(df_mwm)
 
         # créer un graphique pie
         fig = px.pie(data_frame=df_mwm, #resultats['MWM']
