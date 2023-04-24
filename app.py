@@ -624,13 +624,13 @@ if choice == "Test":
             df= df.drop(columns=['application déployée'])
 
         df.to_csv('dataset_test.csv', index=None)
-        st.dataframe(df)
+        #st.dataframe(df)
 
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         #df= df.drop(columns=['application déployée'])
+        df_2 = cleaning_data(df_2)
         st.write(df_2)
-        #df = cleaning_data(df)
         #df = nb_actif(df, df_Tosca)
         #st.write(df)
         #data = data_by_trimestre(df)
