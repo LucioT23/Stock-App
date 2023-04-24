@@ -717,6 +717,7 @@ if choice == "Test":
         counts_MWM = df_mwm['état'].value_counts()
         
         st.write(df_mwm)
+        df_mwm.to_csv('df_mwm.csv', index=None)
 
         # créer un graphique pie
         fig = px.pie(data_frame=df_mwm, #resultats['MWM']
