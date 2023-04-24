@@ -17,7 +17,7 @@ def nb_actif(df,df_Tosca):
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
   st.write(df_test)
   st.write(df_Tosca_test)
-  
+
   #### Suppression des codes groupes de df_test non présent dans le dataframe df_Tosca_test car généère des erreurs
   # Convertir les chaînes de caractères de codes en listes de codes dans df_test
   df_test['Code groupe DISE'] = df_test['Code groupe DISE'].str.split(',')
@@ -620,6 +620,7 @@ if choice == "Test":
         df = pd.read_csv('dataset.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         #df= df.drop(columns=['application déployée'])
+        st.write(df)
         df = cleaning_data(df)
         st.write(df)
         df = nb_actif(df, df_Tosca)
