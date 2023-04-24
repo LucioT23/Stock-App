@@ -147,7 +147,7 @@ def data_by_trimestre(df):
   data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
   st.write(data_test)
   # Trier le DataFrame selon la colonne trimestre_deployé
-  data_test['trimestre_deployé'] = pd.PeriodIndex(data_test['Date de création'], freq='Q').astype(str)
+  data_test['trimestre_deployé'] = pd.PeriodIndex(data_test['trimestre_deployé'], freq='Q').astype(str)
   data_test = data_test.sort_values('trimestre_deployé', na_position='last')
   trimestres = sorted(data_test['trimestre_deployé'].unique())
 
