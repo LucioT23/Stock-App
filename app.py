@@ -30,7 +30,7 @@ def nb_actif(df,df_Tosca):
     if isinstance(codes, str):
         codes = [int(c) for c in codes.split(',') if c.strip()]
     else:
-        codes = [int(c) for c in str(codes).split(',')] codes = [int(c) for c in codes.split(',') if c.strip()]
+        codes = [int(c) for c in str(codes).split(',')]
 
     return sum(actif_par_code.get(c, 0) for c in codes)
 
