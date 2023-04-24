@@ -20,7 +20,7 @@ def nb_actif(df,df_Tosca):
 
   #### Suppression des codes groupes de df_test non présent dans le dataframe df_Tosca_test car généère des erreurs
   # Convertir les chaînes de caractères de codes en listes de codes dans df_test
-  #df_test['Code groupe DISE'] = df_test['Code groupe DISE'].str.split(',')
+  df_test['Code groupe DISE'] = df_test['Code groupe DISE'].str.split(',')
 
   # Convertir les chaînes de caractères de codes en str dans df_Tosca_test
   df_Tosca_test['Code groupe DISE'] = df_Tosca_test['Code groupe DISE'].astype(str)
