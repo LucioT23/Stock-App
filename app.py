@@ -617,7 +617,16 @@ if choice == "Project Manager":
 
 if choice == "Test":
         st.header('Test fonctions')
-        df = pd.read_csv('dataset.csv', index_col=None)
+        st.header("Download Your Kantree Dataset") # ou st.subheader()
+        file = st.file_uploader("Download Your File", key="1")
+        if file: 
+            df = pd.read_csv(file, index_col=None)
+            df= df.drop(columns=['application déployée'])
+
+        df.to_csv('dataset_test.csv', index=None)
+        st.dataframe(df)
+
+        df = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         #df= df.drop(columns=['application déployée'])
         st.write(df)
