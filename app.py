@@ -15,7 +15,9 @@ def nb_actif(df,df_Tosca):
   df_test = df_test.loc[df_test['Code groupe DISE'] != '0']
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
-
+  st.write(df_test)
+  st.write(df_Tosca_test)
+  
   #### Suppression des codes groupes de df_test non présent dans le dataframe df_Tosca_test car généère des erreurs
   # Convertir les chaînes de caractères de codes en listes de codes dans df_test
   df_test['Code groupe DISE'] = df_test['Code groupe DISE'].str.split(',')
