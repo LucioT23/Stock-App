@@ -736,8 +736,8 @@ if choice == "Test":
         st.write(fig)
 
         if st.button('Exporter en CSV'):
-        # Exportez le fichier CSV
-        csv = df_mwm.to_csv(index=False)
-        b64 = base64.b64encode(csv.encode()).decode()
-        href = f'<a href="data:file/csv;base64,{b64}" download="donnees.csv">Télécharger le fichier CSV</a>'
-        st.markdown(href, unsafe_allow_html=True)
+          # Exportez le fichier CSV
+          csv = df_mwm.to_csv(index=False)
+          b64 = base64.b64encode(csv.encode()).decode()
+          href = f'<a href="data:file/csv;base64,{b64}" download="donnees.csv">Télécharger le fichier CSV</a>'
+          st.markdown(href, unsafe_allow_html=True)
