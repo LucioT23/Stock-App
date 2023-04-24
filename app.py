@@ -16,7 +16,7 @@ def nb_actif(df,df_Tosca):
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
 
-  ##### Suppression des codes groupes de df_test non présent dans le dataframe df_Tosca_test car généère des erreurs
+  #### Suppression des codes groupes de df_test non présent dans le dataframe df_Tosca_test car généère des erreurs
   # Convertir les chaînes de caractères de codes en listes de codes dans df_test
   df_test['Code groupe DISE'] = df_test['Code groupe DISE'].str.split(',')
 
@@ -38,8 +38,7 @@ def nb_actif(df,df_Tosca):
   # Renommer la colonne 'fk_code_grp' en 'Code groupe DISE' dans df_Tosca
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp': 'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE', 'nb_actif']]
-  #####################################################################################
-  
+ 
   # Créer un dictionnaire avec les codes et le nombre d'actifs correspondant
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
 
