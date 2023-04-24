@@ -38,7 +38,7 @@ def nb_actif(df,df_Tosca):
   # Renommer la colonne 'fk_code_grp' en 'Code groupe DISE' dans df_Tosca
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp': 'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE', 'nb_actif']]
-#####################################################################################
+  #####################################################################################
   
   # Créer un dictionnaire avec les codes et le nombre d'actifs correspondant
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
@@ -48,7 +48,7 @@ def nb_actif(df,df_Tosca):
       return sum(actif_par_code.get(c, 0) for c in codes)
 
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
-  return(df_test)
+  return (df_test)
 
 def cleaning_data(df):
   
@@ -621,6 +621,7 @@ if choice == "Test":
         #df= df.drop(columns=['application déployée'])
         df = cleaning_data(df)
         df = nb_actif(df, df_Tosca)
+        st.write(df)
         #data = data_by_trimestre(df)
 
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
