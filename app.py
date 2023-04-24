@@ -372,7 +372,8 @@ if choice == "Download":
     st.header("Download Your Planning Dataset")
     file_plan = st.file_uploader("Download Your File", key="3")
     if file_plan: 
-        df_Planning = pd.read_csv(file_plan, sep=';', warn_bad_lines=True,error_bad_lines=False)
+        #df_Planning = pd.read_csv(file_plan, sep=';', warn_bad_lines=True,error_bad_lines=False)
+        df_Planning = pd.read_csv(file_plan, sep=';', skiprows=1, warn_bad_lines=True, error_bad_lines=False)
         df_Planning['nom_client'] = df_Planning['nom_client'].str.title()
         df_Planning_data = df_Planning[['nom_client','Code DISE','Kickoff GLM AC','Déployé ou non','Cause : Pas déployé','Causes de regression / API/ autres']]
         df_Planning_data.to_csv('dataset_Planning.csv', index=None)
