@@ -64,6 +64,7 @@ def nb_actif_2(df,df_Tosca):
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
   return (df_test)
 
+#####################
 def cleaning_data(df):
   
   # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
@@ -139,6 +140,7 @@ def cleaning_data(df):
 
   return (df)
 
+#####################
 def data_by_trimestre(df):
 
   df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
@@ -226,6 +228,52 @@ def data_by_trimestre(df):
   new_data = new_data.drop(new_data[new_data['to_remove'] == True].index)
 
   return (new_data)
+
+#####################
+def Client_MWM_EWOCS (df, data):
+  # déploiement en cours GLM AC extrait du fichier Kantree
+  df_ongoing_deploiement_GLMAC = df[(df['statut deploiement']=='En cours') & (df['Portail déployée']=='GLM AC')]
+  df_ongoing_deploiement_GLMAC['title'] = df_ongoing_deploiement_GLMAC['title'].str.title()
+
+  # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
+  plus_recente = data['trimestre_digital'].max()
+
+  # Clients déployés GLM AC
+  data_deploiement = data[(data['trimestre_digital']==plus_recente)] #&(data['Portail déployée']=='GLM AC')]
+
+  # Créer un nouveau dataframe avec les lignes à ajouter
+  new_rows = pd.DataFrame({
+      'title': df_ongoing_deploiement_GLMAC['title'],
+      'Code groupe DISE': df_ongoing_deploiement_GLMAC['Code groupe DISE'],
+      'quarterc': df_ongoing_deploiement_GLMAC['quarterc'],
+      'date Vie de Solution': df_ongoing_deploiement_GLMAC['date Vie de Solution'],
+      'trimestre_deployé': df_ongoing_deploiement_GLMAC['trimestre_deployé'],
+      'Portail déployée': df_ongoing_deploiement_GLMAC['Portail déployée'],
+      'statut deploiement': df_ongoing_deploiement_GLMAC['statut deploiement'],
+      'Nb_actifs': df_ongoing_deploiement_GLMAC['Nb_actifs'],
+      'trimestre_digital': plus_recente, # Ajouter une colonne avec une valeur fixe pour tous les nouveaux enregistrements
+      'migré': False,
+      'old_portail': df_ongoing_deploiement_GLMAC['Portail existant'],
+      'to_remove': False
+  })
+
+  # Ajouter les nouvelles lignes au dataframe existant
+  data_deploiement_GLMAC = pd.concat([data_deploiement, new_rows], ignore_index=True)
+
+  data_deploiement_GLMAC['old_portail'] = data_deploiement_GLMAC['old_portail'].str.upper()
+  data_deploiement_GLMAC = data_deploiement_GLMAC[~data_deploiement_GLMAC['title'].isin(['Veolia Sade', 'Grdf', 'Cofely'])]
+
+  resultats = {}
+  for portail in ['MWM', 'EWOCS']:
+      filtre = ((data_deploiement_GLMAC['Portail déployée']==portail)
+      | (data_deploiement_GLMAC['old_portail']==portail)) #(data_deploiement_GLMAC['trimestre_digital']==plus_recente) & 
+      resultats[portail] = data_deploiement_GLMAC[filtre]
+
+      # créer une nouvelle colonne 'état' basée sur la colonne 'statut deploiement'
+      resultats[portail]['état'] = resultats[portail].apply(lambda row: row['Portail déployée'] if row['statut deploiement'] == 'Déployé' 
+                                                            else 'En cours de déploiement' if row['Portail déployée'] == 'GLM AC' else None, axis=1)
+  return (resultats)
+
 
 ###############################################################################
 
@@ -651,47 +699,7 @@ if choice == "Test":
         # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
         df_2.loc[mask, 'statut deploiement'] = 'En cours'
         
-        # déploiement en cours GLM AC extrait du fichier Kantree
-        df_ongoing_deploiement_GLMAC = df_2[(df_2['statut deploiement']=='En cours') & (df_2['Portail déployée']=='GLM AC')]
-        df_ongoing_deploiement_GLMAC['title'] = df_ongoing_deploiement_GLMAC['title'].str.title()
-
-        # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
-        plus_recente = data['trimestre_digital'].max()
-
-        # Clients déployés GLM AC
-        data_deploiement = data[(data['trimestre_digital']==plus_recente)] #&(data['Portail déployée']=='GLM AC')]
-
-        # Créer un nouveau dataframe avec les lignes à ajouter
-        new_rows = pd.DataFrame({
-            'title': df_ongoing_deploiement_GLMAC['title'],
-            'Code groupe DISE': df_ongoing_deploiement_GLMAC['Code groupe DISE'],
-            'quarterc': df_ongoing_deploiement_GLMAC['quarterc'],
-            'date Vie de Solution': df_ongoing_deploiement_GLMAC['date Vie de Solution'],
-            'trimestre_deployé': df_ongoing_deploiement_GLMAC['trimestre_deployé'],
-            'Portail déployée': df_ongoing_deploiement_GLMAC['Portail déployée'],
-            'statut deploiement': df_ongoing_deploiement_GLMAC['statut deploiement'],
-            'Nb_actifs': df_ongoing_deploiement_GLMAC['Nb_actifs'],
-            'trimestre_digital': plus_recente, # Ajouter une colonne avec une valeur fixe pour tous les nouveaux enregistrements
-            'migré': False,
-            'old_portail': df_ongoing_deploiement_GLMAC['Portail existant'],
-            'to_remove': False
-        })
-
-        # Ajouter les nouvelles lignes au dataframe existant
-        data_deploiement_GLMAC = pd.concat([data_deploiement, new_rows], ignore_index=True)
-
-        data_deploiement_GLMAC['old_portail'] = data_deploiement_GLMAC['old_portail'].str.upper()
-        data_deploiement_GLMAC = data_deploiement_GLMAC[~data_deploiement_GLMAC['title'].isin(['Veolia Sade', 'Grdf', 'Cofely'])]
-
-        resultats = {}
-        for portail in ['MWM', 'EWOCS']:
-            filtre = ((data_deploiement_GLMAC['Portail déployée']==portail)
-            | (data_deploiement_GLMAC['old_portail']==portail)) #(data_deploiement_GLMAC['trimestre_digital']==plus_recente) & 
-            resultats[portail] = data_deploiement_GLMAC[filtre]
-
-            # créer une nouvelle colonne 'état' basée sur la colonne 'statut deploiement'
-            resultats[portail]['état'] = resultats[portail].apply(lambda row: row['Portail déployée'] if row['statut deploiement'] == 'Déployé' 
-                                                                  else 'En cours de déploiement' if row['Portail déployée'] == 'GLM AC' else None, axis=1)
+        resultats = Client_MWM_EWOCS (df, data)
 
         df_mwm = resultats['MWM']
 
@@ -705,6 +713,7 @@ if choice == "Test":
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_mwm = df_mwm.groupby('title').apply(remove_duplicates).reset_index(drop=True)
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
+
         counts_MWM = df_mwm['état'].value_counts()
         
         st.write(df_mwm)
