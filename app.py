@@ -360,13 +360,23 @@ if choice == "Download":
         df.to_csv('dataset.csv', index=None)
         st.dataframe(df)
 
-
+    ### Fichier Parc TOSCA ###
     st.header("Download Your Tosca Dataset") # ou st.subheader()
     file_Tosca = st.file_uploader("Download Your File", key="2")
     if file_Tosca: 
         df_Tosca = pd.read_csv(file_Tosca, sep=';', warn_bad_lines=True,error_bad_lines=False)
         df_Tosca.to_csv('dataset_Tosca.csv', index=None)
         st.dataframe(df_Tosca)
+
+    ### Fichier Planning ###
+    st.header("Download Your Planning Dataset")
+    file_plan = st.file_uploader("Download Your File", key="3")
+    if file_plan: 
+        df_Planning = pd.read_csv(file_plan, sep=';', warn_bad_lines=True,error_bad_lines=False)
+        df_Planning['nom_client'] = df_Planning['nom_client'].str.title()
+        df_Planning_data = df_Planning[['nom_client','Code DISE','Kickoff GLM AC','Déployé ou non','Cause : Pas déployé','Causes de regression / API/ autres']]
+        df_Planning_data.to_csv('dataset_Planning.csv', index=None)
+        st.dataframe(df_Planning_data)
 
 
 if choice == "GLM AC deployment":
@@ -701,7 +711,8 @@ if choice == "Test":
         df_2.loc[mask, 'statut deploiement'] = 'En cours'
         
         resultats = Client_MWM_EWOCS (df_2, data)
-
+        ######## Clients MWM #############
+        st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
 
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
@@ -735,6 +746,7 @@ if choice == "Test":
         st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
         st.write(fig)
 
+        # Export CSV du fichier df_mwm
         if st.button('Exporter en CSV'):
           # Exportez le fichier CSV
           csv = df_mwm.to_csv(index=False)
