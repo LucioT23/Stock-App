@@ -15,25 +15,40 @@ def nb_actif(df,df_Tosca):
   df_test = df_test.loc[df_test['Code groupe DISE'] != '0']
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
+
+  ##### Suppression des codes groupes de df_test non présent dans le dataframe df_Tosca_test car généère des erreurs
+  # Convertir les chaînes de caractères de codes en listes de codes dans df_test
+  df_test['Code groupe DISE'] = df_test['Code groupe DISE'].str.split(',')
+
+  # Convertir les chaînes de caractères de codes en str dans df_Tosca_test
+  df_Tosca_test['Code groupe DISE'] = df_Tosca_test['Code groupe DISE'].astype(str)
+
+  # Convertir les chaînes de caractères de codes en listes de codes dans df_Tosca_test
+  df_Tosca_test['Code groupe DISE'] = df_Tosca_test['Code groupe DISE'].str.split(',')
+
+  # Trouver les codes présents dans df_Tosca_test
+  codes_tosca = set([code.strip() for codes_list in df_Tosca_test['Code groupe DISE'] for code in codes_list])
+
+  # Sélectionner les lignes de df_test avec des codes présents dans df_Tosca_test
+  df_test = df_test[df_test['Code groupe DISE'].apply(lambda x: any(code.strip() in codes_tosca for code in x))]
+
+  # Convertir la liste en chaine de caractère dans la colonne 'Code groupe DISE'
+  df_test['Code groupe DISE'] = df_test['Code groupe DISE'].apply(lambda x : ','.join(map(str,x)))
+
+  # Renommer la colonne 'fk_code_grp' en 'Code groupe DISE' dans df_Tosca
+  df_Tosca = df_Tosca.rename(columns={'fk_code_grp': 'Code groupe DISE'})
+  df_Tosca_test = df_Tosca[['Code groupe DISE', 'nb_actif']]
+#####################################################################################
   
-  # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
+  # Créer un dictionnaire avec les codes et le nombre d'actifs correspondant
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
-  
-  # Supprimer les lignes qui n'existent plus dans df_Tosca_test
-  df_test = df_test[df_test['Code groupe DISE'].isin(actif_par_code.keys())]
 
   def calculer_actif(codes):
       codes = [int(c) for c in codes.split(',')]
       return sum(actif_par_code.get(c, 0) for c in codes)
-  
-  #def calculer_actif(codes):
-  #    codes = [int(c) for c in ''.join(codes).split(',') if c.isdigit()]
-  #    return sum(actif_par_code.get(c, 0) for c in codes)
-    
-  #df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
-  #df_test["Nb_actifs"] = df_test['Code groupe DISE'].astype(str).apply(calculer_actif)
+
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
-  return (df_test)
+  return(df_test)
 
 def cleaning_data(df):
   
