@@ -27,12 +27,12 @@ def nb_actif(df,df_Tosca):
   #    return sum(actif_par_code.get(c, 0) for c in codes)
     
   def calculer_actif(codes):
-    if isinstance(codes, str):
-        codes = [int(c) for c in codes.split(',') if c.strip()]
-    else:
-        codes = [int(c) for c in str(codes).split(',')]
+      codes = [int(c) for c in codes.split(',') if c.isdigit()]
+      print("Codes avant conversion:", codes)
+      codes = [c for c in codes if c in actif_par_code]
+      print("Codes après conversion:", codes)
+      return sum(actif_par_code.get(c, 0) for c in codes)
 
-    return sum(actif_par_code.get(c, 0) for c in codes)
 
   #df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].astype(str).apply(calculer_actif)
