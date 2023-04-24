@@ -647,9 +647,9 @@ if choice == "Test":
         
         df_2 = cleaning_data(df_2)
         df_2 = nb_actif_2(df_2, df_Tosca)
-        st.write(df_2)
+        #st.write(df_2)
         data = data_by_trimestre(df_2)
-        st.write(data)
+        #st.write(data)
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
         #mask = df["Phase d'avancement"] == 'Pipe déploiement'
 
