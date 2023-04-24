@@ -645,7 +645,7 @@ if choice == "Test":
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         
         df_2 = cleaning_data(df_2)
-        df_2 = nb_actif(df_2, df_Tosca)
+        df_2 = nb_actif_2(df_2, df_Tosca)
         st.write(df_2)
         #data = data_by_trimestre(df)
 
