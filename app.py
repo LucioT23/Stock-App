@@ -12,31 +12,27 @@ pd.set_option('display.max_column',111)
 ############################################ Fonctions ###################################
 def nb_actif(df,df_Tosca):
   df_test = df.copy()
+  df_test = df_test.loc[df_test['Code groupe DISE'] != '0']
   df_Tosca = df_Tosca.rename(columns={'fk_code_grp':'Code groupe DISE'})
   df_Tosca_test = df_Tosca[['Code groupe DISE','nb_actif']]
   
   # Création d'un dictionnaire avec les codes et le nombre d'actif correspondant
   actif_par_code = dict(zip(df_Tosca_test['Code groupe DISE'], df_Tosca_test['nb_actif']))
   
-  #def calculer_actif(codes):
-  #    codes = [int(c) for c in codes.split(',')] # ce me donne que des zéros  if c.isdigit()
-  #    return sum(actif_par_code.get(c, 0) for c in codes)
+  # Supprimer les lignes qui n'existent plus dans df_Tosca_test
+  df_test = df_test[df_test['Code groupe DISE'].isin(actif_par_code.keys())]
+
+  def calculer_actif(codes):
+      codes = [int(c) for c in codes.split(',')]
+      return sum(actif_par_code.get(c, 0) for c in codes)
   
   #def calculer_actif(codes):
   #    codes = [int(c) for c in ''.join(codes).split(',') if c.isdigit()]
   #    return sum(actif_par_code.get(c, 0) for c in codes)
     
-  def calculer_actif(codes):
-      codes = [int(c) for c in codes.split(',') if c.isdigit()]
-      print("Codes avant conversion:", codes)
-      codes = [c for c in codes if c in actif_par_code]
-      print("Codes après conversion:", codes)
-      return sum(actif_par_code.get(c, 0) for c in codes)
-
-
   #df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
-  df_test["Nb_actifs"] = df_test['Code groupe DISE'].astype(str).apply(calculer_actif)
-  #df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
+  #df_test["Nb_actifs"] = df_test['Code groupe DISE'].astype(str).apply(calculer_actif)
+  df_test["Nb_actifs"] = df_test['Code groupe DISE'].apply(calculer_actif)
   return (df_test)
 
 def cleaning_data(df):
