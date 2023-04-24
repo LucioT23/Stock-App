@@ -21,13 +21,17 @@ def nb_actif(df,df_Tosca):
   #def calculer_actif(codes):
   #    codes = [int(c) for c in codes.split(',')] # ce me donne que des zéros  if c.isdigit()
   #    return sum(actif_par_code.get(c, 0) for c in codes)
-
+  
   def calculer_actif(codes):
-    if isinstance(codes, str):
-        codes = [int(c) for c in codes.split(',')]
-    else:
-        codes = [int(c) for c in str(codes).split(',')]
-    return sum(actif_par_code.get(c, 0) for c in codes)
+      codes = [int(c) for c in ''.join(codes).split(',') if c.isdigit()]
+      return sum(actif_par_code.get(c, 0) for c in codes)
+    
+  #def calculer_actif(codes):
+  #  if isinstance(codes, str):
+  #      codes = [int(c) for c in codes.split(',')]
+  #  else:
+  #      codes = [int(c) for c in str(codes).split(',')]
+  #  return sum(actif_par_code.get(c, 0) for c in codes)
 
   #df_test['Code groupe DISE'] = df_test['Code groupe DISE'].astype(str)
   df_test["Nb_actifs"] = df_test['Code groupe DISE'].astype(str).apply(calculer_actif)
