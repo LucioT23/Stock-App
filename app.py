@@ -143,7 +143,7 @@ def data_by_trimestre(df):
 
   df_deploiement2 = df[(df['statut deploiement']=='Déployé') | (df['statut deploiement']=='En cours')]
   data_test = df_deploiement2.copy()
-  data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement']] #,'Nb_actifs']]
+  data_test = data_test[['title','Code groupe DISE','quarterc','date Vie de Solution','trimestre_deployé', 'Portail déployée','statut deploiement','Nb_actifs']]
   # Trier le DataFrame selon la colonne trimestre_deployé
   data_test = data_test.sort_values('trimestre_deployé', na_position='last')
   trimestres = sorted(data_test['trimestre_deployé'].unique())
