@@ -629,7 +629,7 @@ if choice == "Test":
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         #df= df.drop(columns=['application déployée'])
-        st.write(df2)
+        st.write(df_2)
         #df = cleaning_data(df)
         #df = nb_actif(df, df_Tosca)
         #st.write(df)
