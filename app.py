@@ -626,18 +626,18 @@ if choice == "Test":
         df.to_csv('dataset_test.csv', index=None)
         st.dataframe(df)
 
-        df = pd.read_csv('dataset_test.csv', index_col=None)
+        df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         #df= df.drop(columns=['application déployée'])
-        st.write(df)
+        st.write(df2)
         #df = cleaning_data(df)
-        df = nb_actif(df, df_Tosca)
-        st.write(df)
+        #df = nb_actif(df, df_Tosca)
+        #st.write(df)
         #data = data_by_trimestre(df)
 
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
-        mask = df["Phase d'avancement"] == 'Pipe déploiement'
+        #mask = df["Phase d'avancement"] == 'Pipe déploiement'
 
         # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
-        df.loc[mask, 'statut deploiement'] = 'En cours'
+        #df.loc[mask, 'statut deploiement'] = 'En cours'
         #st.write(df)
