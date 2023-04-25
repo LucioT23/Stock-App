@@ -275,7 +275,38 @@ def Client_MWM_EWOCS (df, data):
                                                             else 'En cours de déploiement' if row['Portail déployée'] == 'GLM AC' else None, axis=1)
   return (resultats)
 
+######################
+# Clients MWM sous GLM AC
 
+def client_MWM(df_mwm):
+
+  # Clients MWM non déployés sous GLM AC
+  # Filtrer les lignes avec 'état' == 'MWM'
+  df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
+
+  # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
+  df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
+
+  # Regrouper les trimestres de la colonne 'quarterc' par 'Code DISE'
+  quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict()
+
+  # Ajouter la colonne 'trimestre_deployable' en utilisant les valeurs de la colonne 'quarterc' du dataframe 'df_Planning_data'
+  df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
+
+  # Remplacer les valeurs nulles par des chaînes vides
+  df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
+  df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
+  df_mwm_filtered = df_mwm_filtered.dropna(subset=['trimestre_deployable_GLM'])
+
+  # clients MWM en déploiement GLM AC
+  test = df_mwm[df_mwm['état'] != 'MWM'].copy()
+  test['trimestre_deployable_GLM'] = test['trimestre_deployable_GLM'].fillna(plus_recente)
+  test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM']).dt.to_period('Q').astype(str)
+
+  # Ajout des lignes de df2 à df1 en utilisant append()
+  df_concat = test.append(df_mwm_filtered)
+  
+  return(df_concat)
 ###############################################################################
 
 st.title('Digital Deployment')
@@ -712,6 +743,7 @@ if choice == "Test":
         df_2.loc[mask, 'statut deploiement'] = 'En cours'
         
         resultats = Client_MWM_EWOCS (df_2, data)
+
         ######## Clients MWM #############
         st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
@@ -746,6 +778,22 @@ if choice == "Test":
         #Ajout du graphique animé sur la migration client sur les portails digitaux
         st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
         st.write(fig)
+
+        df_concat= client_MWM(df_mwm)
+        counts_MWM = df_concat['état'].value_counts()
+
+        # créer un graphique pie
+        fig1 = px.pie(data_frame=df_concat, #resultats['MWM']
+                      values=counts_MWM.values,  # utiliser les valeurs de counts_MWM
+                      names=counts_MWM.index,  # utiliser les noms de chaque état
+                      hole=0.4,  # ajouter un trou au milieu du pie chart
+                    width=800, height=400)  
+
+        # ajouter un titre
+        fig.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
+        fig.update_traces(textinfo="percent+label+value")
+        st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC : version 2")
+        st.write(fig1)
 
         # Export CSV du fichier df_mwm
         if st.button('Exporter en CSV'):
