@@ -278,7 +278,7 @@ def Client_MWM_EWOCS (df, data):
 ######################
 # Clients MWM sous GLM AC
 
-def client_MWM(df_mwm):
+def client_MWM(df_mwm, df_Planning_data):
 
   # Clients MWM non déployés sous GLM AC
   # Filtrer les lignes avec 'état' == 'MWM'
@@ -731,6 +731,7 @@ if choice == "Test":
         
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
+        df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)
         
         df_2 = cleaning_data(df_2)
         df_2 = nb_actif_2(df_2, df_Tosca)
@@ -779,7 +780,7 @@ if choice == "Test":
         st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
         st.write(fig)
 
-        df_concat= client_MWM(df_mwm)
+        df_concat= client_MWM(df_mwm, df_Planning_data)
         counts_MWM = df_concat['état'].value_counts()
 
         # créer un graphique pie
