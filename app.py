@@ -278,7 +278,7 @@ def Client_MWM_EWOCS (df, data):
 ######################
 # Clients MWM sous GLM AC
 
-def client_MWM(df_mwm, df_Planning_data, data):
+def client_MWM(df_mwm, df_Planning_data, plus_recente):
 
   # Clients MWM non déployés sous GLM AC
   # Filtrer les lignes avec 'état' == 'MWM'
@@ -299,7 +299,7 @@ def client_MWM(df_mwm, df_Planning_data, data):
   df_mwm_filtered = df_mwm_filtered.dropna(subset=['trimestre_deployable_GLM'])
 
   # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
-  plus_recente = data['trimestre_digital'].max()
+  # plus_recente = data['trimestre_digital'].max()
 
   # clients MWM en déploiement GLM AC
   test = df_mwm[df_mwm['état'] != 'MWM'].copy()
@@ -783,7 +783,10 @@ if choice == "Test":
         st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
         st.write(fig)
 
-        df_concat= client_MWM(df_mwm, df_Planning_data, data)
+        # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
+        plus_recente = data['trimestre_digital'].max()
+
+        df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente)
         counts_MWM = df_concat['état'].value_counts()
 
         # créer un graphique pie
