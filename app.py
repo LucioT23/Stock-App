@@ -280,7 +280,6 @@ def Client_MWM_EWOCS (df, data):
 
 def client_MWM(df_mwm, df_Planning_data, plus_recente):
 
-  st.write(plus_recente)
   # Clients MWM non déployés sous GLM AC
   # Filtrer les lignes avec 'état' == 'MWM'
   df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
@@ -305,7 +304,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   # clients MWM en déploiement GLM AC
   test = df_mwm[df_mwm['état'] != 'MWM'].copy()
   test['trimestre_deployable_GLM'] = test['trimestre_deployable_GLM'].fillna(plus_recente)
-  test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM']).dt.to_period('Q').astype(str)
+  test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM'], format='%YQ%q').dt.to_period('Q').astype(str)
 
   # Ajout des lignes de df2 à df1 en utilisant append()
   df_concat = test.append(df_mwm_filtered)
