@@ -814,7 +814,7 @@ if choice == "Test":
         fig.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de déploiement",
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM ")
-        st.write(fig2))
+        st.write(fig2)
 
         # Export CSV du fichier df_mwm
         if st.button('Exporter en CSV'):
