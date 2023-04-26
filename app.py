@@ -304,7 +304,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   # clients MWM en déploiement GLM AC
   test = df_mwm[df_mwm['état'] != 'MWM'].copy()
   test['trimestre_deployable_GLM'] = test['trimestre_deployable_GLM'].fillna(plus_recente)
-  test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM'], format='%YQ%q').dt.to_period('Q').astype(str)
+  test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM'], format='%YQ%q', errors='coerce').dt.to_period('Q').astype(str)
   st.write(test['trimestre_deployable_GLM'])
 
   # Ajout des lignes de df2 à df1 en utilisant append()
