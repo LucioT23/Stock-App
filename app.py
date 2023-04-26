@@ -286,6 +286,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
 
   # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
   df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
+  st.write(df_Planning_data)
 
   # Regrouper les trimestres de la colonne 'quarterc' par 'Code DISE'
   quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict()
