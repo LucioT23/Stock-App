@@ -304,7 +304,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   st.write(type(plus_recente))
   # clients MWM en déploiement GLM AC
   test = df_mwm[df_mwm['état'] != 'MWM'].copy()
-  test['trimestre_deployable_GLM'] = test['trimestre_deployable_GLM'].fillna(2023Q2) #plus_recente
+  test['trimestre_deployable_GLM'] = test['trimestre_deployable_GLM'].fillna('2023Q2') #plus_recente
   #test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM'], format='%YQ%q', errors='coerce').dt.to_period('Q').astype(str)
   test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM']).dt.to_period('Q').astype(str)
   st.write(test)
