@@ -287,16 +287,13 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
   df_Planning_data['Kickoff GLM AC'] = pd.to_datetime(df_Planning_data['Kickoff GLM AC'], format='%d/%m/%Y')
   df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
-  st.write(df_Planning_data)
-
+  
   # Regrouper les trimestres de la colonne 'quarterc' par 'Code DISE'
   quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict()
-  st.write(quarterc_dict)
-
+  
   # Ajouter la colonne 'trimestre_deployable' en utilisant les valeurs de la colonne 'quarterc' du dataframe 'df_Planning_data'
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
-  #df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
-  st.write(df_mwm_filtered)
+)
   # Remplacer les valeurs nulles par des chaînes vides
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
@@ -310,11 +307,6 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
 
   # Formater la date de sortie au format "YYYYQx"
   df_mwm_filtered['trimestre_deployable_GLM'] = periods.strftime('%YQ%q')
-
-  st.write(df_mwm_filtered)
-
-  # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
-  # plus_recente = data['trimestre_digital'].max()
 
   # clients MWM en déploiement GLM AC
   test = df_mwm[df_mwm['état'] != 'MWM'].copy()
@@ -824,8 +816,8 @@ if choice == "Test":
         df_concat = df_concat.sort_values('trimestre_deployable_GLM')
         st.write(df_concat)
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
-                      hover_name='title', text='title',color='état',
-                      category_orders={'trimestre_deployable_GLM': ['2020Q2', '2021Q4', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
+                      hover_name='title', text='title',color='état')
+                      #category_orders={'trimestre_deployable_GLM': ['2020Q2', '2021Q4', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
         
         fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de déploiement",
