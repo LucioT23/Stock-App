@@ -306,7 +306,12 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   test = df_mwm[df_mwm['état'] != 'MWM'].copy()
   test['trimestre_deployable_GLM'] = test['trimestre_deployable_GLM'].fillna('2023Q2') #plus_recente
   #test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM'], format='%YQ%q', errors='coerce').dt.to_period('Q').astype(str)
-  test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM']).dt.to_period('Q').astype(str)
+  #test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM']).dt.to_period('Q').astype(str)
+  try:
+    test['trimestre_deployable_GLM'] = pd.to_datetime(test['trimestre_deployable_GLM']).dt.to_period('Q').astype(str)
+  except ValueError as e:
+    st.write("Erreur de format de date :", e)
+    st.write("Les valeurs suivantes posent problème :", test['trimestre_deployable_GLM'][pd.to_datetime(test['trimestre_deployable_GLM'], errors='coerce').isna()])
   st.write(test)
 
   # Ajout des lignes de df2 à df1 en utilisant append()
