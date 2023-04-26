@@ -298,15 +298,15 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
   df_mwm_filtered = df_mwm_filtered.dropna(subset=['trimestre_deployable_GLM'])
-  
+
   # Convertir les valeurs de la colonne en chaînes de caractères
-  df['trimestre_deployable_GLM'] = df['trimestre_deployable_GLM'].astype(str)
+  df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].astype(str)
 
   # Convertir les chaînes de caractères en objets périodiques
-  periods = pd.PeriodIndex(df['trimestre_deployable_GLM'], freq='Q')
+  periods = pd.PeriodIndex(df_mwm_filtered['trimestre_deployable_GLM'], freq='Q')
 
   # Formater la date de sortie au format "YYYYQx"
-  df['trimestre_deployable_GLM'] = periods.strftime('%YQ%q')
+  df_mwm_filtered['trimestre_deployable_GLM'] = periods.strftime('%YQ%q')
 
   st.write(df_mwm_filtered)
 
