@@ -298,6 +298,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
   df_mwm_filtered = df_mwm_filtered.dropna(subset=['trimestre_deployable_GLM'])
+  st.write(df_mwm_filtered)
 
   # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
   # plus_recente = data['trimestre_digital'].max()
