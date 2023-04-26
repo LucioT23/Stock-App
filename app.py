@@ -812,30 +812,30 @@ if choice == "Test":
         st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC : version 2")
         st.write(fig1)
 
-        #df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
-        #df_concat = df_concat.sort_values('trimestre_deployable_GLM')
+        df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
+        df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
         
-        #fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
-        #              hover_name='title', text='title',color='état')
+        fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
+                      hover_name='title', text='title',color='état')
                       #category_orders={'trimestre_deployable_GLM': ['2020Q2', '2021Q4', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
         
-        #fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
-        #                  yaxis_title="Nombre de déploiement",
-        #                  title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM")
-        #st.write(fig2)
-
-        df_concat['trimestre_deployable_GLM'] = pd.to_datetime(df_concat['trimestre_deployable_GLM'])
-        df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
-        st.write(df_concat)
-        x_order = df_concat['trimestre_deployable_GLM'].dt.to_period('Q').astype(str).unique()
-        fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
-                      hover_name='title', text='title',color='état',
-                      category_orders={'trimestre_deployable_GLM': x_order})
-
         fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de déploiement",
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM")
         st.write(fig2)
+
+        #df_concat['trimestre_deployable_GLM'] = pd.to_datetime(df_concat['trimestre_deployable_GLM'])
+        #df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
+        #st.write(df_concat)
+        #x_order = df_concat['trimestre_deployable_GLM'].dt.to_period('Q').astype(str).unique()
+        #fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
+        #              hover_name='title', text='title',color='état',
+        #              category_orders={'trimestre_deployable_GLM': x_order})
+
+        #fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
+        #                  yaxis_title="Nombre de déploiement",
+        #                  title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM")
+        #st.write(fig2)
 
         # Export CSV du fichier df_mwm
         if st.button('Exporter en CSV'):
