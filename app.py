@@ -301,7 +301,6 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
   # plus_recente = data['trimestre_digital'].max()
 
-  st.write(type(plus_recente))
   # clients MWM en déploiement GLM AC
   test = df_mwm[df_mwm['état'] != 'MWM'].copy()
   test['trimestre_deployable_GLM'] = test['trimestre_deployable_GLM'].fillna(plus_recente)
@@ -791,30 +790,31 @@ if choice == "Test":
         st.write(plus_recente)
 
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente)
-        counts_MWM = df_concat['état'].value_counts()
-        st.write(counts_MWM)
+        counts_MWM_GLM = df_concat['état'].value_counts()
+        st.write(counts_MWM_GLM)
 
         # créer un graphique pie
-        fig1 = px.pie(data_frame=df_concat, #resultats['MWM']
-                      values=counts_MWM.values,  # utiliser les valeurs de counts_MWM
-                      names=counts_MWM.index,  # utiliser les noms de chaque état
+        fig1 = px.pie(data_frame=df_concat,
+                      values=counts_MWM_GLM.values,  # utiliser les valeurs de counts_MWM
+                      names=counts_MWM_GLM.index,  # utiliser les noms de chaque état
                       hole=0.4,  # ajouter un trou au milieu du pie chart
-                    width=800, height=400)  
+                      width=800, height=400)  
 
         # ajouter un titre
-        fig.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
-        fig.update_traces(textinfo="percent+label+value")
-        fig.update_traces(textinfo="percent+label+value")
+        fig1.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
+        fig1.update_traces(textinfo="percent+label+value")
         st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC : version 2")
         st.write(fig1)
 
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
         df_concat = df_concat.sort_values('trimestre_deployable_GLM')
-        fig2 = px.bar(df_concat, x='trimestre_deployable_GLM', hover_name='title', text='title',color='état'
-        ,category_orders={'trimestre_deployable_GLM': ['2020Q2', '2021Q4', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
-        fig.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
+        fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
+                      hover_name='title', text='title',color='état',
+                      category_orders={'trimestre_deployable_GLM': ['2020Q2', '2021Q4', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
+        
+        fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de déploiement",
-                          title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM ")
+                          title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM")
         st.write(fig2)
 
         # Export CSV du fichier df_mwm
