@@ -293,7 +293,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   
   # Ajouter la colonne 'trimestre_deployable' en utilisant les valeurs de la colonne 'quarterc' du dataframe 'df_Planning_data'
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
-)
+
   # Remplacer les valeurs nulles par des chaînes vides
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
