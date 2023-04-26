@@ -280,6 +280,7 @@ def Client_MWM_EWOCS (df, data):
 
 def client_MWM(df_mwm, df_Planning_data, plus_recente):
 
+  st.write(plus_recente)
   # Clients MWM non déployés sous GLM AC
   # Filtrer les lignes avec 'état' == 'MWM'
   df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
@@ -785,6 +786,7 @@ if choice == "Test":
 
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
+        st.write(plus_recente)
 
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente)
         counts_MWM = df_concat['état'].value_counts()
