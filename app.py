@@ -814,7 +814,7 @@ if choice == "Test":
 
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
-        
+        x_order = df_concat['trimestre_deployable_GLM'].dt.to_period('Q').astype(str).unique()
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
                       hover_name='title', text='title',color='état')
                       #category_orders={'trimestre_deployable_GLM': ['2020Q2', '2021Q4', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
