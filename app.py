@@ -285,6 +285,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
 
   # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
+  df_Planning_data['Kickoff GLM AC'] = pd.to_datetime(df_Planning_data['Kickoff GLM AC'], format='%d/%m/%Y')
   df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
   st.write(df_Planning_data)
 
