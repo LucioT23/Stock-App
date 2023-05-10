@@ -734,14 +734,16 @@ if choice == "Project Manager":
 if choice == "Test":
         st.header('Test fonctions')
         st.header("Download Your Kantree Dataset") # ou st.subheader()
-        file = st.file_uploader("Download Your File", key="1")
-        if file: 
-            df = pd.read_csv(file, index_col=None)
-            df= df.drop(columns=['application déployée'])
+        #file = st.file_uploader("Download Your File", key="1")
+        #if file: 
+        #    df = pd.read_csv(file, index_col=None)
+        #    df= df.drop(columns=['application déployée'])
 
-        df.to_csv('dataset_test.csv', index=None)
-        
-        df_2 = pd.read_csv('dataset_test.csv', index_col=None)
+        #df.to_csv('dataset_test.csv', index=None)
+        #df = pd.read_csv('dataset.csv', index_col=None)
+
+        df_2 = pd.read_csv('dataset.csv', index_col=None)
+        df_2 = pd.read_csv('dataset.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)
         
@@ -760,6 +762,7 @@ if choice == "Test":
         ######## Clients MWM #############
         st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
+        #st.write(df_mwm)
 
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df):
@@ -774,6 +777,7 @@ if choice == "Test":
 
         counts_MWM = df_mwm['état'].value_counts()
         
+        st.write(counts_MWM)
         st.write(df_mwm)
         
         # créer un graphique pie
