@@ -734,20 +734,19 @@ if choice == "Project Manager":
 if choice == "Test":
         st.header('Test fonctions')
         st.header("Download Your Kantree Dataset") # ou st.subheader()
-        #file = st.file_uploader("Download Your File", key="1")
-        #if file: 
-        #    df = pd.read_csv(file, index_col=None)
-        #    df= df.drop(columns=['application déployée'])
+        file = st.file_uploader("Download Your File", key="1")
+        if file: 
+            df = pd.read_csv(file, index_col=None)
+            df= df.drop(columns=['application déployée'])
 
-        #df.to_csv('dataset_test.csv', index=None)
+        df.to_csv('dataset_test.csv', index=None)
         #df = pd.read_csv('dataset.csv', index_col=None)
 
-        df_2 = pd.read_csv('dataset.csv', index_col=None)
-        df_2 = pd.read_csv('dataset.csv', index_col=None)
+        df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)
         
-        df_2 = cleaning_data(df_2)
+        df_2 = cleaning_data(df_2) ### fonction a retirer ou a integrer dans download
         df_2 = nb_actif_2(df_2, df_Tosca)
         data = data_by_trimestre(df_2)
         
