@@ -821,7 +821,8 @@ if choice == "Test":
         
         fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de déploiement",
-                          title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM")
+                          title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM", barmode='stack')
+        #fig.update_layout(barmode='stack')
         st.write(fig2)
 
 
