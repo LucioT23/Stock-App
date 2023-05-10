@@ -773,6 +773,7 @@ if choice == "Test":
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_mwm = df_mwm.groupby('title').apply(remove_duplicates).reset_index(drop=True)
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
+        st.write(df_mwm[['Portail déployée','statut deploiement']].value_counts())
 
         counts_MWM = df_mwm['état'].value_counts()
         
