@@ -776,7 +776,7 @@ if choice == "Test":
         st.write(df_mwm[['Portail déployée','statut deploiement']].value_counts())
 
         counts_MWM = df_mwm['état'].value_counts()
-        
+        st.write(df_mwm[df_mwm['état']=='En cours de déploiement'])
         st.write(counts_MWM)
         st.write(df_mwm)
         
