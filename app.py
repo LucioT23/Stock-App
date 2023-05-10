@@ -814,8 +814,10 @@ if choice == "Test":
 
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
-        df_concat['trimestre_deployable_GLM'] = pd.to_datetime(df_concat['trimestre_deployable_GLM'])
-        x_order = df_concat['trimestre_deployable_GLM'].dt.to_period('Q').astype(str).unique()
+        df_concat['trimestre_deployable_GLM'] = pd.to_datetime(df_concat['trimestre_deployable_GLM']) #, format='%YQ%q')
+        #df_mwm_filtered['trimestre_deployable_GLM'] = periods.strftime('%YQ%q')
+        #df['trimestre_deployé'] = pd.PeriodIndex(df['date Vie de Solution'], freq='Q')
+        #x_order = df_concat['trimestre_deployable_GLM'].dt.to_period('Q').astype(str).unique() # ces 2 lignes me génère une erreur peut être tester uniquement la 1ère d'abord ?
 
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
                       hover_name='title', text='title',color='état')
