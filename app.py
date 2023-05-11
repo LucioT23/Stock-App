@@ -231,6 +231,8 @@ def data_by_trimestre(df):
   return (new_data)
 
 #####################
+#  Ajout des données de nombre de lignes d'après le fichier TOSCA
+
 def Client_MWM_EWOCS (df, data):
   # déploiement en cours GLM AC extrait du fichier Kantree
   df_ongoing_deploiement_GLMAC = df[(df['statut deploiement']=='En cours') & (df['Portail déployée']=='GLM AC')]
@@ -277,6 +279,7 @@ def Client_MWM_EWOCS (df, data):
 
 ######################
 # Clients MWM sous GLM AC
+# consolidation des clients MWM et du fichier de planification des déploiements
 
 def client_MWM(df_mwm, df_Planning_data, plus_recente):
 
@@ -819,6 +822,8 @@ if choice == "Test":
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
         st.write(df_concat)
+        st.write(trimestres_universal_music = df_concat.loc[df_concat['title'] == 'Universal Music', 'trimestre_deployable_GLM'].tolist())
+        st.write(trimestres_veolia = df_concat.loc[df_concat['title'] == 'Veolia', 'trimestre_deployable_GLM'].tolist())
 
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
                       hover_name='title', text='title',color='état')
