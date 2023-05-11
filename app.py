@@ -300,7 +300,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente):
   # Remplacer les valeurs nulles par des chaînes vides
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
   df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
-  st.write(df_mwm_filtered[df_mwm_filtered['trimestre_deployable_GLM'].isna()])
+  
   df_mwm_filtered = df_mwm_filtered.dropna(subset=['trimestre_deployable_GLM'])
 
   # Convertir les valeurs de la colonne en chaînes de caractères
@@ -809,7 +809,31 @@ if choice == "Test":
         st.subheader("df_concat")
         st.write(df_concat)
         counts_MWM_GLM = df_concat['état'].value_counts()
-        st.write(counts_MWM_GLM)
+        #st.write(counts_MWM_GLM)
+
+        #### TEST ####
+
+        df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
+
+        # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
+        df_Planning_data['Kickoff GLM AC'] = pd.to_datetime(df_Planning_data['Kickoff GLM AC'], format='%d/%m/%Y')
+        df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
+        
+        # Regrouper les trimestres de la colonne 'quarterc' par 'Code DISE'
+        quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict()
+        
+        # Ajouter la colonne 'trimestre_deployable' en utilisant les valeurs de la colonne 'quarterc' du dataframe 'df_Planning_data'
+        df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
+
+        # Remplacer les valeurs nulles par des chaînes vides
+        df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
+        df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
+
+        st.write(df_mwm_filtered[df_mwm_filtered['trimestre_deployable_GLM'].isna()]
+)
+
+
+        ###############
 
         # créer un graphique pie
         fig1 = px.pie(data_frame=df_concat,
