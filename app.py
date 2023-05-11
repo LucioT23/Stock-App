@@ -780,20 +780,20 @@ if choice == "Test":
         counts_MWM = df_mwm['état'].value_counts()
         
         # créer un graphique pie
-        fig = px.pie(data_frame=df_mwm, #resultats['MWM']
-                      values=counts_MWM.values,  # utiliser les valeurs de counts_MWM
-                      names=counts_MWM.index,  # utiliser les noms de chaque état
-                      hole=0.4,  # ajouter un trou au milieu du pie chart
-                    width=800, height=400)  
+        #fig = px.pie(data_frame=df_mwm, #resultats['MWM']
+        #              values=counts_MWM.values,  # utiliser les valeurs de counts_MWM
+        #              names=counts_MWM.index,  # utiliser les noms de chaque état
+        #              hole=0.4,  # ajouter un trou au milieu du pie chart
+        #            width=800, height=400)  
 
         # ajouter un titre
-        fig.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
-        fig.update_traces(textinfo="percent+label+value")
+        #fig.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
+        #fig.update_traces(textinfo="percent+label+value")
 
         # afficher le graphique
         #Ajout du graphique animé sur la migration client sur les portails digitaux
-        st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
-        st.write(fig)
+        #st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
+        #st.write(fig)
 
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
@@ -811,7 +811,7 @@ if choice == "Test":
         # ajouter un titre
         fig1.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
         fig1.update_traces(textinfo="percent+label+value")
-        st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC : version 2")
+        #st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
         st.write(fig1)
 
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
