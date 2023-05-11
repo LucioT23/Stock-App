@@ -820,9 +820,9 @@ if choice == "Test":
         df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
         
         # Regrouper les trimestres de la colonne 'quarterc' par 'Code DISE'
-        quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict()
+        quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict())
         st.write(quarterc_dict)
-        
+
         # Ajouter la colonne 'trimestre_deployable' en utilisant les valeurs de la colonne 'quarterc' du dataframe 'df_Planning_data'
         df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
 
