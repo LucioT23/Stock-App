@@ -765,8 +765,6 @@ if choice == "Test":
         ######## Clients MWM #############
         st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
-        st.subheader("df_mwm")
-        st.write(df_mwm)
 
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df):
@@ -778,11 +776,8 @@ if choice == "Test":
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_mwm = df_mwm.groupby('title').apply(remove_duplicates).reset_index(drop=True)
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
-        #st.write(df_mwm[['Portail déployée','statut deploiement']].value_counts())
 
         counts_MWM = df_mwm['état'].value_counts()
-        #st.write(counts_MWM)
-        #st.write(df_mwm)
         
         # créer un graphique pie
         fig = px.pie(data_frame=df_mwm, #resultats['MWM']
@@ -803,38 +798,8 @@ if choice == "Test":
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
         
-        st.subheader("df_mwm")
-        st.write(df_mwm)
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente)
-        st.subheader("df_concat")
-        st.write(df_concat)
         counts_MWM_GLM = df_concat['état'].value_counts()
-        #st.write(counts_MWM_GLM)
-
-        #### TEST ####
-
-        df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
-
-        # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
-        df_Planning_data['Kickoff GLM AC'] = pd.to_datetime(df_Planning_data['Kickoff GLM AC'], format='%d/%m/%Y')
-        df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
-        
-        # Regrouper les trimestres de la colonne 'quarterc' par 'Code DISE'
-        quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict()
-        st.write(quarterc_dict)
-
-        # Ajouter la colonne 'trimestre_deployable' en utilisant les valeurs de la colonne 'quarterc' du dataframe 'df_Planning_data'
-        df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
-
-        # Remplacer les valeurs nulles par des chaînes vides
-        df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].fillna('')
-        df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
-
-        st.write(df_mwm_filtered[df_mwm_filtered['trimestre_deployable_GLM'].isna()])
-
-
-
-        ###############
 
         # créer un graphique pie
         fig1 = px.pie(data_frame=df_concat,
@@ -853,9 +818,6 @@ if choice == "Test":
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].str.strip()
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
         
-        st.subheader("df_concat")
-        st.write(df_concat)
-
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
                       hover_name='title', text='title',color='état')
                       #, category_orders={'trimestre_deployable_GLM': ['2020Q2', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
