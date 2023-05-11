@@ -764,7 +764,8 @@ if choice == "Test":
         ######## Clients MWM #############
         st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
-        #st.write(df_mwm)
+        st.subheader("df_mwm")
+        st.write(df_mwm)
 
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df):
@@ -776,12 +777,11 @@ if choice == "Test":
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_mwm = df_mwm.groupby('title').apply(remove_duplicates).reset_index(drop=True)
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
-        st.write(df_mwm[['Portail déployée','statut deploiement']].value_counts())
+        #st.write(df_mwm[['Portail déployée','statut deploiement']].value_counts())
 
         counts_MWM = df_mwm['état'].value_counts()
-        st.write(df_mwm[df_mwm['état']=='En cours de déploiement'])
-        st.write(counts_MWM)
-        st.write(df_mwm)
+        #st.write(counts_MWM)
+        #st.write(df_mwm)
         
         # créer un graphique pie
         fig = px.pie(data_frame=df_mwm, #resultats['MWM']
@@ -802,7 +802,11 @@ if choice == "Test":
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
         
+        st.subheader("df_mwm")
+        st.write(df_mwm)
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente)
+        st.subheader("df_concat")
+        st.write(df_concat)
         counts_MWM_GLM = df_concat['état'].value_counts()
         st.write(counts_MWM_GLM)
 
@@ -823,11 +827,8 @@ if choice == "Test":
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].str.strip()
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
         
+        st.subheader("df_concat")
         st.write(df_concat)
-        trimestres_universal_music = df_concat.loc[df_concat['title'] == 'Universal Music', 'trimestre_deployable_GLM'].tolist()
-        st.write(trimestres_universal_music)
-        trimestres_veolia = df_concat.loc[df_concat['title'] == 'Veolia', 'trimestre_deployable_GLM'].tolist()
-        st.write(trimestres_veolia)
 
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
                       hover_name='title', text='title',color='état')
