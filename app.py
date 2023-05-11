@@ -822,8 +822,10 @@ if choice == "Test":
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
         st.write(df_concat)
-        st.write(trimestres_universal_music = df_concat.loc[df_concat['title'] == 'Universal Music', 'trimestre_deployable_GLM'].tolist())
-        st.write(trimestres_veolia = df_concat.loc[df_concat['title'] == 'Veolia', 'trimestre_deployable_GLM'].tolist())
+        trimestres_universal_music = df_concat.loc[df_concat['title'] == 'Universal Music', 'trimestre_deployable_GLM'].tolist()
+        st.write(trimestres_universal_music)
+        trimestres_veolia = df_concat.loc[df_concat['title'] == 'Veolia', 'trimestre_deployable_GLM'].tolist()
+        st.write(trimestres_veolia)
 
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
                       hover_name='title', text='title',color='état')
