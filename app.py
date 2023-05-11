@@ -778,22 +778,6 @@ if choice == "Test":
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
 
         counts_MWM = df_mwm['état'].value_counts()
-        
-        # créer un graphique pie
-        #fig = px.pie(data_frame=df_mwm, #resultats['MWM']
-        #              values=counts_MWM.values,  # utiliser les valeurs de counts_MWM
-        #              names=counts_MWM.index,  # utiliser les noms de chaque état
-        #              hole=0.4,  # ajouter un trou au milieu du pie chart
-        #            width=800, height=400)  
-
-        # ajouter un titre
-        #fig.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
-        #fig.update_traces(textinfo="percent+label+value")
-
-        # afficher le graphique
-        #Ajout du graphique animé sur la migration client sur les portails digitaux
-        #st.subheader("Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC")
-        #st.write(fig)
 
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
@@ -824,10 +808,14 @@ if choice == "Test":
         
         fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de déploiement",
-                          title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM", barmode='stack')
-        #fig.update_layout(barmode='stack')
+                          title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM", barmode='stack')        
         st.write(fig2)
 
+        fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',color='état')       
+        fig3.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
+                          yaxis_title="Nombre de lignes",
+                          title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM en nb de lignes", barmode='stack')        
+        st.write(fig3)
 
         # Export CSV du fichier df_mwm
         if st.button('Exporter en CSV'):
