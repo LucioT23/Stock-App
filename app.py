@@ -820,7 +820,9 @@ if choice == "Test":
         st.write(fig1)
 
         df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].astype(str)
+        df_concat['trimestre_deployable_GLM'] = df_concat['trimestre_deployable_GLM'].str.strip()
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
+        
         st.write(df_concat)
         trimestres_universal_music = df_concat.loc[df_concat['title'] == 'Universal Music', 'trimestre_deployable_GLM'].tolist()
         st.write(trimestres_universal_music)
