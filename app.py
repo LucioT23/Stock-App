@@ -821,6 +821,7 @@ if choice == "Test":
         
         # Regrouper les trimestres de la colonne 'quarterc' par 'Code DISE'
         quarterc_dict = df_Planning_data.groupby('Code DISE')['quarterc'].agg(lambda x: sorted(set(x))).to_dict()
+        st.write(quarterc_dict)
         
         # Ajouter la colonne 'trimestre_deployable' en utilisant les valeurs de la colonne 'quarterc' du dataframe 'df_Planning_data'
         df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['Code groupe DISE'].map(quarterc_dict)
@@ -830,7 +831,7 @@ if choice == "Test":
         df_mwm_filtered['trimestre_deployable_GLM'] = df_mwm_filtered['trimestre_deployable_GLM'].apply(lambda x: pd.Period(x[0], freq='Q') if len(x)>0 else pd.NaT)
 
         st.write(df_mwm_filtered[df_mwm_filtered['trimestre_deployable_GLM'].isna()]
-)
+
 
 
         ###############
