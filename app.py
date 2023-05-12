@@ -838,7 +838,7 @@ if choice == "Test":
         #counts_EWOCS = df_ewocs['état'].value_counts()
 
         df_concat_ewocs= client_MWM(df_ewocs, df_Planning_data, plus_recente,'EWOCS')
-        counts_EWOCS_GLM = df_concat['état'].value_counts() #*
+        counts_EWOCS_GLM = df_concat_ewocs['état'].value_counts() #*
 
         # créer un graphique pie
         fig1 = px.pie(data_frame=df_concat_ewocs,
