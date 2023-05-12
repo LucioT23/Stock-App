@@ -784,12 +784,14 @@ if choice == "Test":
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente)
         counts_MWM_GLM = df_concat['état'].value_counts()
 
-        # Définir les couleurs
-        #colors = px.colors.qualitative.Plotly
-        
-        colors = {'MWM': 'blue',
-                  'GLM AC': 'green',
-                  'En cours de déploiement': 'red'}
+        ### Définir les couleurs
+        # Obtenir les couleurs standard de Plotly Express dans un ordre déterminé
+        colors = px.colors.qualitative.Plotly[:3]
+
+        # Créer un dictionnaire pour mapper chaque service à sa couleur correspondante
+        color_map = {'MWM': colors[0],
+                    'GLM AC': colors[1],
+                    'En cours de déploiement': colors[2]}
 
         # créer un graphique pie
         fig1 = px.pie(data_frame=df_concat,
@@ -810,7 +812,7 @@ if choice == "Test":
         
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
                       hover_name='title', text='title',
-                      color='état', color_discrete_map=colors) 
+                      color='état', color_discrete_map=color_map) 
                       #, category_orders={'trimestre_deployable_GLM': ['2020Q2', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
         
         fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
@@ -819,7 +821,7 @@ if choice == "Test":
         st.write(fig2)
 
         fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',
-                      color='état', color_discrete_map=colors)    # color_discrete_sequence=['green', 'red', 'blue'],   
+                      color='état', color_discrete_map=color_map)    # color_discrete_sequence=['green', 'red', 'blue'],   
         fig3.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de lignes",
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM en nb de lignes", barmode='stack')        
