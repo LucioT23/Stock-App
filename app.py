@@ -789,7 +789,8 @@ if choice == "Test":
                       values=counts_MWM_GLM.values,  # utiliser les valeurs de counts_MWM
                       names=counts_MWM_GLM.index,  # utiliser les noms de chaque état
                       hole=0.4,  # ajouter un trou au milieu du pie chart
-                      width=800, height=400)  
+                      width=800, height=400,
+                      color_discrete_sequence=['blue', 'green', 'red'],color_continuous_scale='viridis')  
 
         # ajouter un titre
         fig1.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
@@ -802,7 +803,8 @@ if choice == "Test":
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
         
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
-                      hover_name='title', text='title',color='état', color_discrete_sequence=['blue', 'green', 'red'])
+                      hover_name='title', text='title',
+                      color='état',color_discrete_sequence=['green', 'red', 'blue'], color_continuous_scale='viridis')
                       #, category_orders={'trimestre_deployable_GLM': ['2020Q2', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
         
         fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
@@ -810,7 +812,8 @@ if choice == "Test":
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM", barmode='stack')        
         st.write(fig2)
 
-        fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',color='état', color_discrete_sequence=['green', 'red', 'blue'])       
+        fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',
+                      color='état', color_discrete_sequence=['green', 'red', 'blue'], color_continuous_scale='viridis')       
         fig3.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de lignes",
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM en nb de lignes", barmode='stack')        
