@@ -743,19 +743,13 @@ if choice == "Test":
             df = pd.read_csv(file, index_col=None)
             df= df.drop(columns=['application déployée'])
 
-        df.to_csv('dataset_test.csv', index=None)
-        
+        df.to_csv('dataset_test.csv', index=None)        
 
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
-        df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)
-        
+        df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)       
 
-
-        df_2 = cleaning_data(df_2) ### fonction a retirer ou a integrer dans download
-        airbus_ligne_df_b = df_2[df_2['title'].isin(['Airbus'])]
-        st.write(airbus_ligne_df_b)
-        
+        df_2 = cleaning_data(df_2) ### fonction a retirer ou a integrer dans download      
         df_2 = nb_actif_2(df_2, df_Tosca)
         data = data_by_trimestre(df_2)
         
@@ -773,9 +767,6 @@ if choice == "Test":
         ######## Clients MWM #############
         st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
-
-        airbus_ligne_df_mwm = df_mwm[df_mwm['title'].isin(['Airbus'])]
-        st.write(airbus_ligne_df_mwm)
 
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df):
@@ -821,9 +812,6 @@ if choice == "Test":
                           yaxis_title="Nombre de déploiement",
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM", barmode='stack')        
         st.write(fig2)
-
-        airbus_ligne = df_concat[df_concat['title'].isin(['Airbus'])]
-        st.write(airbus_ligne)
 
         fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',color='état')       
         fig3.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
