@@ -811,6 +811,9 @@ if choice == "Test":
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM", barmode='stack')        
         st.write(fig2)
 
+        airbus_ligne = df_concat[df_concat['title'].isin(['Airbus'])]
+        st.write(airbus_ligne)
+
         fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',color='état')       
         fig3.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de lignes",
