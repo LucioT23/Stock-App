@@ -744,12 +744,15 @@ if choice == "Test":
             df= df.drop(columns=['application déployée'])
 
         df.to_csv('dataset_test.csv', index=None)
-        #df = pd.read_csv('dataset.csv', index_col=None)
+        
 
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)
         
+        airbus_ligne_df = df_2[df_2['title'].isin(['Airbus'])]
+        st.write(airbus_ligne_df)
+
         df_2 = cleaning_data(df_2) ### fonction a retirer ou a integrer dans download
         df_2 = nb_actif_2(df_2, df_Tosca)
         data = data_by_trimestre(df_2)
@@ -765,6 +768,9 @@ if choice == "Test":
         ######## Clients MWM #############
         st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
+
+        airbus_ligne_df_mwm = df_mwm[df_mwm['title'].isin(['Airbus'])]
+        st.write(airbus_ligne_df_mwm)
 
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df):
