@@ -281,11 +281,12 @@ def Client_MWM_EWOCS (df, data):
 # Clients MWM sous GLM AC
 # consolidation des clients MWM et du fichier de planification des déploiements
 
-def client_MWM(df_mwm, df_Planning_data, plus_recente):
+def client_MWM(df_mwm, df_Planning_data, plus_recente, portail):
 
   # Clients MWM non déployés sous GLM AC
-  # Filtrer les lignes avec 'état' == 'MWM'
-  df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
+  # Filtrer les lignes avec 'état' == 'MWM' ou 'EWOCS'
+  df_mwm_filtered = df_mwm[df_mwm['état'].isin([portail])].copy()
+  #df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
 
   # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
   df_Planning_data['Kickoff GLM AC'] = pd.to_datetime(df_Planning_data['Kickoff GLM AC'], format='%d/%m/%Y')
@@ -775,13 +776,12 @@ if choice == "Test":
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_mwm = df_mwm.groupby('title').apply(remove_duplicates).reset_index(drop=True)
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
-
         counts_MWM = df_mwm['état'].value_counts()
 
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
         
-        df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente)
+        df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente,'MWM')
         counts_MWM_GLM = df_concat['état'].value_counts()
 
         ### Définir les couleurs
@@ -831,6 +831,22 @@ if choice == "Test":
         ######## Clients EWOCS #############
         st.subheader('Clients EWOCS')
         df_ewocs = resultats['EWOCS']
+
+        # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
+        def remove_duplicates(df):
+            if 'état' in df.columns:
+                if len(df['état'].unique()) > 1:
+                    df = df.loc[df['état'] != 'EWOCS']
+            return df
+
+        # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
+        # df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates).reset_index(drop=True)
+
+        # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
+        df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates).reset_index(drop=True)
+        df_ewocs['trimestre_deployable_GLM']=df_ewocs['quarterc']
+        counts_EWOCS = df_ewocs['état'].value_counts()
+
 
         # Export CSV du fichier df_mwm
         #if st.button('Exporter en CSV'):
