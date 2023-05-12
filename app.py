@@ -765,10 +765,6 @@ if choice == "Test":
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
 
-        ######## Clients MWM #############
-        st.subheader('Clients MWM')
-        df_mwm = resultats['MWM']
-
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df,portail):
             if 'état' in df.columns:
@@ -776,16 +772,7 @@ if choice == "Test":
                     df = df.loc[df['état'] != portail]
             return df
 
-        # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
-        df_mwm = df_mwm.groupby('title').apply(remove_duplicates, 'MWM').reset_index(drop=True)
-        df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
-        counts_MWM = df_mwm['état'].value_counts()
-
-        
-        df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente,'MWM')
-        counts_MWM_GLM = df_concat['état'].value_counts()
-
-        ### Définir les couleurs
+        ### Définir les couleurs des graphiques
         # Obtenir les couleurs standard de Plotly Express dans un ordre déterminé
         colors = px.colors.qualitative.Plotly[:3]
 
@@ -793,6 +780,18 @@ if choice == "Test":
         color_map = {'MWM': colors[0],
                     'GLM AC': colors[1],
                     'En cours de déploiement': colors[2]}
+
+        ######## Clients MWM #############
+        st.subheader('Clients MWM')
+        df_mwm = resultats['MWM']
+
+        # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
+        df_mwm = df_mwm.groupby('title').apply(remove_duplicates, 'MWM').reset_index(drop=True)
+        df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
+        #counts_MWM = df_mwm['état'].value_counts()
+        
+        df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente,'MWM')
+        counts_MWM_GLM = df_concat['état'].value_counts() #*
 
         # créer un graphique pie
         fig1 = px.pie(data_frame=df_concat,
@@ -833,20 +832,32 @@ if choice == "Test":
         st.subheader('Clients EWOCS')
         df_ewocs = resultats['EWOCS']
 
-        # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
-        def remove_duplicates(df):
-            if 'état' in df.columns:
-                if len(df['état'].unique()) > 1:
-                    df = df.loc[df['état'] != 'EWOCS']
-            return df
-
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
-        # df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates).reset_index(drop=True)
+        # df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
 
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates).reset_index(drop=True)
         df_ewocs['trimestre_deployable_GLM']=df_ewocs['quarterc']
-        counts_EWOCS = df_ewocs['état'].value_counts()
+        #counts_EWOCS = df_ewocs['état'].value_counts()
+
+        df_concat_ewocs= client_MWM(df_ewocs, df_Planning_data, plus_recente,'EWOCS')
+        counts_EWOCS_GLM = df_concat['état'].value_counts() #*
+
+        # créer un graphique pie
+        fig1 = px.pie(data_frame=df_concat_ewocs,
+                      values=counts_EWOCS_GLM.values,  # utiliser les valeurs de counts_EWOCS
+                      names=counts_EWOCS_GLM.index,  # utiliser les noms de chaque état
+                      hole=0.4,  # ajouter un trou au milieu du pie chart
+                      width=800, height=400)  
+
+        # ajouter un titre
+        fig1.update_layout(title_text='Répartition des clients EWOCS déployés ou en cours de déploiement sur GLM AC')
+        fig1.update_traces(textinfo="percent+label+value")
+        st.write(fig1)
+
+        df_concat_ewocs['trimestre_deployable_GLM'] = df_concat_ewocs['trimestre_deployable_GLM'].astype(str)
+        df_concat_ewocs['trimestre_deployable_GLM'] = df_concat_ewocs['trimestre_deployable_GLM'].str.strip()
+        df_concat_ewocs = df_concat_ewocs.sort_values('trimestre_deployable_GLM', ignore_index=True)
 
 
         # Export CSV du fichier df_mwm
