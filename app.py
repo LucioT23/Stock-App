@@ -761,25 +761,26 @@ if choice == "Test":
         df_2.loc[mask, 'statut deploiement'] = 'En cours'
 
         resultats = Client_MWM_EWOCS (df_2, data)
+        
+        # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
+        plus_recente = data['trimestre_digital'].max()
 
         ######## Clients MWM #############
         st.subheader('Clients MWM')
         df_mwm = resultats['MWM']
 
         # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
-        def remove_duplicates(df):
+        def remove_duplicates(df,portail):
             if 'état' in df.columns:
                 if len(df['état'].unique()) > 1:
-                    df = df.loc[df['état'] != 'MWM']
+                    df = df.loc[df['état'] != portail]
             return df
 
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
-        df_mwm = df_mwm.groupby('title').apply(remove_duplicates).reset_index(drop=True)
+        df_mwm = df_mwm.groupby('title').apply(remove_duplicates, 'MWM').reset_index(drop=True)
         df_mwm['trimestre_deployable_GLM']=df_mwm['quarterc']
         counts_MWM = df_mwm['état'].value_counts()
 
-        # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
-        plus_recente = data['trimestre_digital'].max()
         
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente,'MWM')
         counts_MWM_GLM = df_concat['état'].value_counts()
