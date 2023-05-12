@@ -833,10 +833,7 @@ if choice == "Test":
         df_ewocs = resultats['EWOCS']
 
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
-        # df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
-
-        # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
-        df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates).reset_index(drop=True)
+        df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
         df_ewocs['trimestre_deployable_GLM']=df_ewocs['quarterc']
         #counts_EWOCS = df_ewocs['état'].value_counts()
 
