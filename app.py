@@ -789,8 +789,7 @@ if choice == "Test":
                       values=counts_MWM_GLM.values,  # utiliser les valeurs de counts_MWM
                       names=counts_MWM_GLM.index,  # utiliser les noms de chaque état
                       hole=0.4,  # ajouter un trou au milieu du pie chart
-                      width=800, height=400,
-                      color_continuous_scale='viridis')  
+                      width=800, height=400)  
 
         # ajouter un titre
         fig1.update_layout(title_text='Répartition des clients MWM déployés ou en cours de déploiement sur GLM AC')
