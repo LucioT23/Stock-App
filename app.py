@@ -750,9 +750,6 @@ if choice == "Test":
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)
         
-        airbus_ligne_df = df_2[df_2['title'].isin(['Airbus'])]
-        st.write(airbus_ligne_df)
-
         df_2 = cleaning_data(df_2) ### fonction a retirer ou a integrer dans download
         df_2 = nb_actif_2(df_2, df_Tosca)
         data = data_by_trimestre(df_2)
@@ -763,6 +760,9 @@ if choice == "Test":
         # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
         df_2.loc[mask, 'statut deploiement'] = 'En cours'
         
+        airbus_ligne_df = df_2[df_2['title'].isin(['Airbus'])]
+        st.write(airbus_ligne_df)
+
         resultats = Client_MWM_EWOCS (df_2, data)
 
         ######## Clients MWM #############
