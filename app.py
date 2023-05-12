@@ -802,7 +802,7 @@ if choice == "Test":
         df_concat = df_concat.sort_values('trimestre_deployable_GLM', ignore_index=True)
         
         fig2 = px.bar(df_concat, x='trimestre_deployable_GLM',
-                      hover_name='title', text='title',color='état')
+                      hover_name='title', text='title',color='état', color_discrete_sequence=['blue', 'green', 'red'])
                       #, category_orders={'trimestre_deployable_GLM': ['2020Q2', '2022Q2', '2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3']})
         
         fig2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
@@ -810,16 +810,21 @@ if choice == "Test":
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM", barmode='stack')        
         st.write(fig2)
 
-        fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',color='état')       
+        fig3 = px.bar(df_concat, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',color='état', color_discrete_sequence=['green', 'red', 'blue'])       
         fig3.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
                           yaxis_title="Nombre de lignes",
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients MWM en nb de lignes", barmode='stack')        
         st.write(fig3)
 
+
+        ######## Clients EWOCS #############
+        st.subheader('Clients EWOCS')
+        df_ewocs = resultats['EWOCS']
+
         # Export CSV du fichier df_mwm
-        if st.button('Exporter en CSV'):
+        #if st.button('Exporter en CSV'):
           # Exportez le fichier CSV
-          csv = df_mwm.to_csv(index=False)
-          b64 = base64.b64encode(csv.encode()).decode()
-          href = f'<a href="data:file/csv;base64,{b64}" download="donnees.csv">Télécharger le fichier CSV</a>'
-          st.markdown(href, unsafe_allow_html=True)
+        #  csv = df_mwm.to_csv(index=False)
+        #  b64 = base64.b64encode(csv.encode()).decode()
+        #  href = f'<a href="data:file/csv;base64,{b64}" download="donnees.csv">Télécharger le fichier CSV</a>'
+        #  st.markdown(href, unsafe_allow_html=True)
