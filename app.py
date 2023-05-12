@@ -841,21 +841,29 @@ if choice == "Test":
         counts_EWOCS_GLM = df_concat_ewocs['état'].value_counts() #*
 
         # créer un graphique pie
-        fig1 = px.pie(data_frame=df_concat_ewocs,
+        fig_ewocs_1 = px.pie(data_frame=df_concat_ewocs,
                       values=counts_EWOCS_GLM.values,  # utiliser les valeurs de counts_EWOCS
                       names=counts_EWOCS_GLM.index,  # utiliser les noms de chaque état
                       hole=0.4,  # ajouter un trou au milieu du pie chart
                       width=800, height=400)  
 
         # ajouter un titre
-        fig1.update_layout(title_text='Répartition des clients EWOCS déployés ou en cours de déploiement sur GLM AC')
-        fig1.update_traces(textinfo="percent+label+value")
-        st.write(fig1)
+        fig_ewocs_1.update_layout(title_text='Répartition des clients EWOCS déployés ou en cours de déploiement sur GLM AC')
+        fig_ewocs_1.update_traces(textinfo="percent+label+value")
+        st.write(fig_ewocs_1)
 
         df_concat_ewocs['trimestre_deployable_GLM'] = df_concat_ewocs['trimestre_deployable_GLM'].astype(str)
         df_concat_ewocs['trimestre_deployable_GLM'] = df_concat_ewocs['trimestre_deployable_GLM'].str.strip()
         df_concat_ewocs = df_concat_ewocs.sort_values('trimestre_deployable_GLM', ignore_index=True)
 
+        fig_ewocs_2 = px.bar(df_concat_ewocs, x='trimestre_deployable_GLM',
+                      hover_name='title', text='title',
+                      color='état', color_discrete_map=color_map) 
+                     
+        fig_ewocs_2.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
+                          yaxis_title="Nombre de déploiement",
+                          title = "Planning prévisionnel de déploiement GLM AC pour les clients EWOCS", barmode='stack')        
+        st.write(fig_ewocs_2)
 
         # Export CSV du fichier df_mwm
         #if st.button('Exporter en CSV'):
