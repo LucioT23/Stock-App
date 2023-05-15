@@ -781,8 +781,8 @@ if choice == "Test":
 
         # Créer un dictionnaire pour mapper chaque service à sa couleur correspondante
         color_map = {'MWM': colors[0],
-                    'GLM AC': colors[1],
-                    'En cours de déploiement': colors[2]}
+                    'GLM AC': colors[2],
+                    'En cours de déploiement': colors[1]}
 
         ######## Clients MWM #############
         st.subheader('Clients MWM')
