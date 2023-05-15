@@ -756,6 +756,8 @@ if choice == "Test":
         df_2 = nb_actif_2(df_2, df_Tosca)
         data = data_by_trimestre(df_2)
         
+        st.subheader('Après cleaning')
+        st.write(df_2)
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
         mask = df_2["Phase d'avancement"] == 'Pipe déploiement'
 
@@ -797,7 +799,7 @@ if choice == "Test":
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente,'MWM')
         counts_MWM_GLM = df_concat['état'].value_counts() #*
         st.write(df_concat)
-        
+
         # créer un graphique pie
         fig1 = px.pie(data_frame=df_concat,
                       values=counts_MWM_GLM.values,  # utiliser les valeurs de counts_MWM
