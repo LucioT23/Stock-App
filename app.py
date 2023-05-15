@@ -765,7 +765,8 @@ if choice == "Test":
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
         plus_recente = data['trimestre_digital'].max()
 
-        # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
+        #### Fonction #####
+        Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df,portail):
             if 'état' in df.columns:
                 if len(df['état'].unique()) > 1:
@@ -831,11 +832,14 @@ if choice == "Test":
         ######## Clients EWOCS #############
         st.subheader('Clients EWOCS')
         df_ewocs = resultats['EWOCS']
+        st.write(df_ewocs)
 
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
         df_ewocs['trimestre_deployable_GLM']=df_ewocs['quarterc']
-        #counts_EWOCS = df_ewocs['état'].value_counts()
+        counts_EWOCS = df_ewocs['état'].value_counts()
+        st.write(df_ewocs)
+        st.write(counts_EWOCS)
 
         df_concat_ewocs= client_MWM(df_ewocs, df_Planning_data, plus_recente,'EWOCS')
         counts_EWOCS_GLM = df_concat_ewocs['état'].value_counts() #*
@@ -864,6 +868,13 @@ if choice == "Test":
                           yaxis_title="Nombre de déploiement",
                           title = "Planning prévisionnel de déploiement GLM AC pour les clients EWOCS", barmode='stack')        
         st.write(fig_ewocs_2)
+
+        fig_ewocs_3 = px.bar(df_concat_ewocs, x='trimestre_deployable_GLM',y='Nb_actifs',hover_name='title', text='title',
+                      color='état', color_discrete_map=color_map)    # color_discrete_sequence=['green', 'red', 'blue'],   
+        fig_ewocs_3.update_layout(height=600,width =1200,xaxis_title="Trimestre (Kick off)",
+                          yaxis_title="Nombre de lignes",
+                          title = "Planning prévisionnel de déploiement GLM AC pour les clients EWOCS en nb de lignes", barmode='stack')        
+        st.write(fig_ewocs_3)
 
         # Export CSV du fichier df_mwm
         #if st.button('Exporter en CSV'):
