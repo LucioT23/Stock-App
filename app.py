@@ -833,6 +833,8 @@ if choice == "Test":
         st.subheader('Clients EWOCS')
         df_ewocs = resultats['EWOCS']
         st.write(df_ewocs)
+        counts_EWOCS_init = df_ewocs['état'].value_counts()
+        st.write(counts_EWOCS_init)
 
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
