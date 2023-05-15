@@ -766,7 +766,7 @@ if choice == "Test":
         plus_recente = data['trimestre_digital'].max()
 
         #### Fonction #####
-        Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
+        # Créer une fonction pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         def remove_duplicates(df,portail):
             if 'état' in df.columns:
                 if len(df['état'].unique()) > 1:
