@@ -751,11 +751,11 @@ if choice == "Test":
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)       
-        st.write(df_2)
+        
         df_2 = cleaning_data(df_2) ### fonction a retirer ou a integrer dans download      
         df_2 = nb_actif_2(df_2, df_Tosca)
         data = data_by_trimestre(df_2)
-        
+
         st.subheader('Après cleaning')
         st.write(df_2)
         # On sélectionne les lignes où la colonne "Phase d'avancement" est égale à "Pipe déploiement"
@@ -838,6 +838,7 @@ if choice == "Test":
         ######## Clients EWOCS #############
         st.subheader('Clients EWOCS')
         df_ewocs = resultats['EWOCS']
+        st.write(df_ewocs)
 
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
