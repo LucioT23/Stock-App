@@ -286,8 +286,7 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente, portail):
   # Clients MWM non déployés sous GLM AC
   # Filtrer les lignes avec 'état' == 'MWM' ou 'EWOCS'
   df_mwm_filtered = df_mwm[df_mwm['état'].isin([portail])].copy()
-  #df_mwm_filtered = df_mwm[df_mwm['état'] == 'MWM'].copy()
-
+  
   # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
   df_Planning_data['Kickoff GLM AC'] = pd.to_datetime(df_Planning_data['Kickoff GLM AC'], format='%d/%m/%Y')
   df_Planning_data['quarterc'] = pd.PeriodIndex(pd.to_datetime(df_Planning_data['Kickoff GLM AC']), freq='Q').astype(str)
@@ -832,9 +831,6 @@ if choice == "Test":
         ######## Clients EWOCS #############
         st.subheader('Clients EWOCS')
         df_ewocs = resultats['EWOCS']
-        st.write(df_ewocs)
-        counts_EWOCS_init = df_ewocs['état'].value_counts()
-        st.write(counts_EWOCS_init)
 
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
@@ -845,6 +841,8 @@ if choice == "Test":
 
         df_concat_ewocs= client_MWM(df_ewocs, df_Planning_data, plus_recente,'EWOCS')
         counts_EWOCS_GLM = df_concat_ewocs['état'].value_counts() #*
+        st.write(df_concat_ewocs)
+        st.write(counts_EWOCS_GLM)
 
         # créer un graphique pie
         fig_ewocs_1 = px.pie(data_frame=df_concat_ewocs,
