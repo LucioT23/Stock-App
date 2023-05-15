@@ -114,7 +114,8 @@ def cleaning_data(df):
   #df["Code groupe DISE"] = df["Code groupe DISE"].str.replace(r'[,/-]', ';')
   #df["Code groupe DISE"] = df["Code groupe DISE"].astype(str).apply(lambda x: [int(i) for i in x.split(';')])
   # pour supprimer aussi les espaces  avant les séparateurs
-  df["Code groupe DISE"] = df["Code groupe DISE"].str.replace(r'\s*([,/-])\s*', r'\1').str.replace(r'\s+', '')
+  #df["Code groupe DISE"] = df["Code groupe DISE"].str.replace(r'\s*([,/-])\s*', r'\1').str.replace(r'\s+', '')
+  df["Code groupe DISE"] = df["Code groupe DISE"].str.replace(r'[,-/]', ';').str.replace(r';\s+', ';')
   
   # conversion de la colonne en liste d'entiers
   def convert_list(x):
