@@ -751,7 +751,7 @@ if choice == "Test":
         df_2 = pd.read_csv('dataset_test.csv', index_col=None)
         df_Tosca = pd.read_csv('dataset_Tosca.csv', index_col=None)
         df_Planning_data = pd.read_csv('dataset_Planning.csv', index_col=None)       
-
+        st.write(df_2)
         df_2 = cleaning_data(df_2) ### fonction a retirer ou a integrer dans download      
         df_2 = nb_actif_2(df_2, df_Tosca)
         data = data_by_trimestre(df_2)
@@ -762,6 +762,7 @@ if choice == "Test":
         # On met à jour la colonne 'statut déploiement' pour les lignes sélectionnées
         df_2.loc[mask, 'statut deploiement'] = 'En cours'
 
+        
         resultats = Client_MWM_EWOCS (df_2, data)
         
         # Obtenir la plus récente valeur de la colonne 'trimestre_digital'
@@ -795,7 +796,8 @@ if choice == "Test":
         
         df_concat= client_MWM(df_mwm, df_Planning_data, plus_recente,'MWM')
         counts_MWM_GLM = df_concat['état'].value_counts() #*
-
+        st.write(df_concat)
+        
         # créer un graphique pie
         fig1 = px.pie(data_frame=df_concat,
                       values=counts_MWM_GLM.values,  # utiliser les valeurs de counts_MWM
@@ -838,9 +840,7 @@ if choice == "Test":
         # Appliquer la fonction personnalisée pour supprimer les doublons dans la colonne 'état' pour chaque client dans la colonne 'title'
         df_ewocs = df_ewocs.groupby('title').apply(remove_duplicates, 'EWOCS').reset_index(drop=True)
         df_ewocs['trimestre_deployable_GLM']=df_ewocs['quarterc']
-        counts_EWOCS = df_ewocs['état'].value_counts()
-        st.write(df_ewocs)
-        st.write(counts_EWOCS)
+        #counts_EWOCS = df_ewocs['état'].value_counts()
 
         df_concat_ewocs= client_MWM(df_ewocs, df_Planning_data, plus_recente,'EWOCS')
         counts_EWOCS_GLM = df_concat_ewocs['état'].value_counts() #*
