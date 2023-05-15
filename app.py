@@ -292,11 +292,11 @@ def client_MWM(df_mwm, df_Planning_data, plus_recente, portail):
 
   if portail == 'EWOCS':
     # Traitement OPACHE afin de mettre  les codes dans l'ordre alphanumérique
-    Code_Opache = df_ewocs_filtered['Code groupe DISE'].loc[df_ewocs_filtered['title'] == 'Opache 5']
+    Code_Opache = df_mwm_filtered['Code groupe DISE'].loc[df_ewocs_filtered['title'] == 'Opache 5']
     Code_Opache = Code_Opache.str.split(', ').explode().astype(int)
     Code_Opache = Code_Opache.sort_values().astype(str)
     Code_Opache = ','.join(Code_Opache)
-    df_ewocs_filtered['Code groupe DISE'].loc[df_ewocs_filtered['title'] == 'Opache 5']= Code_Opache
+    df_mwm_filtered['Code groupe DISE'].loc[df_mwm_filtered['title'] == 'Opache 5']= Code_Opache
   
   # Convertir les trimestres de la colonne 'quarterc' en trimestres de la forme 'YYYYQN'
   df_Planning_data['Kickoff GLM AC'] = pd.to_datetime(df_Planning_data['Kickoff GLM AC'], format='%d/%m/%Y')
