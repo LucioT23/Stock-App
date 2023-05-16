@@ -107,9 +107,7 @@ def cleaning_data(df):
 
   # select not renouvellement ou avenant
   df = df[df['Renouvellement'].isna()]
-  
-  st.write(df)
-
+ 
   # replace NaN by 0
   df["Code groupe DISE"] = df["Code groupe DISE"].fillna("0")
 
@@ -390,6 +388,8 @@ if choice == "Download":
                 return 'Non déployé'
 
         df['statut deploiement'] = df.apply(statut, axis=1)
+
+        st.write(df)
 
         # select not renouvellement ou avenant
         df = df[df['Renouvellement'].isna()]
