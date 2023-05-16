@@ -369,7 +369,7 @@ if choice == "Download":
         # tranfo en date toutes les colonnes avec un format date
         date_columns = [col for col in df.columns if 'date' in col]
         for col in date_columns :
-          df[col]= pd.to_datetime(df[col],format='%Y %m %d')
+          df[col]= pd.to_datetime(df[col],format='%Y %m %d', errors='coerce')
 
         today = datetime.now().date()
         today = pd.to_datetime(today,format='%Y %m %d')
