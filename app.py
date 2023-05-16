@@ -354,7 +354,7 @@ if choice == "Download":
         df= df.drop(columns=['application déployée'])
         
         st.write(df)
-        
+
         # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
         def rename_application(df):
           for i,val in enumerate(df['Application déployée']):
@@ -372,7 +372,8 @@ if choice == "Download":
         # tranfo en date toutes les colonnes avec un format date
         date_columns = [col for col in df.columns if 'date' in col]
         for col in date_columns :
-          df[col]= pd.to_datetime(df[col],format='%Y %m %d', errors='coerce')
+          df[col] = df[col].fillna(0)
+          df[col]= pd.to_datetime(df[col],format='%Y %m %d')
 
         today = datetime.now().date()
         today = pd.to_datetime(today,format='%Y %m %d')
