@@ -87,6 +87,7 @@ def cleaning_data(df):
   for col in date_columns :
     df[col]= pd.to_datetime(df[col],format='%Y %m %d')
 
+
   today = datetime.now().date()
   today = pd.to_datetime(today,format='%Y %m %d')
 
@@ -107,6 +108,8 @@ def cleaning_data(df):
   # select not renouvellement ou avenant
   df = df[df['Renouvellement'].isna()]
   
+  st.write(df)
+
   # replace NaN by 0
   df["Code groupe DISE"] = df["Code groupe DISE"].fillna("0")
 
