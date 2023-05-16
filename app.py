@@ -353,6 +353,8 @@ if choice == "Download":
         df = pd.read_csv(file, index_col=None)
         df= df.drop(columns=['application déployée'])
         
+        st.write(df)
+        
         # Renome les portails avec des noms uniques (EWOCS/GLM AC/MWM)
         def rename_application(df):
           for i,val in enumerate(df['Application déployée']):
