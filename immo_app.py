@@ -27,8 +27,8 @@ if fl is not None:
 
 st.sidebar.header("Choose your filter: ")
 # Create for Region
-nb_rooms = st.sidebar.multiselect("Nombre de chambre", df["Number Room"].unique())
+nb_rooms = st.sidebar.multiselect("Nombre de chambre", df['Number Room'].unique())
 if not nb_rooms:
     df2 = df.copy()
 else:
-    df2 = df[df["Number Room"].isin(Number Room)]
+    df2 = df[df['Number Room'].isin(nb_rooms)]
