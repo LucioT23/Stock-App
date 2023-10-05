@@ -11,21 +11,18 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 
+# pour nommer la page
+st.set_page_config(page_title="SuperImmo!!!", page_icon=":house:",layout="wide")
 
 st.title(' :house: Immo Data Analyze')
+# Pour remonter le titre dans la page
+st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
 
-with st.sidebar:
-    st.image("https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png")
-    st.title("Digital Mobile Deployment_ML")
-    choice = st.radio("Navigation", ["Download","GLM AC deployment","Customer Migration", "Project Manager", "Test"])
-    st.info("This project application helps you to have a complete vision of the digital deployments of our clients")
+fl = st.file_uploader(":file_folder: Upload a file",type=(["csv","txt","xlsx","xls"]))
+if fl is not None:
+    filename = fl.name
+    st.write(filename)
+    df = pd.read_csv(filename, encoding = "ISO-8859-1")
+        
 
-
-if choice == "Download":
-    st.header("Download Your Kantree Dataset") # ou st.subheader()
-    file = st.file_uploader("Download Your File", key="1")
-    if file:
-        df = pd.read_csv(file, index_col=None)
-        df= df.drop(columns=['application déployée'])
-
-        st.write(df)
+st.write(df)
