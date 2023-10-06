@@ -12,7 +12,9 @@ pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 
 #encodage UTF-8 dans votre application Streamlit pour garantir que les caractères spéciaux
-# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 # pour nommer la page
