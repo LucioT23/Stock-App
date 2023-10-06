@@ -35,7 +35,7 @@ else:
     df2 = df[df['Number Room'].isin(nb_rooms)]
 
 # Create for State
-city = st.sidebar.multiselect("Pick the State", df2["City"].unique())
+city = st.sidebar.multiselect("Ville", df2["City"].unique())
 if not city:
     df3 = df2.copy()
 else:
@@ -64,7 +64,7 @@ with col1:
     # Scatter plot des annonces par prix et par nombre de chambres
     fig = px.scatter(filtered_df, x="Number Room", y='euros', template = "seaborn") #,color="piscine")
     #fig.update_layout(height=500,width =900, yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres", title = "Prix par nuit en fonction du nombre de chambre")
-    fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres", title = "Prix par nuit en fonction du nombre de chambre")
+    fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
     st.plotly_chart(fig,use_container_width=True, height = 200)
 
 with col2:
@@ -74,3 +74,9 @@ with col2:
     #fig.update_traces(text = filtered_df["Number Room"], textposition = "outside")
     fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
     st.plotly_chart(fig,use_container_width=True)
+
+st.subheader("Localisation des biens")
+fig = px.scatter_mapbox(df_test, lat="latitude", lon="longitude", color="euros",
+                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=11,
+                  mapbox_style="carto-positron")
+st.plotly_chart(fig,use_container_width=True, height = 500, width = 1000)
