@@ -13,7 +13,7 @@ pd.set_option('display.max_column',111)
 
 #encodage UTF-8 dans votre application Streamlit pour garantir que les caractères spéciaux
 import sys
-reload(sys)
+#reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
