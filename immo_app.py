@@ -81,7 +81,7 @@ fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color="eur
 st.plotly_chart(fig,use_container_width=True, height = 500, width = 1000)
 
 with st.expander("Nb_de_biens_ViewData"):
-    nb_rooms = filtered_df.groupby(by = "Number Room", as_index = False)["Titles"].count()
+    nb_rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
     st.write(nb_rooms.style.background_gradient(cmap="Oranges"))
     csv = region.to_csv(index = False).encode('utf-8')
     st.download_button("Download Data", data = csv, file_name = "Bien par chambre.csv", mime = "text/csv",
