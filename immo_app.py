@@ -26,9 +26,17 @@ if fl is not None:
         
 
 st.sidebar.header("Choose your filter: ")
+
 # Create for Region
 nb_rooms = st.sidebar.multiselect("Nombre de chambre", df['Number Room'].unique())
 if not nb_rooms:
     df2 = df.copy()
 else:
     df2 = df[df['Number Room'].isin(nb_rooms)]
+
+# Create for State
+city = st.sidebar.multiselect("Pick the State", df2["City"].unique())
+if not city:
+    df3 = df2.copy()
+else:
+    df3 = df2[df2["City"].isin(city)]
