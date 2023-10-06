@@ -40,3 +40,35 @@ if not city:
     df3 = df2.copy()
 else:
     df3 = df2[df2["City"].isin(city)]
+
+
+# Filter the data based on Region, State and City
+
+if not nb_rooms and not city:
+    filtered_df = df
+elif nb_rooms and city:
+    filtered_df = df3[df["Number Room"].isin(nb_rooms) & df3["City"].isin(city)]
+elif city:
+    filtered_df = df3[df3["City"].isin(city)]
+elif nb_rooms:
+    filtered_df = df3[df3["Number Room"].isin(nb_rooms)]
+else:
+    filtered_df = df3[df3["Number Room"].isin(nb_rooms) & df3["City"].isin(city)]
+
+col1, col2 = st.columns((2))
+with col1:
+    st.subheader("Prix par nombre de chambre")
+    #fig = px.bar(category_df, x = "Category", y = "Sales", text = ['${:,.2f}'.format(x) for x in category_df["Sales"]],
+    #             template = "seaborn")
+    
+    # Scatter plot des annonces par prix et par nombre de chambres
+    fig = px.scatter(filtered_df, x="Number Room", y='euros') #,color="piscine")
+    fig.update_layout(height=500,width =900, yaxis_title="Prix par nuit", xaxis_title = "Nombre de chambres", title = "Prix par nuit en fonction du nombre de chambre")
+    st.plotly_chart(fig,use_container_width=True, height = 200)
+
+with col2:
+    st.subheader("Region wise Sales")
+    fig = px.box(filtered_df, x="Number Room", y='euros')
+    #fig = px.pie(filtered_df, values = "Sales", names = "Region", hole = 0.5)
+    fig.update_traces(text = filtered_df["Number Room"], textposition = "outside")
+    st.plotly_chart(fig,use_container_width=True)
