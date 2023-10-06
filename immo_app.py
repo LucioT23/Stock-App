@@ -79,3 +79,10 @@ st.subheader("Localisation des biens")
 fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color="euros", color_continuous_scale=px.colors.cyclical.IceFire,
                        size_max=15, zoom=11,mapbox_style="carto-positron")
 st.plotly_chart(fig,use_container_width=True, height = 500, width = 1000)
+
+with st.expander("Nb_de_biens_ViewData"):
+    nb_rooms = filtered_df.groupby(by = "Number Room", as_index = False)["Titles"].count()
+    st.write(nb_rooms.style.background_gradient(cmap="Oranges"))
+    csv = region.to_csv(index = False).encode('utf-8')
+    st.download_button("Download Data", data = csv, file_name = "Bien par chambre.csv", mime = "text/csv",
+                    help = 'Click here to download the data as a CSV file')
