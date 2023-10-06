@@ -4,6 +4,7 @@ import numpy as np
 from datetime import datetime
 import streamlit as st
 import plotly.express as px
+import matplotlib.pyplot as plt
 import base64
 import warnings
 warnings.filterwarnings('ignore')
