@@ -11,12 +11,6 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.max_row',111)
 pd.set_option('display.max_column',111)
 
-#encodage UTF-8 dans votre application Streamlit pour garantir que les caractères spéciaux
-import sys
-#reload(sys)
-sys.setdefaultencoding('utf-8')
-
-
 # pour nommer la page
 st.set_page_config(page_title="SuperImmo!!!", page_icon=":house:",layout="wide")
 
