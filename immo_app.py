@@ -63,12 +63,12 @@ with col1:
     
     # Scatter plot des annonces par prix et par nombre de chambres
     fig = px.scatter(filtered_df, x="Number Room", y='euros') #,color="piscine")
-    fig.update_layout(height=500,width =900, yaxis_title="Prix par nuit", xaxis_title = "Nombre de chambres", title = "Prix par nuit en fonction du nombre de chambre")
+    fig.update_layout(height=500,width =900, yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres", title = "Prix par nuit en fonction du nombre de chambre")
     st.plotly_chart(fig,use_container_width=True, height = 200)
 
 with col2:
     st.subheader("Prix moyen par nuit")
-    fig = px.box(filtered_df, x="Number Room", y='Price per night')
+    fig = px.box(filtered_df, x="Number Room", y='euros')
     #fig = px.pie(filtered_df, values = "Sales", names = "Region", hole = 0.5)
-    fig.update_traces(text = filtered_df["Number Room"], textposition = "outside")
+    #fig.update_traces(text = filtered_df["Number Room"], textposition = "outside")
     st.plotly_chart(fig,use_container_width=True)
