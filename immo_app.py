@@ -23,7 +23,7 @@ if fl is not None:
     filename = fl.name
     st.write(filename)
     df = pd.read_csv(filename, encoding = "ISO-8859-1")
-        
+
 
 st.sidebar.header("Choose your filter: ")
 
@@ -60,7 +60,7 @@ with col1:
     st.subheader("Prix par nuit en fonction du nb de chambre")
     #fig = px.bar(category_df, x = "Category", y = "Sales", text = ['${:,.2f}'.format(x) for x in category_df["Sales"]],
     #             template = "seaborn")
-    
+
     # Scatter plot des annonces par prix et par nombre de chambres
     fig = px.scatter(filtered_df, x="Number Room", y='euros', template = "seaborn") #,color="piscine")
     #fig.update_layout(height=500,width =900, yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres", title = "Prix par nuit en fonction du nombre de chambre")
