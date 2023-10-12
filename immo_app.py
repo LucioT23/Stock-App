@@ -42,12 +42,7 @@ else:
     df3 = df2[df2["City"].isin(city)]
 
 # Create for Type of house
-typologie = st.sidebar.multiselect("Type de logement", df2["type_logement"].unique())
-if not typologie:
-    df3 = df2.copy()
-else:
-    df3 = df2[df2["type_logement"].isin(typologie)]
-
+typologie = st.sidebar.multiselect("Type de logement",df3["type_logement"].unique())
 
 # Filter the data based on Number of room, City and Typologie
 
