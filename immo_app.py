@@ -27,33 +27,52 @@ if fl is not None:
 
 st.sidebar.header("Choose your filter: ")
 
-# Create for Region
+# Create for Number of room
 nb_rooms = st.sidebar.multiselect("Nombre de chambre", df['Number Room'].unique())
 if not nb_rooms:
     df2 = df.copy()
 else:
     df2 = df[df['Number Room'].isin(nb_rooms)]
 
-# Create for State
+# Create for City
 city = st.sidebar.multiselect("Ville", df2["City"].unique())
 if not city:
     df3 = df2.copy()
 else:
     df3 = df2[df2["City"].isin(city)]
 
+# Create for Type of house
+typologie = st.sidebar.multiselect("Type de logement", df2["type_logement"].unique())
+if not typologie:
+    df3 = df2.copy()
+else:
+    df3 = df2[df2["type_logement"].isin(typologie)]
 
-# Filter the data based on Region, State and City
 
-if not nb_rooms and not city:
+# Filter the data based on Number of room, City and Typologie
+
+if not nb_rooms and not city and not typologie:
     filtered_df = df
+elif not nb_rooms and not city:
+    filtered_df = df[df["type_logement"].isin(typologie)]
+elif not nb_rooms and not typologie:
+    filtered_df = df[df["City"].isin(city)]
+elif not typologie and not city:
+    filtered_df = df[df["Number Room"].isin(nb_rooms)]
 elif nb_rooms and city:
     filtered_df = df3[df["Number Room"].isin(nb_rooms) & df3["City"].isin(city)]
+elif nb_rooms and typologie:
+    filtered_df = df3[df["Number Room"].isin(nb_rooms) & df3["type_logement"].isin(typologie)]
+elif city and typologie:
+    filtered_df = df3[df["City"].isin(city) & df3["type_logement"].isin(typologie)]
 elif city:
     filtered_df = df3[df3["City"].isin(city)]
+elif typologie:
+    filtered_df = df3[df3["type_logement"].isin(typologie)]
 elif nb_rooms:
     filtered_df = df3[df3["Number Room"].isin(nb_rooms)]
 else:
-    filtered_df = df3[df3["Number Room"].isin(nb_rooms) & df3["City"].isin(city)]
+    filtered_df = df3[df3["Number Room"].isin(nb_rooms) & df3["City"].isin(city) & df3["type_logement"].isin(typologie)]
 
 col1, col2 = st.columns((2))
 with col1:
@@ -80,9 +99,14 @@ fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color="eur
                        size_max=15, zoom=11,mapbox_style="carto-positron")
 st.plotly_chart(fig,use_container_width=True, height = 500, width = 1000)
 
-with st.expander("Nb_de_biens_ViewData"):
+st.subheader("Repartition des biens")
+rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
+fig = px.pie(df_migrated, values=rooms, names=rooms.index)
+st.plotly_chart(fig,use_container_width=True)
+
+with st.expander("ViewData"):
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
     st.write(rooms) #.style.background_gradient(cmap="Blues"))
-    csv = region.to_csv(index = False).encode('utf-8')
+    csv = region.to_csv(index = False)   #.encode('utf-8')
     st.download_button("Download Data", data = csv, file_name = "Bien par chambre.csv", mime = "text/csv",
                     help = 'Click here to download the data as a CSV file')
