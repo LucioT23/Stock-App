@@ -41,6 +41,8 @@ if not city:
 else:
     df3 = df2[df2["City"].isin(city)]
 
+st.write(df3)
+
 # Create for Type of house
 typologie = st.sidebar.multiselect("Type de logement",df3["type_logement"].unique())
 
