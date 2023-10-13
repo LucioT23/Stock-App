@@ -103,7 +103,8 @@ st.plotly_chart(fig,use_container_width=True)
 
 with st.expander("View_Data"):
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
-    st.write(rooms) #.style.background_gradient(cmap="Blues"))
-    csv = region.to_csv(index = False)   #.encode('utf-8')
+    st.write(rooms) #.style.background_gradient(cmap="Blues")
+    csv = region.to_csv(index=False, encoding='utf-8')
+    #csv = region.to_csv(index = False)   #.encode('utf-8')
     st.download_button("Download Data", data = csv, file_name = "Bien par chambre.csv", mime = "text/csv",
                     help = 'Click here to download the data as a CSV file')
