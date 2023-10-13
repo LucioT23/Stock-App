@@ -98,10 +98,10 @@ st.plotly_chart(fig,use_container_width=True, height = 500, width = 1000)
 
 st.subheader("Repartition des biens")
 rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
-fig = px.pie(filtered_df, values=rooms, names=rooms.index)
+fig = px.pie(rooms, values='Title', names='Number Room')
 st.plotly_chart(fig,use_container_width=True)
 
-with st.expander("ViewData"):
+with st.expander("View_Data"):
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
     st.write(rooms) #.style.background_gradient(cmap="Blues"))
     csv = region.to_csv(index = False)   #.encode('utf-8')
