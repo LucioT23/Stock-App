@@ -71,7 +71,7 @@ elif nb_rooms:
 else:
     filtered_df = df3[df3["Number Room"].isin(nb_rooms) & df3["City"].isin(city) & df3["type_logement"].isin(typologie)]
 
-col1, col2 = st.columns((2))
+col1, col2, col3 = st.columns((3))
 with col1:
     st.subheader("Prix par nuit en fonction du nb de chambre")
     #fig = px.bar(category_df, x = "Category", y = "Sales", text = ['${:,.2f}'.format(x) for x in category_df["Sales"]],
@@ -84,12 +84,18 @@ with col1:
     st.plotly_chart(fig,use_container_width=True, height = 200)
 
 with col2:
-    st.subheader("Prix moyen par nuit")
+    st.subheader("Prix médian par nuit")
     fig = px.box(filtered_df, x="Number Room", y='euros')
-    #fig = px.pie(filtered_df, values = "Sales", names = "Region", hole = 0.5)
-    #fig.update_traces(text = filtered_df["Number Room"], textposition = "outside")
     fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
     st.plotly_chart(fig,use_container_width=True)
+
+with col3:
+    st.subheader("Prix moyen par nuit")
+    rooms = filtered_df.groupby(by = "Number Room", as_index = False)['euros'].mean()
+    fig = px.box(rooms, x="Number Room", y='euros')
+    fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
+    st.plotly_chart(fig,use_container_width=True)
+
 
 st.subheader("Localisation des biens")
 fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color="euros", color_continuous_scale=px.colors.cyclical.IceFire,
