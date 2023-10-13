@@ -98,7 +98,7 @@ st.plotly_chart(fig,use_container_width=True, height = 500, width = 1000)
 
 st.subheader("Repartition des biens")
 rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
-fig = px.pie(df_migrated, values=rooms, names=rooms.index)
+fig = px.pie(filtered_df, values=rooms, names=rooms.index)
 st.plotly_chart(fig,use_container_width=True)
 
 with st.expander("ViewData"):
