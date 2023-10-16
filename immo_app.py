@@ -40,13 +40,12 @@ if not city:
 else:
     df3 = df2[df2["City"].isin(city)]
 
-
 # Create for Type of house
 typologie = st.sidebar.multiselect("Type de logement",df3["type_logement"].unique())
 if not typologie:
     df4 = df3.copy()
 else:
-    df4 = df3[df3["City"].isin(city)]
+    df4 = df3[df3["Type de logement"].isin(typologie)]
 
 
 # Create for Equipement
@@ -55,6 +54,7 @@ equipements_a_filtrer = ['piscine', 'jacuzzi', 'acces plage']
 # Interface utilisateur pour la sélection de l'équipement
 #selected_equipement = st.selectbox("Sélectionnez un équipement", equipements_a_filtrer)
 selected_equipement = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
+st.write(selected_equipement)
 if not selected_equipement:
     df5 = df4.copy()
 else:
