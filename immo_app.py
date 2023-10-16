@@ -52,7 +52,10 @@ equipements_a_filtrer = ['piscine', 'jacuzzi', 'acces plage']
 
 # Create for Equipement
 selected_equipement = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
-# Filtrage du DataFrame
+if not city:
+    df3 = df3.copy()
+else:
+    df3 = df3[df3['Test_Equipment'].str.contains(selected_equipement)]]
 
 
 # Filter the data based on Number of room, City and Typologie
