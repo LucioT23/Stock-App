@@ -51,7 +51,7 @@ equipements_a_filtrer = ['piscine', 'jacuzzi', 'acces plage']
 #selected_equipement = st.selectbox("Sélectionnez un équipement", equipements_a_filtrer)
 
 # Create for Equipement
-city = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
+selected_equipement = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
 # Filtrage du DataFrame
 
 
