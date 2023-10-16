@@ -85,14 +85,14 @@ with col1:
 
 with col2:
     st.subheader("Prix médian par nuit")
-    fig = px.box(filtered_df, x="Number Room", y='euros',template="gridon")
+    fig = px.box(filtered_df, x="Number Room", y='euros', template = "seaborn") #template="gridon"
     fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
     st.plotly_chart(fig,use_container_width=True)
 
 with col3:
     st.subheader("Prix moyen par nuit")
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['euros'].mean()
-    fig = px.box(rooms, x="Number Room", y='euros',template = "plotly_dark")
+    fig = px.box(rooms, x="Number Room", y='euros', template = "seaborn") #template = "plotly_dark"
     fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
     st.plotly_chart(fig,use_container_width=True)
 
@@ -109,7 +109,8 @@ st.plotly_chart(fig,use_container_width=True)
 
 with st.expander("View_Data"):
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
-    st.write(rooms).style.background_gradient(cmap="Blues")
+    st.write(rooms.style.background_gradient(cmap="Blues"))
+    #st.write(region.style.background_gradient(cmap="Oranges"))
     #csv = region.to_csv(index = False)   #.encode('utf-8')
     # Sauvegardez le DataFrame au format CSV en spécifiant l'encodage
     csv = region.to_csv(index=False)
