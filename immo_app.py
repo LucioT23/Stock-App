@@ -46,7 +46,7 @@ typologie = st.sidebar.multiselect("Type de logement",df3["type_logement"].uniqu
 if not typologie:
     df4 = df3.copy()
 else:
-    df4 = df3[df2["City"].isin(city)]
+    df4 = df3[df3["City"].isin(city)]
 
 
 # Create for Equipement
