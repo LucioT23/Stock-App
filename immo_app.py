@@ -52,7 +52,7 @@ equipements_a_filtrer = ['piscine', 'jacuzzi', 'acces plage']
 
 # Create for Equipement
 selected_equipement = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
-if not city:
+if not selected_equipement:
     df3 = df3.copy()
 else:
     df3 = df3[df3['Test_Equipment'].str.contains(selected_equipement)]
