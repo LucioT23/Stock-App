@@ -45,6 +45,17 @@ st.write(df3)
 # Create for Type of house
 typologie = st.sidebar.multiselect("Type de logement",df3["type_logement"].unique())
 
+# Liste des équipements à filtrer
+equipements_a_filtrer = ['piscine', 'jacuzzi', 'acces plage']
+
+# Interface utilisateur pour la sélection de l'équipement
+selected_equipement = st.selectbox("Sélectionnez un équipement", equipements_a_filtrer)
+
+# Filtrage du DataFrame
+if selected_equipement:
+    filtered_df = df3[df3['Test_Equipment'].str.contains(selected_equipement)]
+    st.dataframe(filtered_df)
+
 # Filter the data based on Number of room, City and Typologie
 
 if not nb_rooms and not city and not typologie:
