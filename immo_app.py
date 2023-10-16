@@ -143,3 +143,11 @@ with st.expander("View_Data"):
     csv = rooms.to_csv(index=False) #region.to_csv('nom_du_fichier.csv', index=False)
     st.download_button("Download Data", data = csv, mime = "text/csv",
                     help = 'Click here to download the data as a CSV file') #, file_name = "Bien par chambre.csv"
+
+
+# Create a treem based on Region, category, sub-Category
+st.subheader("Jours réservés")
+fig3 = px.treemap(filtered_df, path = ["city","nb_rooms","type_logement"], values = "jours reserves",hover_data = ["euros"],
+                  color = "type_logement")
+fig3.update_layout(width = 800, height = 650)
+st.plotly_chart(fig3, use_container_width=True)
