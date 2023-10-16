@@ -47,14 +47,13 @@ typologie = st.sidebar.multiselect("Type de logement",df3["type_logement"].uniqu
 
 # Liste des équipements à filtrer
 equipements_a_filtrer = ['piscine', 'jacuzzi', 'acces plage']
-
 # Interface utilisateur pour la sélection de l'équipement
-selected_equipement = st.selectbox("Sélectionnez un équipement", equipements_a_filtrer)
+#selected_equipement = st.selectbox("Sélectionnez un équipement", equipements_a_filtrer)
 
+# Create for Equipement
+city = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
 # Filtrage du DataFrame
-if selected_equipement:
-    filtered_df = df3[df3['Test_Equipment'].str.contains(selected_equipement)]
-    st.dataframe(filtered_df)
+
 
 # Filter the data based on Number of room, City and Typologie
 
@@ -80,6 +79,11 @@ elif nb_rooms:
     filtered_df = df3[df3["Number Room"].isin(nb_rooms)]
 else:
     filtered_df = df3[df3["Number Room"].isin(nb_rooms) & df3["City"].isin(city) & df3["type_logement"].isin(typologie)]
+
+if selected_equipement:
+    filtered_df = df3[df3['Test_Equipment'].str.contains(selected_equipement)]
+    st.dataframe(filtered_df)
+
 
 col1, col2, col3 = st.columns((3))
 with col1:
