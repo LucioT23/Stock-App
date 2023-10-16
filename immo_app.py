@@ -109,7 +109,7 @@ st.plotly_chart(fig,use_container_width=True)
 with st.expander("View_Data"):
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
     #st.write(rooms.style.background_gradient(cmap="Blues"))
-    st.write(rooms.style.background_gradient(cmap="Oranges"))
+    st.write(rooms) #.style.background_gradient(cmap="Oranges"))
     #csv = region.to_csv(index = False)   #.encode('utf-8')
     # Sauvegardez le DataFrame au format CSV en spécifiant l'encodage
     csv = region.to_csv(index=False)
