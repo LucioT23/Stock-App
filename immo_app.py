@@ -147,7 +147,6 @@ with st.expander("View_Data"):
 
 # Create a treem based on Region, category, sub-Category
 st.subheader("Jours réservés")
-fig3 = px.treemap(filtered_df, path = ["City","Number Room","type_logement"], values = "jours reserves" ) #,
-                  # color = "type_logement") #, hover_data = "euros"
-fig3.update_layout(width = 800, height = 650)
+fig3 = px.treemap(filtered_df, path=["City", "Number Room", "type_logement"], values="jours reserves")
+fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
