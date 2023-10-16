@@ -81,18 +81,18 @@ with col1:
     fig = px.scatter(filtered_df, x="Number Room", y='euros', template = "seaborn") #,color="piscine")
     #fig.update_layout(height=500,width =900, yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres", title = "Prix par nuit en fonction du nombre de chambre")
     fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
-    st.plotly_chart(fig,use_container_width=True, height = 200)
+    st.plotly_chart(fig,use_container_width=True) #, height = 200)
 
 with col2:
     st.subheader("Prix médian par nuit")
-    fig = px.box(filtered_df, x="Number Room", y='euros')
+    fig = px.box(filtered_df, x="Number Room", y='euros',template="gridon")
     fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
     st.plotly_chart(fig,use_container_width=True)
 
 with col3:
     st.subheader("Prix moyen par nuit")
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['euros'].mean()
-    fig = px.box(rooms, x="Number Room", y='euros')
+    fig = px.box(rooms, x="Number Room", y='euros',template = "plotly_dark")
     fig.update_layout(yaxis_title="Prix € par nuit", xaxis_title = "Nombre de chambres")
     st.plotly_chart(fig,use_container_width=True)
 
@@ -109,8 +109,9 @@ st.plotly_chart(fig,use_container_width=True)
 
 with st.expander("View_Data"):
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
-    st.write(rooms) #.style.background_gradient(cmap="Blues")
-    csv = region.to_csv(index=False, encoding='utf-8')
+    st.write(rooms).style.background_gradient(cmap="Blues")
     #csv = region.to_csv(index = False)   #.encode('utf-8')
+    # Sauvegardez le DataFrame au format CSV en spécifiant l'encodage
+    csv = region.to_csv(index=False)
     st.download_button("Download Data", data = csv, file_name = "Bien par chambre.csv", mime = "text/csv",
                     help = 'Click here to download the data as a CSV file')
