@@ -51,14 +51,12 @@ else:
 # Create for Equipement
 # Liste des équipements à filtrer
 equipements_a_filtrer = ['piscine', 'jacuzzi', 'acces plage']
-# Interface utilisateur pour la sélection de l'équipement
-#selected_equipement = st.selectbox("Sélectionnez un équipement", equipements_a_filtrer)
 selected_equipement = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
-st.write(selected_equipement)
+
 if not selected_equipement:
     df5 = df4.copy()
 else:
-    df5 = df4[df4['Test_Equipment'].str.contains(selected_equipement)]
+    df5 = df4[df4['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement))]
 
 st.write(df5)
 
