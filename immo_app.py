@@ -71,7 +71,7 @@ elif not nb_rooms and not typologie and not selected_equipement:
 elif not typologie and not city and not selected_equipement:
     filtered_df = df5[df5["Number Room"].isin(nb_rooms)]
 elif not typologie and not city and not nb_rooms:
-    filtered_df = df5[df5['Test_Equipment'].str.contains(selected_equipement)]
+    filtered_df = df5[df5['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement))]
 
 elif nb_rooms and city:
     filtered_df = df5[df5["Number Room"].isin(nb_rooms) & df5["City"].isin(city)]
@@ -81,11 +81,11 @@ elif city and typologie:
     filtered_df = df5[df5["City"].isin(city) & df5["type_logement"].isin(typologie)]
 
 elif nb_rooms and city and selected_equipement:
-    filtered_df = df5[df5["Number Room"].isin(nb_rooms) & df5["City"].isin(city) & df5['Test_Equipment'].str.contains(selected_equipement)]
+    filtered_df = df5[df5["Number Room"].isin(nb_rooms) & df5["City"].isin(city) & (df5['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement)))]
 elif nb_rooms and typologie and selected_equipement:
-    filtered_df = df5[df5["Number Room"].isin(nb_rooms) & df5["type_logement"].isin(typologie) & df5['Test_Equipment'].str.contains(selected_equipement)]
+    filtered_df = df5[df5["Number Room"].isin(nb_rooms) & df5["type_logement"].isin(typologie) & (df5['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement)))]
 elif city and typologie and selected_equipement:
-    filtered_df = df5[df5["City"].isin(city) & df5["type_logement"].isin(typologie) & df5['Test_Equipment'].str.contains(selected_equipement)]
+    filtered_df = df5[df5["City"].isin(city) & df5["type_logement"].isin(typologie) & (df5['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement)))]
 
 elif city:
     filtered_df = df5[df5["City"].isin(city)]
@@ -94,14 +94,9 @@ elif typologie:
 elif nb_rooms:
     filtered_df = df5[df5["Number Room"].isin(nb_rooms)]
 elif selected_equipement:
-    filtered_df = df5[df5['Test_Equipment'].str.contains(selected_equipement)]
+    filtered_df = df5[df5['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement))]
 else:
-    filtered_df = df5[df5["Number Room"].isin(nb_rooms) & df5["City"].isin(city) & df5["type_logement"].isin(typologie) & df5['Test_Equipment'].str.contains(selected_equipement)]
-
-#if selected_equipement:
-#    filtered_df = df[df3['Test_Equipment'].str.contains(selected_equipement)]
-#    st.dataframe(filtered_df)
-
+    filtered_df = df5[df5["Number Room"].isin(nb_rooms) & df5["City"].isin(city) & df5["type_logement"].isin(typologie) & (df5['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement)))]
 
 col1, col2, col3 = st.columns((3))
 with col1:
