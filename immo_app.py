@@ -57,32 +57,45 @@ city = st.sidebar.multiselect("Equipement", equipements_a_filtrer)
 
 # Filter the data based on Number of room, City and Typologie
 
-if not nb_rooms and not city and not typologie:
+if not nb_rooms and not city and not typologie and not selected_equipement:
     filtered_df = df
-elif not nb_rooms and not city:
+elif not nb_rooms and not city and not selected_equipement:
     filtered_df = df[df["type_logement"].isin(typologie)]
-elif not nb_rooms and not typologie:
+elif not nb_rooms and not typologie and not selected_equipement:
     filtered_df = df[df["City"].isin(city)]
-elif not typologie and not city:
+elif not typologie and not city and not selected_equipement:
     filtered_df = df[df["Number Room"].isin(nb_rooms)]
+elif not typologie and not city and not nb_rooms:
+    filtered_df = df[df['Test_Equipment'].str.contains(selected_equipement)]
+
 elif nb_rooms and city:
     filtered_df = df3[df["Number Room"].isin(nb_rooms) & df3["City"].isin(city)]
 elif nb_rooms and typologie:
     filtered_df = df3[df["Number Room"].isin(nb_rooms) & df3["type_logement"].isin(typologie)]
 elif city and typologie:
     filtered_df = df3[df["City"].isin(city) & df3["type_logement"].isin(typologie)]
+
+elif nb_rooms and city and selected_equipement:
+    filtered_df = df3[df["Number Room"].isin(nb_rooms) & df3["City"].isin(city) & df3['Test_Equipment'].str.contains(selected_equipement)]
+elif nb_rooms and typologie and selected_equipement:
+    filtered_df = df3[df["Number Room"].isin(nb_rooms) & df3["type_logement"].isin(typologie) & df3['Test_Equipment'].str.contains(selected_equipement)]
+elif city and typologie and selected_equipement:
+    filtered_df = df3[df["City"].isin(city) & df3["type_logement"].isin(typologie) & df3['Test_Equipment'].str.contains(selected_equipement)]
+
 elif city:
     filtered_df = df3[df3["City"].isin(city)]
 elif typologie:
     filtered_df = df3[df3["type_logement"].isin(typologie)]
 elif nb_rooms:
     filtered_df = df3[df3["Number Room"].isin(nb_rooms)]
-else:
-    filtered_df = df3[df3["Number Room"].isin(nb_rooms) & df3["City"].isin(city) & df3["type_logement"].isin(typologie)]
-
-if selected_equipement:
+elif selected_equipement:
     filtered_df = df3[df3['Test_Equipment'].str.contains(selected_equipement)]
-    st.dataframe(filtered_df)
+else:
+    filtered_df = df3[df3["Number Room"].isin(nb_rooms) & df3["City"].isin(city) & df3["type_logement"].isin(typologie) & df3['Test_Equipment'].str.contains(selected_equipement)]
+
+#if selected_equipement:
+#    filtered_df = df3[df3['Test_Equipment'].str.contains(selected_equipement)]
+#    st.dataframe(filtered_df)
 
 
 col1, col2, col3 = st.columns((3))
