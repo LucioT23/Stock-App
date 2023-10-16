@@ -112,6 +112,6 @@ with st.expander("View_Data"):
     st.write(rooms) #.style.background_gradient(cmap="Oranges"))
     #csv = region.to_csv(index = False)   #.encode('utf-8')
     # Sauvegardez le DataFrame au format CSV en spécifiant l'encodage
-    csv = region.to_csv(index=False)
-    st.download_button("Download Data", data = csv, file_name = "Bien par chambre.csv", mime = "text/csv",
-                    help = 'Click here to download the data as a CSV file')
+    csv = region.to_csv("Bien par chambre.csv",index=False) #region.to_csv('nom_du_fichier.csv', index=False)
+    st.download_button("Download Data", data = csv, mime = "text/csv",
+                    help = 'Click here to download the data as a CSV file') #, file_name = "Bien par chambre.csv"
