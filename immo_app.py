@@ -153,8 +153,9 @@ with st.expander("View_Data"):
 
 # Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
-#fig3 = px.treemap(df5, path=["City", "Number Room", "type_logement"], values="jours reserves")
-fig3 = px.treemap(filtered_df, path=["City", "Number Room", "type_logement"], values="jours reserves")
+df_tree=pd.DataFrame(df5)
+fig3 = px.treemap(df_tree, path=["City", "Number Room", "type_logement"], values="jours reserves")
+#fig3 = px.treemap(filtered_df, path=["City", "Number Room", "type_logement"], values="jours reserves")
 
 fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
