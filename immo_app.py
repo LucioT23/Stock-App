@@ -159,7 +159,7 @@ df.rename(columns={
 
 # Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
-fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
+fig3 = px.treemap(df, path=["City", "Number_Room", "Type_Logement"], values="Jours_Reserves")
 
 fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
