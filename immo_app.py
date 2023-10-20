@@ -22,7 +22,7 @@ fl = st.file_uploader(" :file_folder: Upload a file",type=(["csv","txt","xlsx","
 if fl is not None:
     filename = fl.name
     st.write(filename)
-    df = pd.read_csv(filename, encoding = "ISO-8859-1")
+    df = pd.read_csv(filename) #, encoding = "ISO-8859-1")
 
 
 st.sidebar.header("Choose your filter: ")
@@ -47,7 +47,6 @@ if not typologie:
     df4 = df3.copy()
 else:
     df4 = df3[df3["type_logement"].isin(typologie)]
-
 
 # Create for Equipement
 # Liste des équipements à filtrer
@@ -150,10 +149,9 @@ with st.expander("View_Data"):
     st.download_button("Download Data", data = csv, mime = "text/csv",
                     help = 'Click here to download the data as a CSV file') #, file_name = "Bien par chambre.csv"
 
-
 # Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
-fig3 = px.treemap(df5, path=["City", "Number Room"], values="jours reserves") #, "type_logement"
+fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
 
 fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
