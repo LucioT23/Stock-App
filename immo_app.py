@@ -60,7 +60,7 @@ else:
 
 
 with st.expander("Data"):
-    st.write(df5).style.background_gradient(cmap="Oranges"))
+    st.write(df5).style.background_gradient(cmap="Oranges")
 
 #st.write(df5)
 
