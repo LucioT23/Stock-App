@@ -62,9 +62,8 @@ else:
 
 with st.expander("Data"):
     #st.write(df5) #.style.background_gradient(cmap="Oranges")
-    #cmap = plt.cm.get_cmap('RdYlGn')
-    st.dataframe(df5.style.background_gradient(cmap="Oranges")) #(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None)
-    #st.write(df5.style.background_gradient(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None).to_html(), unsafe_allow_html=True)
+    st.dataframe(df5.style.background_gradient(cmap="Oranges"))
+    
 
 
 # Filter the data based on Number of room, City and Typologie
@@ -143,8 +142,8 @@ st.plotly_chart(fig,use_container_width=True)
 
 with st.expander("View_Data"):
     rooms = filtered_df.groupby(by = "Number Room", as_index = False)['Title'].count()
-    #st.write(rooms.style.background_gradient(cmap="Blues"))
-    st.write(rooms) #.style.background_gradient(cmap="Oranges"))
+    st.write(rooms.style.background_gradient(cmap="Blues"))
+    #st.write(rooms) #.style.background_gradient(cmap="Oranges"))
     #csv = region.to_csv(index = False)   #.encode('utf-8')
     # Sauvegardez le DataFrame au format CSV en spécifiant l'encodage
     csv = rooms.to_csv(index=False) #region.to_csv('nom_du_fichier.csv', index=False)
@@ -152,9 +151,10 @@ with st.expander("View_Data"):
                     help = 'Click here to download the data as a CSV file') #, file_name = "Bien par chambre.csv"
 
 
-
 # Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
-fig3 = px.treemap(df5, path=["City", "Number Room", "type_logement"], values="jours reserves")
+#fig3 = px.treemap(df5, path=["City", "Number Room", "type_logement"], values="jours reserves")
+fig3 = px.treemap(filtered_df, path=["City", "Number Room", "type_logement"], values="jours reserves")
+
 fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
