@@ -149,6 +149,14 @@ with st.expander("View_Data"):
     st.download_button("Download Data", data = csv, mime = "text/csv",
                     help = 'Click here to download the data as a CSV file') #, file_name = "Bien par chambre.csv"
 
+df.rename(columns={
+    "City": "City",
+    "Number Room": "Number_Room",
+    "type_logement": "Type_Logement",
+    "jours reserves": "Jours_Reserves"
+}, inplace=True)
+
+
 # Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
 fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
