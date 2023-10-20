@@ -62,9 +62,9 @@ else:
 
 with st.expander("Data"):
     #st.write(df5) #.style.background_gradient(cmap="Oranges")
-    cmap = plt.cm.get_cmap('RdYlGn')
-    st.dataframe(df5.style.background_gradient(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None))
-    st.write(df5.style.background_gradient(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None).to_html(), unsafe_allow_html=True)
+    #cmap = plt.cm.get_cmap('RdYlGn')
+    st.dataframe(df5.style.background_gradient(cmap="Oranges")) #(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None)
+    #st.write(df5.style.background_gradient(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None).to_html(), unsafe_allow_html=True)
 
 
 # Filter the data based on Number of room, City and Typologie
@@ -155,6 +155,6 @@ with st.expander("View_Data"):
 
 # Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
-fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
+fig3 = px.treemap(df5, path=["City", "Number Room", "type_logement"], values="jours reserves")
 fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
