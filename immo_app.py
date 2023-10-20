@@ -153,22 +153,7 @@ with st.expander("View_Data"):
 
 # Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
-#df_tree=pd.DataFrame(df5)
-#fig3 = px.treemap(df_tree, path=["City", "Number Room", "type_logement"], values="jours reserves")
-#fig3 = px.treemap(filtered_df, path=["City", "Number Room", "type_logement"], values="jours reserves")
-
-# Exemple de données
-data = {
-    "City": ["City1", "City1", "City2", "City2"],
-    "Number Room": ["Room1", "Room2", "Room1", "Room2"],
-    "type_logement": ["Type1", "Type2", "Type1", "Type2"],
-    "jours reserves": [10, 20, 30, 40],
-}
-
-df = pd.DataFrame(data)
-
-# Maintenant, vous pouvez créer un treemap avec ces données
-fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
+fig3 = px.treemap(df5, path=["City", "Number Room"], values="jours reserves") #, "type_logement"
 
 fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
