@@ -152,22 +152,9 @@ with st.expander("View_Data"):
                     help = 'Click here to download the data as a CSV file') #, file_name = "Bien par chambre.csv"
 
 
-#test treemap
-# Exemple de données
-data = {
-    "City": ["City1", "City1", "City2", "City2"],
-    "Number Room": ["Room1", "Room2", "Room1", "Room2"],
-    "type_logement": ["Type1", "Type2", "Type1", "Type2"],
-    "jours reserves": [10, 20, 30, 40],
-}
 
-df = pd.DataFrame(data)
-
-# Maintenant, vous pouvez créer un treemap avec ces données
-fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
-
-# Create a treem based on Region, category, sub-Category
+# Create a treemap based on Region, category, sub-Category
 st.subheader("Jours réservés")
-#fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
-#fig3.update_layout(width=800, height=650)
+fig3 = px.treemap(df, path=["City", "Number Room", "type_logement"], values="jours reserves")
+fig3.update_layout(width=800, height=650)
 st.plotly_chart(fig3, use_container_width=True)
