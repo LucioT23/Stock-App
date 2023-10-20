@@ -60,9 +60,11 @@ else:
 
 
 with st.expander("Data"):
-    st.write(df5).style.background_gradient(cmap="Oranges")
+    #st.write(df5) #.style.background_gradient(cmap="Oranges")
+    cmap = plt.cm.get_cmap('RdYlGn')
+    st.dataframe(df.style.background_gradient(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None))
+    st.write(df.style.background_gradient(cmap=cmap,vmin=(-0.015),vmax=0.015,axis=None).to_html(), unsafe_allow_html=True)
 
-#st.write(df5)
 
 # Filter the data based on Number of room, City and Typologie
 
