@@ -58,7 +58,11 @@ if not selected_equipement:
 else:
     df5 = df4[df4['Test_Equipment'].apply(lambda x: all(equip in x for equip in selected_equipement))]
 
-st.write(df5)
+
+with st.expander("Data"):
+    st.write(df5).style.background_gradient(cmap="Oranges"))
+
+#st.write(df5)
 
 # Filter the data based on Number of room, City and Typologie
 
