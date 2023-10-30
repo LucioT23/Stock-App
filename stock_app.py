@@ -24,4 +24,7 @@ if fl is not None:
     st.write(filename)
     df = pd.read_csv(filename) #, encoding = "ISO-8859-1")
 
+with st.expander("Data"):
+    st.dataframe(df.style.background_gradient(cmap="Oranges"))
+
 st.line_chart(data=df, x=df['Close'], y=df['Date'], use_container_width=True) #color='r'
