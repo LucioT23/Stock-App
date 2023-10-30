@@ -24,5 +24,5 @@ if fl is not None:
     st.write(filename)
     df = pd.read_csv(filename) #, encoding = "ISO-8859-1")
 
-
+st.line_chart(data=df, x='Close', y='Date', color='r', use_container_width=True)
 #st.sidebar.header("Choose your filter: ")
