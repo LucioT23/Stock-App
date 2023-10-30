@@ -24,6 +24,7 @@ if fl is not None:
     st.write(filename)
     df = pd.read_csv(filename) #, encoding = "ISO-8859-1")
 
+df['Date']=pd.to_datetime(df['Date'])
 with st.expander("Data"):
     st.dataframe(df.style.background_gradient(cmap="Oranges"))
 
