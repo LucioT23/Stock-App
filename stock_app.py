@@ -30,7 +30,7 @@ START = "2015-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
 
 stocks = ('DG.PA', 'ORA.PA', 'AAPL', 'GOOG')
-selected_stock = st.selectbox('Selectionner l'action pour la prédiction', stocks)
+selected_stock = st.selectbox("Selectionner l'action pour la prédiction", stocks)
 
 n_months = st.slider('Nombre de mois à prédire:', 1, 12)
 #n_years = st.slider('Years of prediction:', 1, 4)
