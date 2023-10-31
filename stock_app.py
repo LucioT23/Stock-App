@@ -87,7 +87,7 @@ st.plotly_chart(fig1,use_container_width=True)
 st.write("Forecast components")
 fig2 = m.plot_components(forecast)
 #fig2.update_layout(yaxis_title="Cours de l'action €", xaxis_title = "Date")
-st.plotly_chart(fig2,use_container_width=True, height = 200, width = 300 )
+st.plotly_chart(fig2,use_container_width=True) 
 #st.write(fig2)
 
 #fl = st.file_uploader(" :file_folder: Upload a file",type=(["csv","txt","xlsx","xls"]))
