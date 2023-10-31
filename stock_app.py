@@ -22,7 +22,7 @@ pd.set_option('display.max_column',111)
 # pour nommer la page
 st.set_page_config(page_title="Stock Prediction !!!", page_icon=":euro:",layout="wide")
 
-st.title(' :euro: Prédiction des cours de l'action')
+st.title(" :euro: Prédiction des cours de l'action")
 # Pour remonter le titre dans la page
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
 
