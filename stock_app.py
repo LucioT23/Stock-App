@@ -19,7 +19,6 @@ st.title(' :house: Stock Prediction')
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
 
 # pip install streamlit fbprophet yfinance plotly
-import streamlit as st
 from datetime import date
 
 import yfinance as yf
@@ -30,8 +29,6 @@ from plotly import graph_objs as go
 START = "2015-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
 
-st.title('Stock Forecast App')
-
 stocks = ('DG.PA', 'ORA.PA', 'AAPL', 'GOOG')
 selected_stock = st.selectbox('Select dataset for prediction', stocks)
 
@@ -40,13 +37,11 @@ n_months = st.slider('Months of prediction:', 1, 12)
 #period = n_years * 365
 period = n_months * 30
 
-
 @st.cache
 def load_data(ticker):
     data = yf.download(ticker, START, TODAY)
     data.reset_index(inplace=True)
     return data
-
 	
 data_load_state = st.text('Loading data...')
 data = load_data(selected_stock)
@@ -80,7 +75,7 @@ st.subheader('Forecast data')
 with st.expander("Data"):
     st.dataframe(forecast.style.background_gradient(cmap="Blues"))
     
-st.write(f'Forecast plot for {n_years} years')
+st.write(f'Forecast plot for {n_months} months')
 fig1 = plot_plotly(m, forecast)
 fig1.update_layout(yaxis_title="Cours de l'action €", xaxis_title = "Date")
 st.plotly_chart(fig1,use_container_width=True)
@@ -88,8 +83,6 @@ st.plotly_chart(fig1,use_container_width=True)
 
 st.write("Forecast components")
 fig2 = m.plot_components(forecast)
-#fig2.update_layout(yaxis_title="Cours de l'action €", xaxis_title = "Date")
-#st.plotly_chart(fig2) #,use_container_width=True
 st.write(fig2)
 
 #fl = st.file_uploader(" :file_folder: Upload a file",type=(["csv","txt","xlsx","xls"]))
