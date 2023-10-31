@@ -35,8 +35,10 @@ st.title('Stock Forecast App')
 stocks = ('DG.PA', 'ORA.PA', 'AAPL', 'GOOG')
 selected_stock = st.selectbox('Select dataset for prediction', stocks)
 
-n_years = st.slider('Years of prediction:', 1, 4)
-period = n_years * 365
+n_months = st.slider('Months of prediction:', 1, 12)
+#n_years = st.slider('Years of prediction:', 1, 4)
+#period = n_years * 365
+period = n_months * 30
 
 
 @st.cache
