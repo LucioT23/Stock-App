@@ -82,7 +82,7 @@ st.write(f'Forecast plot for {n_years} years')
 fig1 = plot_plotly(m, forecast)
 fig1.update_layout(yaxis_title="Cours de l'action €", xaxis_title = "Date")
 st.plotly_chart(fig1,use_container_width=True)
-s#t.plotly_chart(fig1)
+#st.plotly_chart(fig1)
 
 st.write("Forecast components")
 fig2 = m.plot_components(forecast)
